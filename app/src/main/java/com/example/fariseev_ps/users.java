@@ -140,7 +140,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         try {
             Name1 = URLEncoder.encode(Name1, "UTF-8");
             Name1 = Name1.replace("+", "%20");
-            Name1 = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/" + Name1 + ".jpg";
+            Name1 = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + Name1 + ".jpg";
             // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
