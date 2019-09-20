@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings"
+        app:showAsAction="never"
+        android:title="@string/action_settings"/>
+    <item
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/about"
+        app:showAsAction="never"
+        android:title="О программе" />
+
+    <item
+        android:id="@+id/action_search"
+
+        android:title="Поиск"
+        android:showAsAction = "always"
+        android:actionViewClass="android.widget.SearchView" />
+
+
+
+
+</menu>

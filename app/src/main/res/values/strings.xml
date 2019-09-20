@@ -1,0 +1,40 @@
+<resources>
+    <string name="API_KEY">AIzaSyA4fePSRFYo9jVr2jGXpRX2M_R-TTAJu64</string>
+    <string name="app_name">Справочник МЭС С-З</string>
+    <string name="action_about">О программе</string>
+    <string name="action_settings">Настройки</string>
+    <string name="Версия">Версия</string>
+    <string name="about_text">Карельское ПМЭС - филиал ПАО ФСК ЕЭС\n Справочник абонентов\n 185003, Республика Карелия, \nг.Петрозаводск, проспект А.Невского,д.53А \n тел/ф. (8142) 716068, 716059 \n email: kpmes@kp.sz.fsk-ees.ru \n http://www.tcc.fsk-ees.ru\n \n \n Фарисеев П.С.</string>
+    <string name="admin">adm</string>
+    <string name="updatesprkpmes">Обновление доступно</string>
+    <string name="list">lst</string>
+    <string name="callreceiver">Проверка входящего звонка</string>
+    <string name="outgoing">Проверка исходящего звонка</string>
+    <string name="num_list">num_lst</string>
+    <string name="absXX">XX</string>
+    <string name="absYY">YY</string>
+    <string name="DBPATH">DBPATH</string>
+    <string name="dayupdate">dayup</string>
+    <string name="uvedom">Уведомления</string>
+    <string name="autoupdate">Обновлять базу автоматически</string>
+    <string name="upd">upd</string>
+    <string name="imageload">Загружать фотографию</string>
+    <string name="text1_razmer">Средний</string>
+    <string name="text2_razmer">Меленький</string>
+    <string name="osn">1</string>
+    <string name="dop">2</string>
+    <string name="lastUpdateTime">Сервис</string>
+    <string name="textview">TextView</string>
+    <string name="Updatespr">Обновить базу справочника</string>
+    <string name="todo">TODO</string>
+    <string name="nastrosnshrift">Настройки основного шрифта</string>
+    <string name="razmerosnshrift">Размер основного шрифта</string>
+    <string name="stilosnshrift">Стиль основного шрифта</string>
+    <string name="nastrdopshrift">Настройки дополнительного шрифта</string>
+    <string name="razmerdopshrift">Размер дополнительного шрифта</string>
+    <string name="stildopshrift">Стиль дополнительного шрифта</string>
+    <string name="clickPhone">clickPh</string>
+    <string name="todo1">TODO1</string>
+
+
+</resources>

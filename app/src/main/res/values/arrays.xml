@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nazvanieosn">
+        <item>Обычный</item>
+        <item>Полужирный</item>
+        <item>Курсив</item>
+        <item>Полужирный+Курсив</item>
+    </string-array>
+    <string-array name="text1_razmer">
+        <item>Крупный</item>
+        <item>Средний</item>
+        <item>Мелкий</item>
+        <item>Крохотный</item>
+    </string-array>
+    <string-array name="text1_razmer2">
+        <item>"24"</item>
+        <item>"20"</item>
+        <item>"16"</item>
+        <item>"12"</item>
+    </string-array>
+
+
+</resources>
