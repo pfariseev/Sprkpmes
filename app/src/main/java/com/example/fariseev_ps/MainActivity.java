@@ -4,9 +4,7 @@ import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +20,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -33,8 +30,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.telephony.TelephonyManager;
-import android.widget.SearchView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -42,7 +37,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -54,7 +49,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -383,24 +377,36 @@ public void chekRec() {
 
     public void ServiceStart() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    //    if (prefs.getBoolean(getString(R.string.autoupdate), false)) {
+        if (prefs.getBoolean(getString(R.string.autoupdate), false)) {
           //  Log.d("--", "галочка + Уведомление - " + prefs.getBoolean(getString(R.string.uvedom), false));
         //    if (!EternalService.isRunning(this)) {
                 // Log.d("--", "Сервис обновления запущен");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    receiver = new EternalService.Alarm();
-                    intentFilter = new IntentFilter("net.multipi.ALARM");
-                    registerReceiver(receiver, intentFilter);
-                    //  Log.d("--","Регистрация приёмника для API>26");
-                }
+           //     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                 //   receiver = new EternalService.Alarm();
+                 //  intentFilter = new IntentFilter("net.multipi.ALARM");
+                   // registerReceiver(receiver, intentFilter);
+                    ComponentName receiver2 = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+                    PackageManager pm = getPackageManager();
+
+                    pm.setComponentEnabledSetting(receiver2,
+                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+                  //    Log.d("--","Регистрация приёмника для API>26");
+             //   }
                 EternalService.Alarm.setAlarm(this);
-                startService(new Intent(this, EternalService.class));
+            //    startService(new Intent(this, EternalService.class));
          //   }
-       // } else {
+        } else {
+            ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+            PackageManager pm = getPackageManager();
+
+            pm.setComponentEnabledSetting(receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
           //  Log.d("--", "Сервис обновления остановлен");
         //    EternalService.Alarm.cancelAlarm(this);
        //     stopService(new Intent(this, EternalService.class));
-      //  }
+        }
 
         if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
             ShowAlertCheck();
@@ -408,6 +414,8 @@ public void chekRec() {
            // registerReceiver(new OutgoingReceiver(), intentFilter);
            // Log.d("--","Ready in Main "+CallReceiver.ready);
            // CallReceiver.getusers(contex);
+        } else {
+
         }
     }
 
@@ -441,8 +449,7 @@ public void chekRec() {
         int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);
         if (result1 != PackageManager.PERMISSION_GRANTED)
-            if (result2 != PackageManager.PERMISSION_GRANTED)
-        {
+            if (result2 != PackageManager.PERMISSION_GRANTED) {
             result=false;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Предоставить права на просмотр звонков?");
@@ -456,9 +463,6 @@ public void chekRec() {
             alertDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Intent sec_intent = new Intent(MainActivity.this, settings.class);
-                    //  startActivity(sec_intent);
-
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
@@ -466,12 +470,12 @@ public void chekRec() {
         } else result=true;
         if (result1 == PackageManager.PERMISSION_GRANTED)
             if (result2 == PackageManager.PERMISSION_GRANTED)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                result=false;
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setMessage("Предоставить права на режим 'поверх других приложений'?");
-                alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                 if (!Settings.canDrawOverlays(this)) {
+                  result=false;
+                  AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                  alertDialogBuilder.setMessage("Предоставить права на режим 'поверх других приложений'?");
+                  alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));

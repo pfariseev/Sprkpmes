@@ -8,12 +8,12 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -82,10 +82,12 @@ public class EternalService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             contex = context;
-          //  Log.d("--","Обновление  ");
-        //    if (!CallReceiver.ready) CallReceiver.getusers(context);
-           // if (count--==0)
+            if (intent.getAction().equals("net.multipi.ALARM")) {
+                //  Log.d("--","Обновление  ");
+                //    if (!CallReceiver.ready) CallReceiver.getusers(context);
+                // if (count--==0)
                 Update();
+            }
        }
 
         public static void setAlarm(Context context) {

@@ -6,16 +6,12 @@ import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -25,17 +21,18 @@ import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.ArrayMap;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
-import java.io.InputStream;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -56,8 +53,10 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
         public void onReceive(Context context, Intent intent) {
             //     if (!ready) getusers(context);
             if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
-                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false))
+                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false)) {
                     phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+
+                }
             } else {
                 if (intent.getAction().equals("android.intent.action.PHONE_STATE"))
 
