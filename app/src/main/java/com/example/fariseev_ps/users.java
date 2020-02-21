@@ -431,7 +431,9 @@ public boolean onContextItemSelected(MenuItem item) {
 
     @TargetApi(Build.VERSION_CODES.O)
     public void ClickView (View v) {
-                photoDialog();
+        if (getDefaultSharedPreferences(this).getBoolean(getString(R.string.imageload), false)) {
+            photoDialog();
+        }
     }
 
      void CheckAdmin(){
@@ -502,43 +504,53 @@ public boolean onContextItemSelected(MenuItem item) {
             imageView.setImageBitmap(myBitmap);
         } else new DownloadImageTask((ImageView) promptsView.findViewById(R.id.imageView4)).execute(Name1);
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-            alertDialogBuilder
-                    .setCancelable(false)
-                    .setNeutralButton("Выбрать",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                       // Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                                     //   photoPickerIntent.setType("image/*");
-                                    //    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-                                    showDialog(IDD_TWO_BUTTONS);
-                                }
-                            })
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-
-                                    if (realPath!=null) {
-                                        System.out.println("OK " + file.getAbsolutePath());
-                                        try {
-                                            if (android.os.Build.VERSION.SDK_INT >= 26)
-                                            {
-                                            AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation();
-                                            execute.execute();
-                                            upload = false;
-                                            }
-                                        } catch (Exception ex) {
-                                            System.out.println("упс2 " + ex.getMessage());
-                                        }
-
+            if (password!=null) {
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setNeutralButton("Выбрать",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                                        //   photoPickerIntent.setType("image/*");
+                                        //    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                                        showDialog(IDD_TWO_BUTTONS);
                                     }
-                                }
-                            })
-                    .setNegativeButton("Отмена",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                                })
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        if (realPath != null) {
+                                            System.out.println("OK " + file.getAbsolutePath());
+                                            try {
+                                                if (android.os.Build.VERSION.SDK_INT >= 26) {
+                                                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation();
+                                                    execute.execute();
+                                                    upload = false;
+                                                }
+                                            } catch (Exception ex) {
+                                                System.out.println("упс2 " + ex.getMessage());
+                                            }
+
+                                        }
+                                    }
+                                })
+                        .setNegativeButton("Отмена",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+            } else {
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setNegativeButton("Отмена",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+            }
         } else {
             alertDialogBuilder
                     .setCancelable(false)
@@ -551,7 +563,8 @@ public boolean onContextItemSelected(MenuItem item) {
         }
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        if (password==null) enterPassword();
+        if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
+        if (password==null) enterPassword();}
 
     }
 
@@ -560,32 +573,35 @@ public boolean onContextItemSelected(MenuItem item) {
 
         switch (id) {
             case IDD_TWO_BUTTONS:
-                final String[] mMenu ={"Загрузить фото из галерии", "Сделать фото"};
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setItems(mMenu, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-                        if (item==0) {
-                            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                            photoPickerIntent.setType("image/*");
-                            startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-                        }
-                        if (item==1) {
-                            try {
-                                startCamera();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-                builder.setCancelable(true);
-                return builder.create();
+                    final String[] mMenu = {"Загрузить фото из галерии", "Сделать фото"};
 
-            default:
-                return null;
-        }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setItems(mMenu, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                                if (item == 0) {
+
+                                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                                    photoPickerIntent.setType("image/*");
+                                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                                }
+                                if (item == 1) {
+                                    try {
+                                        startCamera();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                        }
+                    });
+                    builder.setCancelable(true);
+                    return builder.create();
+
+                    default:
+                        return null;
+                }
     }
     void startCamera () throws IOException {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
