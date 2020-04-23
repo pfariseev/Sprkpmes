@@ -213,7 +213,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
             try {
                 name = URLEncoder.encode(name, "UTF-8");
                 name = name.replace("+", "%20");
-                name = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/" + name + ".jpg";
+                name = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + name + ".jpg";
                 // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
