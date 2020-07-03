@@ -3,17 +3,12 @@ package com.example.fariseev_ps;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import org.apache.poi.hssf.util.HSSFColor;
 
 import java.util.List;
 import java.util.Map;
@@ -59,6 +54,7 @@ int typeOsn, typeDop;
         }
         return view;
     }
+
         @Override
         public void setViewText (TextView v, String text){
             super.setViewText(v, text);

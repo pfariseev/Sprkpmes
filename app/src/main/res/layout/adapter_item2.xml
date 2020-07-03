@@ -13,7 +13,8 @@
         android:minHeight="38dp"
         android:paddingLeft="0dp"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:background="@drawable/selector"/>
 
 
     <TextView
