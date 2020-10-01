@@ -7,16 +7,11 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,6 +75,7 @@ public class otdels extends Activity {
                // client.put("gde", cursor.getString(6));
 
                // client.put("dole", cursor.getString(8));
+               // client.put("photo",R.raw.sprkpmes);
                 clients.add(client);
             }
             cursor.moveToNext();
@@ -89,7 +85,7 @@ public class otdels extends Activity {
         cursor.close();
 
 //Создаем адаптер
-        adapter = new MySimpleAdapter(this, clients, R.layout.adapter_item2, new String[]{"clients","otd", "dole"}, new int[]{R.id.textViewmain,R.id.textView2,R.id.textView3});
+        adapter = new MySimpleAdapter(this, clients, R.layout.adapter_item2, new String[]{"clients","otd", "dole","photo"}, new int[]{R.id.textViewmain,R.id.textView2,R.id.textView3});
         //listView = (ListView) findViewById(R.id.listView);
         listView = findViewById(R.id.listView);
 

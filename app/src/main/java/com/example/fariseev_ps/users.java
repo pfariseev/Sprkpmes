@@ -179,21 +179,26 @@ void Start (){
     listView.setAdapter(adapter);
     //listView.setOnClickListener(click);
     listView.setOnItemLongClickListener(this);
-    try {
-        Name1 = URLEncoder.encode(Name1, "UTF-8");
-        Name1 = Name1.replace("+", "%20");
-        Name1 = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + Name1 + ".jpg";
-        // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
-    } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-    }
     if (prefs.getBoolean(getString(R.string.imageload), false)) {
         //      GetLink(Name1);
         if (realPath!=null) {
             photoDialog();
         }
-        else new DownloadImageTask((ImageView) findViewById(R.id.imageView2)).execute(Name1);
+        else new DownloadImageTask((ImageView) findViewById(R.id.imageView2)).execute(convertName(Name1));
     }
+}
+
+public static String convertName (String name) {
+    String linkName="";
+    try {
+        linkName = URLEncoder.encode(name, "UTF-8");
+        linkName = linkName.replace("+", "%20");
+        linkName = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + linkName + ".jpg";
+        // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
+    } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+    }
+        return linkName;
 }
 
 @Override
@@ -500,9 +505,9 @@ public boolean onContextItemSelected(MenuItem item) {
         alertDialogBuilder.setView(promptsView);
         if (realPath!=null) {
             Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            ImageView imageView = promptsView.findViewById(R.id.imageView4);
+            ImageView imageView = promptsView.findViewById(R.id.imageView3);
             imageView.setImageBitmap(myBitmap);
-        } else new DownloadImageTask((ImageView) promptsView.findViewById(R.id.imageView4)).execute(Name1);
+        } else new DownloadImageTask((ImageView) promptsView.findViewById(R.id.imageView3)).execute(Name1);
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
             if (password!=null) {
                 alertDialogBuilder
