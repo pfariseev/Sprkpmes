@@ -507,7 +507,7 @@ public boolean onContextItemSelected(MenuItem item) {
             Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             ImageView imageView = promptsView.findViewById(R.id.imageView3);
             imageView.setImageBitmap(myBitmap);
-        } else new DownloadImageTask((ImageView) promptsView.findViewById(R.id.imageView3)).execute(Name1);
+        } else new DownloadImageTask((ImageView) promptsView.findViewById(R.id.imageView3)).execute(convertName(Name1));
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
             if (password!=null) {
                 alertDialogBuilder
