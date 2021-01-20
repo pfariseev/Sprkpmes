@@ -351,7 +351,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             try {
                 fOut = new FileOutputStream(file);
                 // decodeSampledBitmapFromResource(realPath, 50, 75).compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                bmHalf.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                bmHalf.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 System.out.println("!1 " + e.getMessage());
