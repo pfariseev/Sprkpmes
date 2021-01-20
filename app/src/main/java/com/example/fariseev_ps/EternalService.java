@@ -9,25 +9,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class EternalService extends Service {
 
-    Date date = Calendar.getInstance().getTime();
-    private static String DB_PATH = "", DBPATH="";
-    private static Context context;
-    private static int timeUp = 7;
-    private static String lastdayupdate;
-    private static boolean admin, uvedom;
+    //Date date = Calendar.getInstance().getTime();
+   // static String DB_PATH = "", DBPATH="";
+    //static Context context;
+
+    //static String lastdayupdate;
+    //static boolean admin, uvedom;
 
 
 
@@ -39,16 +35,16 @@ public class EternalService extends Service {
     @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        context = this;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
-        DB_PATH = this.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
-        editor.putString("DBPATH",DB_PATH);
-        editor.commit();
-        DBPATH = prefs.getString("DBPATH", "");
-        Log.d("--","DBPATH "+DBPATH);
-        admin = prefs.getBoolean("adm", false);
-        lastdayupdate = prefs.getString("dayup", "");
+       // context = this;
+    //    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
+        //DB_PATH = this.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
+        //editor.putString("DBPATH",DB_PATH);
+        //editor.commit();
+        //DBPATH = prefs.getString("DBPATH", "");
+        //Log.d("--","DBPATH "+DBPATH);
+        //admin = prefs.getBoolean("adm", false);
+    //    lastdayupdate = prefs.getString("dayup", "");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -70,28 +66,28 @@ public class EternalService extends Service {
 
     public static class Alarm extends BroadcastReceiver {
 
-        public static final String ALARM_EVENT = "net.multipi.ALARM";
-        public static final int ALARM_INTERVAL_SEC = 3600;
-        private String hour;
-        private String day;
-        private DatabaseHelper mDBHelper;
-        private SQLiteDatabase mDb;
-        private static Context contex;
+        static final String ALARM_EVENT = "net.multipi.ALARM";
+        static final int ALARM_INTERVAL_SEC = 3600;
+
+        int timeUp = 7;
+        //private String hour;
+        //private String day;
+        //private static Context contex;
 
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            contex = context;
-            if (intent.getAction().equals("net.multipi.ALARM")) {
+          //  contex = context;
+            if (intent.getAction().equals(ALARM_EVENT)) {
                 //  Log.d("--","Обновление  ");
                 //    if (!CallReceiver.ready) CallReceiver.getusers(context);
                 // if (count--==0)
-                Update();
+                Update(context);
             }
        }
 
         public static void setAlarm(Context context) {
-            Intent intent = new Intent("net.multipi.ALARM");
+            Intent intent = new Intent(ALARM_EVENT);
             intent.setClass(context, EternalService.Alarm.class);
             //PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, _intent, 0);
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -108,18 +104,18 @@ public class EternalService extends Service {
         // }
 
 
-        public void Update() {
+        public void Update(Context context) {
             //count=10;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(contex);
-            DB_PATH = prefs.getString("DBPATH", "");
-            admin = prefs.getBoolean("adm", false);
-            uvedom = prefs.getBoolean("Уведомления", false);
-            lastdayupdate = prefs.getString("dayup", "");
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            //DB_PATH = prefs.getString("DBPATH", "");
+            //admin = prefs.getBoolean("adm", false);
+            //uvedom = prefs.getBoolean("Уведомления", false);
+            String lastdayupdate = prefs.getString("dayup", "");
             Date currentDate = new Date();
             SimpleDateFormat fmt = new SimpleDateFormat("HH");
             SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
-            day= fmtday.format(currentDate);
-            hour = fmt.format(currentDate);
+            String day= fmtday.format(currentDate);
+            String hour = fmt.format(currentDate);
             //if (lastdayupdate.equals("")) lastdayupdate=day;
             //Log.d("--", "День  "+day);
             Log.d("--", "Сейчас " + day+" "+hour + "ч. Обновление после " + timeUp);
@@ -127,7 +123,7 @@ public class EternalService extends Service {
                 Log.d("--","сегодня "+day+", "+"последнее обновление "+lastdayupdate);
                 if (Integer.parseInt(hour) > timeUp) {
                     Log.d("--", "TrueUpdate");
-                    updateBase a = updateBase.getInstance(contex);
+                    updateBase.getInstance(context);
                     if (prefs.getBoolean("Обновлять базу автоматически", false)) updateBase.downloadFile();
                 }
             }

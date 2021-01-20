@@ -17,14 +17,14 @@ import java.util.Map;
 
 
 class MySimpleAdapter extends SimpleAdapter {
-    Context context;
-
 
 Float sOsn,sDop;
 int typeOsn, typeDop;
 Boolean loadPhoto;
+Context ctx;
     public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
         super(context, data, resource, from, to);
+        ctx=context;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         loadPhoto = prefs.getBoolean(context.getString(R.string.imageload),false);
         String sizeo="20", typeO;
@@ -94,8 +94,10 @@ Boolean loadPhoto;
                 TextView textView =  view.findViewById(R.id.textViewmain);
                 String name = (String) textView.getText();
                 ImageView photo = view.findViewById(R.id.imageView4);
-                if (photo!=null) {
-                    new users.DownloadImageTask(photo).execute(users.convertName(name));
+                if (photo!=null )
+                if (name!=null) {
+                    users.showAndSavePhoto(ctx, name, photo);
+                  //  new users.DownloadImageTask(photo).execute(users.convertName(name));
                 }
                 }
 

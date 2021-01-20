@@ -5,10 +5,8 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -18,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
@@ -47,7 +46,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
@@ -59,27 +57,27 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     //Переменная для работы с БД
     ActionBar actionBar;
-    EternalService.Alarm receiver;
+    //EternalService.Alarm receiver;
+
 
    // private final BroadcastReceiver callRecv =
    // new CallReceiver.CallService();
 
-    IntentFilter intentFilter;
-    private static boolean callRecvRun;
-    private SharedPreferences mSettings;
+    //IntentFilter intentFilter;
+   // private static boolean callRecvRun;
+   // private SharedPreferences mSettings;
     private DatabaseHelper mDBHelper;
-    private static String DB_PATH = "";
-    File sprkpmes;
+    //private static String DB_PATH = "";
+
     private SearchView mSearchView;
-    private static boolean upd;
+    //private static boolean upd;
     private SQLiteDatabase mDb;
-    int ver, vernew, num_list;
-    String data2, list;
-    Context contex;
-    ArrayList<HashMap<String, Object>> clients = new ArrayList<HashMap<String, Object>>();
-    String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
+    int ver, num_list;
+    String list;
+    //Context contex;
+    //ArrayList<HashMap<String, Object>> clients = new ArrayList<HashMap<String, Object>>();
+
     // String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1E1YMp7fYPFgqTGSph4wYAZC1KmCEPaKp");
-    static final String TAG = "myLogs";
 
     String[] titles = new String[10];
     ViewPager pager;
@@ -97,8 +95,8 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        contex = this;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(contex);
+        //contex = this;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //final SharedPreferences.Editor editor = getDefaultSharedPreferences(contex).edit();
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
@@ -120,7 +118,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     @Override
     public void onResume() {
         super.onResume();
-
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.imageload), false)) chekRecPhoto();
         pagerSet();
         ServiceStart();
       //  final EditText editSearch = (EditText) findViewById(R.id.editSearch);
@@ -134,18 +132,18 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
    @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkSearch (String check) {
             if (check.equals("!")) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(contex);
-                SharedPreferences.Editor editor = getDefaultSharedPreferences(contex).edit();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
                 if (!prefs.getBoolean(getString(R.string.admin), false)) {
                     editor.putBoolean("adm", true);
                     editor.commit();
-                    Toast toast = Toast.makeText(contex, "Привет! :)", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 } else {
                     editor.putBoolean("adm", false);
                     editor.commit();
-                    Toast toast = Toast.makeText(contex, "Пока! :(", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(this, "Пока! :(", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
 
@@ -153,16 +151,16 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                 check="";
             }
             if (check.equals("?")) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(contex);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 boolean admin = prefs.getBoolean(getString(R.string.admin), false);
                 String day = prefs.getString("dayup", "");
-                NotificationUtils n = NotificationUtils.getInstance(contex);
+                NotificationUtils n = NotificationUtils.getInstance(this);
                 n.createInfoNotification("Admin - " + admin + ", LastUpd " + day);
                 check="";
             }
             if (check.equals("s")) {
                 check="";
-                Intent sec_intent = new Intent(contex, savephoto.class);
+                Intent sec_intent = new Intent(this, savephoto.class);
                 startActivity(sec_intent);
             }
             if (check.equals("up")) {
@@ -172,10 +170,10 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
              if (check.equals("**")) {
                   if (CallReceiver.phoneNumber==null) {
                        CallReceiver.phoneNumber = "89214515390";
-                       CallReceiver.getuser(contex);
+                       CallReceiver.getuser(this);
                 } else
                  {
-                    CallReceiver.closeWindow(contex);
+                    CallReceiver.closeWindow(this);
                     CallReceiver.phoneNumber = null;
                  }
                  check="";
@@ -184,17 +182,17 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
                 if (CallReceiver.phoneNumber==null) {
                     CallReceiver.phoneNumber = check;
-                    CallReceiver.getuser(contex);
+                    CallReceiver.getuser(this);
                 } else
                 {
-                    CallReceiver.closeWindow(contex);
+                    CallReceiver.closeWindow(this);
                     CallReceiver.phoneNumber = null;
                 }
                 check="";
             }
 
             if (!check.equals("")) {
-                Intent sec_intent = new Intent(contex, search.class);
+                Intent sec_intent = new Intent(this, search.class);
                 sec_intent.putExtra("searc", check);
                 check="";
                 startActivity(sec_intent);
@@ -327,7 +325,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.about:
-                Intent sec_intent = new Intent(contex, about.class);
+                Intent sec_intent = new Intent(this, about.class);
                 startActivity(sec_intent);
                 return true;
             case R.id.settings:
@@ -354,7 +352,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }
     };
 
-public void chekRec() {
+void chekRec() {
     if (ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_PHONE_STATE)
             != PackageManager.PERMISSION_GRANTED) {
@@ -375,6 +373,21 @@ public void chekRec() {
         }
 }
 
+    void chekRecPhoto() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int canRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {
+                //просим разрешение
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, savephoto.NUMBER_OF_REQUEST);
+            }
+        }
+    }
+
     public void ServiceStart() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean(getString(R.string.autoupdate), false)) {
@@ -386,41 +399,66 @@ public void chekRec() {
                  //  intentFilter = new IntentFilter("net.multipi.ALARM");
                    // registerReceiver(receiver, intentFilter);
                     ComponentName receiver2 = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+           // setReciever (receiver2, true);
                     PackageManager pm = getPackageManager();
 
-                    pm.setComponentEnabledSetting(receiver2,
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                            PackageManager.DONT_KILL_APP);
+                    pm.setComponentEnabledSetting(receiver2, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                   //    Log.d("--","Регистрация приёмника для API>26");
              //   }
-                EternalService.Alarm.setAlarm(this);
-            //    startService(new Intent(this, EternalService.class));
+               EternalService.Alarm.setAlarm(this);
+             //   startService(new Intent(this, EternalService.class));
          //   }
         } else {
-            ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+            ComponentName receiver3 = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+         //   setReciever (receiver3, false);
             PackageManager pm = getPackageManager();
-
-            pm.setComponentEnabledSetting(receiver,
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
+            pm.setComponentEnabledSetting(receiver3,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
           //  Log.d("--", "Сервис обновления остановлен");
-        //    EternalService.Alarm.cancelAlarm(this);
+            EternalService.Alarm.cancelAlarm(this);
        //     stopService(new Intent(this, EternalService.class));
         }
 
         if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
             ShowAlertCheck();
+            setReciever(true);
+        }
+         else if (prefs.getBoolean(getString(R.string.outgoing), false)) {
+            ShowAlertCheck();
+            setReciever(true);
+        }
+         else setReciever(false);
+
+
+
            // IntentFilter intentFilter = new IntentFilter(Intent.ACTION_NEW_OUTGOING_CALL);
            // registerReceiver(new OutgoingReceiver(), intentFilter);
            // Log.d("--","Ready in Main "+CallReceiver.ready);
            // CallReceiver.getusers(contex);
-        } else {
 
-        }
+
+     //       PackageManager pm = getPackageManager();
+      //      pm.setComponentEnabledSetting(receiver3,
+       //             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+       //             PackageManager.DONT_KILL_APP);
+
+         //   ComponentName receiver3 = new ComponentName(getApplicationContext(), CallReceiver.class);
+         //   PackageManager pm = getPackageManager();
+        //    setReciever (receiver3, false);
+         //   pm.setComponentEnabledSetting(receiver3,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
+
+
+    }
+    void setReciever (Boolean enadis) {
+        ComponentName receiver = new ComponentName(getApplicationContext(), CallReceiver.class);
+        PackageManager pm = getPackageManager();
+        if (enadis)
+        pm.setComponentEnabledSetting(receiver,PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+        else
+        pm.setComponentEnabledSetting(receiver,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
     }
 
+    void ShowAlertDialog(){
 
-    public void ShowAlertDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Доступна новая версия программы. Обновить?");
         alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
@@ -428,6 +466,7 @@ public void chekRec() {
             public void onClick(DialogInterface dialog, int which) {
               // mytv.setText("Да");
             //    Log.d("--","Да");
+                String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
                 downloadFile(urlnew);
 
                 }
@@ -507,8 +546,8 @@ public void pagerSet() {
     pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
-            SharedPreferences.Editor editor = getDefaultSharedPreferences(contex).edit();
-            Log.d(TAG, "onPageSelected, position = " + position);
+            SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
+            Log.d("--", "onPageSelected, position = " + position);
             list=String.valueOf(position+1);
             editor.putString("lst",list);
             editor.commit();
@@ -577,11 +616,12 @@ private void update (){
 }
 
     public void downloadFile(String url) {
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
-            DB_PATH = this.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
+        //String DB_PATH = this.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
         new AsyncTask<String, Integer, File>() {
             private Exception m_error = null;
-
+            File sprkpmes;
             @Override
             protected void onPreExecute() {
 
@@ -596,6 +636,7 @@ private void update (){
 
             @Override
             protected File doInBackground(String... params) {
+
                 URL url;
                 HttpURLConnection urlConnection;
                 InputStream inputStream;
@@ -612,7 +653,7 @@ private void update (){
 
                     url = new URL(params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setConnectTimeout(10000); //время ожидания соединения
+                    urlConnection.setConnectTimeout(20000); //время ожидания соединения
                     urlConnection.connect();
                     inputStream = urlConnection.getInputStream();
                     totalSize = 7300000;//urlConnection.getContentLength();
@@ -676,7 +717,7 @@ private void update (){
                 Uri fileUri = Uri.fromFile(sprkpmes); //for Build.VERSION.SDK_INT <= 24
                 if (Build.VERSION.SDK_INT >= 24) {
                     Log.d("--",BuildConfig.APPLICATION_ID);
-                    fileUri = FileProvider.getUriForFile(contex, BuildConfig.APPLICATION_ID,sprkpmes);
+                    fileUri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID,sprkpmes);
                 }
                 Log.d("--",fileUri.toString());
                 Intent intent = new Intent(Intent.ACTION_VIEW);

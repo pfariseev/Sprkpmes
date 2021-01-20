@@ -1,9 +1,11 @@
 package com.example.fariseev_ps;
 ///<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 //        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,15 +14,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -62,10 +61,7 @@ public class savephoto extends Activity {
       //  TextView copyrovanie = findViewById(R.id.textok);
 
         //copyrovanie.setText("Начать копирование ?");
-        folderToSave= Environment.getExternalStorageDirectory().getPath()+
-                "/PhotoSPR/";
-        boolean exists = (new File(folderToSave)).exists();
-        if (!exists){new File(folderToSave).mkdirs();}
+        folderToSave=folderToSaveVoid(this);
         mDBHelper = new DatabaseHelper(this);
         try {
             mDb = mDBHelper.getWritableDatabase();
@@ -83,38 +79,33 @@ public class savephoto extends Activity {
             int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
             if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {
-
-                //Нужно ли нам показывать объяснения , зачем нам нужно это разрешение
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    //показываем объяснение
-                } else {
                     //просим разрешение
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE}, NUMBER_OF_REQUEST);
                 }
-            } else {
-                //ваш код
-            }
+
         }
 
     }
 
-
-
-    public void onClick(View v) {
-
-         // Run();
+    public void onClickSavePhoto(View v) {
+          Run();
     }
 
+    public static String folderToSaveVoid(Context context){
+        String folderToSavenew= context.getApplicationInfo().dataDir + "/Photo/";
+        boolean exists = (new File(folderToSavenew)).exists();
+        if (!exists)new File(folderToSavenew).mkdirs();
+        return folderToSavenew;
+    }
 
-
-    public void Run() {
+    void Run() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         new AsyncTask<String, Integer, File>() {
 
-
             String linky, id = null;
-
             @Override
             protected void onPreExecute() {
                 Log.d("--", "Начато копирование");
@@ -171,7 +162,7 @@ public class savephoto extends Activity {
                             //   Log.d("--", "ID " + id);
 
                         } catch (Exception e) {
-                            Log.d("--", "Err1" + e.getMessage());
+                            Log.d("--", "Err1 " + e.getMessage());
                         }
                         try {
 
@@ -181,7 +172,7 @@ public class savephoto extends Activity {
                             linky = title.attr("src");
                             // Log.d("--", linky);
                         } catch (Exception e) {
-                            Log.d("--", "Err2" + e.getMessage());
+                            Log.d("--", "Err2 " + e.getMessage());
                         }
 
                         try {

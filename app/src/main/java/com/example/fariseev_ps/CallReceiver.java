@@ -30,20 +30,18 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
     public class CallReceiver extends BroadcastReceiver {
 
-        static  private WindowManager windowManager;
-        static  private ViewGroup windowLayout;
+        static  WindowManager windowManager;
+        static  ViewGroup windowLayout;
 
         static int XX,YY;
-        public static String phoneNumber,newClient;
-        static public boolean checkCall, incomingCall, ready, outgoingCall;
+        static String phoneNumber;
+        static boolean checkCall, incomingCall, ready, outgoingCall;
 
 
 
@@ -53,7 +51,8 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
         public void onReceive(Context context, Intent intent) {
             //     if (!ready) getusers(context);
             if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
-                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false)) {
+                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false))
+                {
                     phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 
                 }
@@ -80,9 +79,9 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
                             if (incomingCall) {
                                 // deleteContact(context.getContentResolver(), phoneNumber);
-                                closeWindow(context);
-                                phoneNumber = null;
-                                incomingCall = false;
+                              //  closeWindow(context);
+                             //   phoneNumber = null;
+                            //    incomingCall = false;
                             } else {
                                 if (!outgoingCall) {
                                     outgoingCall = true;
@@ -210,16 +209,18 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
             info_mesto.setText(mesto);
             info_otdel.setText(otdel);
             info_doljnost.setText(doljnost);
-            try {
-                name = URLEncoder.encode(name, "UTF-8");
-                name = name.replace("+", "%20");
-                name = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + name + ".jpg";
-                // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+      //      try {
+      //          name1 = URLEncoder.encode(name, "UTF-8");
+      //          name1 = name1.replace("+", "%20");
+      //          name1 = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + name + ".jpg";
+      //          // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
+      //      } catch (UnsupportedEncodingException e) {
+      //          e.printStackTrace();
+      //      }
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imageload), false)) {
-                new users.DownloadImageTask((ImageView) windowLayout.findViewById(R.id.info_photo)).execute(name);
+                ImageView photo = windowLayout.findViewById(R.id.info_photo);
+                users.showAndSavePhoto(context,name, photo);
+              //  new users.DownloadImageTask(photo.execute(name1);
             }
                 windowManager.addView(windowLayout, params);
 
