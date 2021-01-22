@@ -13,35 +13,33 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
-
 class NotificationUtils {
 
 
 
-    private static NotificationUtils instance;
+     static NotificationUtils instance;
 
-    private static Context context;
-    public static final String NOTIFICATION_CHANNEL_ID_SERVICE = "com.mypackage.service";
-    public static final String NOTIFICATION_CHANNEL_ID_INFO = "com.mypackage.download_info";
+    static Context context;
+   // public static final String NOTIFICATION_CHANNEL_ID_SERVICE = "com.mypackage.service";
+   // public static final String NOTIFICATION_CHANNEL_ID_INFO = "com.mypackage.download_info";
 
-    private NotificationManager manager; // Системная утилита, упарляющая уведомлениями
-    private int lastId = 0; //постоянно увеличивающееся поле, уникальный номер каждого уведомления
-    private HashMap<Integer, Notification> notifications; //массив ключ-значение на все отображаемые пользователю уведомления
+    //NotificationManager manager; // Системная утилита, упарляющая уведомлениями
+    int lastId = 0; //постоянно увеличивающееся поле, уникальный номер каждого уведомления
+    HashMap<Integer, Notification> notifications; //массив ключ-значение на все отображаемые пользователю уведомления
 
 
     //приватный контструктор для Singleton
-    private NotificationUtils(Context context) {
+    NotificationUtils(Context context) {
         NotificationUtils.context = context;
-        manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        notifications = new HashMap<Integer, Notification>();
+        //manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        //notifications = new HashMap<Integer, Notification>();
     }
 
 
     /**
      * Получение ссылки на синглтон
      */
-    public static NotificationUtils getInstance(Context context) {
+    static NotificationUtils getInstance(Context context) {
         if (instance == null) {
             instance = new NotificationUtils(context);
         } else {
@@ -51,7 +49,7 @@ class NotificationUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public int createInfoNotification(String message){
+    int createInfoNotification(String message){
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

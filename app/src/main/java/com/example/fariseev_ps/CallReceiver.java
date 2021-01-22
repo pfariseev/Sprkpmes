@@ -6,16 +6,12 @@ import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -25,28 +21,27 @@ import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.ArrayMap;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import java.io.InputStream;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
     public class CallReceiver extends BroadcastReceiver {
 
-        static  private WindowManager windowManager;
-        static  private ViewGroup windowLayout;
+        static  WindowManager windowManager;
+        static  ViewGroup windowLayout;
 
         static int XX,YY;
-        public static String phoneNumber,newClient;
-        static public boolean checkCall, incomingCall, ready, outgoingCall;
+        static String phoneNumber;
+        static boolean checkCall, incomingCall, ready, outgoingCall;
 
 
 
@@ -57,7 +52,10 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
             //     if (!ready) getusers(context);
             if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
                 if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false))
+                {
                     phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+
+                }
             } else {
                 if (intent.getAction().equals("android.intent.action.PHONE_STATE"))
 
@@ -81,9 +79,9 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
                             if (incomingCall) {
                                 // deleteContact(context.getContentResolver(), phoneNumber);
-                                closeWindow(context);
-                                phoneNumber = null;
-                                incomingCall = false;
+                              //  closeWindow(context);
+                             //   phoneNumber = null;
+                            //    incomingCall = false;
                             } else {
                                 if (!outgoingCall) {
                                     outgoingCall = true;
@@ -211,16 +209,18 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
             info_mesto.setText(mesto);
             info_otdel.setText(otdel);
             info_doljnost.setText(doljnost);
-            try {
-                name = URLEncoder.encode(name, "UTF-8");
-                name = name.replace("+", "%20");
-                name = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/" + name + ".jpg";
-                // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+      //      try {
+      //          name1 = URLEncoder.encode(name, "UTF-8");
+      //          name1 = name1.replace("+", "%20");
+      //          name1 = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + name + ".jpg";
+      //          // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
+      //      } catch (UnsupportedEncodingException e) {
+      //          e.printStackTrace();
+      //      }
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imageload), false)) {
-                new users.DownloadImageTask((ImageView) windowLayout.findViewById(R.id.info_photo)).execute(name);
+                ImageView photo = windowLayout.findViewById(R.id.info_photo);
+                users.showAndSavePhoto(context,name, photo);
+              //  new users.DownloadImageTask(photo.execute(name1);
             }
                 windowManager.addView(windowLayout, params);
 

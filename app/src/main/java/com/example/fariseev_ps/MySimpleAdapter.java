@@ -1,35 +1,32 @@
 package com.example.fariseev_ps;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import org.apache.poi.hssf.util.HSSFColor;
 
 import java.util.List;
 import java.util.Map;
 
 
 class MySimpleAdapter extends SimpleAdapter {
-    Context context;
-
 
 Float sOsn,sDop;
 int typeOsn, typeDop;
-
+Boolean loadPhoto;
+Context ctx;
     public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
         super(context, data, resource, from, to);
-
+        ctx=context;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        loadPhoto = prefs.getBoolean(context.getString(R.string.imageload),false);
         String sizeo="20", typeO;
         String sized="16",typeD;
         sizeo = prefs.getString(context.getString(R.string.text1_razmer), "20");
@@ -48,7 +45,9 @@ int typeOsn, typeDop;
             typeDop += Typeface.BOLD;
         if (typeD.contains("Курсив"))
             typeDop += Typeface.ITALIC;
+
  }
+    @SuppressLint("ResourceType")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
@@ -57,8 +56,11 @@ int typeOsn, typeDop;
         } else {
             view.setBackgroundColor(0xFFFFFFFF);
         }
+        if (loadPhoto) setPhoto (view);
         return view;
     }
+
+
         @Override
         public void setViewText (TextView v, String text){
             super.setViewText(v, text);
@@ -88,7 +90,18 @@ int typeOsn, typeDop;
                 v.setTypeface(null, typeDop);}
             }
 
-        }
+            public void setPhoto (View view){
+                TextView textView =  view.findViewById(R.id.textViewmain);
+                String name = (String) textView.getText();
+                ImageView photo = view.findViewById(R.id.imageView4);
+                if (photo!=null )
+                if (name!=null) {
+                    users.showAndSavePhoto(ctx, name, photo);
+                  //  new users.DownloadImageTask(photo).execute(users.convertName(name));
+                }
+                }
+
+      }
 
 
 

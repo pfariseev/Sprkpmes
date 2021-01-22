@@ -39,10 +39,10 @@ class updateBase {
     private static String DB_PATH = "",list;
 
     private static updateBase instance;
-    public static boolean newver=false;
+    //public static boolean newver=false;
 
     private static Context context;
-    public static final String NAME_TABLE = "Лист";
+    //static final String NAME_TABLE = "Лист";
 
     private updateBase (Context context) {
         updateBase.context = context;
@@ -105,7 +105,7 @@ class updateBase {
 
                     url = new URL(params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setConnectTimeout(10000); //время ожидания соединения
+                    urlConnection.setConnectTimeout(20000); //время ожидания соединения
                     urlConnection.connect();
                     inputStream = urlConnection.getInputStream();
                     totalSize = urlConnection.getContentLength();
@@ -221,7 +221,7 @@ class updateBase {
                     xx = row.getPhysicalNumberOfCells();
                     Log.d("--",String.valueOf(xx));
 
-                    SQL_CREATES_TABLE = "CREATE TABLE " + NAME_TABLE + listsString +" (Column1 NULL );";
+                    SQL_CREATES_TABLE = "CREATE TABLE " + "Лист" + listsString +" (Column1 NULL );";
                     try {
                         mDb.execSQL(SQL_CREATES_TABLE);
                         Log.d("--", "Лист" + listsString + " создан");
@@ -231,7 +231,7 @@ class updateBase {
                     cursor = mDb.rawQuery("SELECT * FROM Лист" + listsString, null);
                     if (xx>cursor.getColumnCount()+1) {
                         for (int x=cursor.getColumnCount()+1; x<xx+1; x++){
-                            String SQL = "ALTER TABLE "+NAME_TABLE+listsString+" ADD COLUMN Column" + x +" NULL;";
+                            String SQL = "ALTER TABLE "+"Лист"+listsString+" ADD COLUMN Column" + x +" NULL;";
                             mDb.execSQL(SQL);
                         }
                     }

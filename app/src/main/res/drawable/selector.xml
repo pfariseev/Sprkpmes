@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <!-- Палец нажимает на пункт, но пункт ещё не активирован -->
+        <item android:state_pressed="true">
+            <ripple android:color="@color/light_blue" />
+        </item>
+
+        <!-- Пункт активирован.  В режиме SINGLE_CHOICE_MODE пункт подсвечивается -->
+        <item android:state_activated="true"
+            android:drawable="@color/light_blue" />
+
+        <!-- По умолчанию -->
+        <item android:drawable="@android:color/transparent" />
+    </selector>
