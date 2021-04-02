@@ -15,12 +15,14 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Map;
 
+import info.hoang8f.widget.FButton;
+
 
 class MySimpleAdapter extends SimpleAdapter {
 
 Float sOsn,sDop;
 int typeOsn, typeDop;
-Boolean loadPhoto;
+Boolean loadPhoto, savephotoToDidsk;
 Context ctx;
     public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
         super(context, data, resource, from, to);
@@ -51,6 +53,13 @@ Context ctx;
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
+        FButton button = view.findViewById(R.id.upLoad);
+        if (button!=null) {
+            button.setButtonColor(ctx.getResources().getColor(R.color.colorPrimary));
+            button.setTextSize(sOsn);
+            button.setTypeface(null,typeOsn);
+            setButton(view);
+        }
         if ((position & 1) != 0) {
             view.setBackgroundColor(0xFFE9E9E9);
         } else {
@@ -88,7 +97,9 @@ Context ctx;
             if (v.getId() == R.id.textView8) {
                 v.setTextSize(sDop);
                 v.setTypeface(null, typeDop);}
-            }
+        }
+
+
 
             public void setPhoto (View view){
                 TextView textView =  view.findViewById(R.id.textViewmain);
@@ -99,7 +110,35 @@ Context ctx;
                     users.showAndSavePhoto(ctx, name, photo);
                   //  new users.DownloadImageTask(photo).execute(users.convertName(name));
                 }
+                ImageView photoUser = view.findViewById(R.id.imageView2);
+                if (photoUser!=null )
+                    if (name!=null)
+                    users.showAndSavePhoto(ctx, name, photoUser);
                 }
+
+                void setButton (View view) {
+
+                    TextView textView =  view.findViewById(R.id.textView3);
+                    String newnumberMobi = textView.getText().toString();
+                    TextView textView2 =  view.findViewById(R.id.textView4);
+                    String newnumberGor = textView2.getText().toString();
+                    newnumberMobi=users.convertNumber(newnumberMobi.replaceAll("[^0-9]", ""));
+                    newnumberGor=users.convertNumber(newnumberGor.replaceAll("[^0-9]", ""));
+                    System.out.println(newnumberGor+ " "+newnumberMobi);
+                    if (users.convertNumber(newnumberMobi)!="" || users.convertNumber(newnumberGor)!="")
+                        if (users.getContactID(ctx.getContentResolver(), newnumberMobi) >=0)
+                            printButton(view,"мобильный");
+                        else if (users.getContactID(ctx.getContentResolver(), newnumberGor) >= 0)
+                            printButton(view, "городской");
+                }
+
+
+void printButton (View view, String text){
+    FButton button = view.findViewById(R.id.upLoad);
+    button.setText("Есть "+text+" в Контактах ");
+    button.setButtonColor(ctx.getResources().getColor(R.color.fbutton_color_green_sea));
+    button.setClickable(false);
+}
 
       }
 

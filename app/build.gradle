@@ -1,14 +1,20 @@
+
+
 apply plugin: 'com.android.application'
 
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
         compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.fariseev_ps"
         minSdkVersion 26
         targetSdkVersion 28
         multiDexEnabled true
-        versionCode 8
-        versionName "8.0"
+        versionCode 9
+        versionName "9.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,6 +37,8 @@ dependencies {
     implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-3.10-min-0.1.5.jar')
     implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-ooxml-schemas-3.10-reduced-more-0.1.5.jar')
     implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/jsoup-1.11.3.jar')
-    implementation 'org.kohsuke:github-api:1.99'
-
+// https://mvnrepository.com/artifact/org.kohsuke/github-api
+    implementation group: 'org.kohsuke', name: 'github-api', version: '1.124'
+    compile 'info.hoang8f:fbutton:1.0.5'
+    compile 'com.android.support:support-v4:28.0.0'
 }

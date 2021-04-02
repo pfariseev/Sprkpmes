@@ -20,6 +20,7 @@
     <string name="autoupdate">Обновлять базу автоматически</string>
     <string name="upd">upd</string>
     <string name="imageload">Загружать фотографию</string>
+    <string name="imagesavetodisk">Сохранять фотографии</string>
     <string name="text1_razmer">Средний</string>
     <string name="text2_razmer">Меленький</string>
     <string name="osn">1</string>

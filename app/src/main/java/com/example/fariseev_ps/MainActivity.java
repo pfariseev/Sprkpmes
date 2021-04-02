@@ -55,52 +55,24 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener {
 
-    //Переменная для работы с БД
     ActionBar actionBar;
-    //EternalService.Alarm receiver;
-
-
-   // private final BroadcastReceiver callRecv =
-   // new CallReceiver.CallService();
-
-    //IntentFilter intentFilter;
-   // private static boolean callRecvRun;
-   // private SharedPreferences mSettings;
     private DatabaseHelper mDBHelper;
-    //private static String DB_PATH = "";
-
     private SearchView mSearchView;
-    //private static boolean upd;
     private SQLiteDatabase mDb;
     int ver, num_list;
-    String list;
-    //Context contex;
-    //ArrayList<HashMap<String, Object>> clients = new ArrayList<HashMap<String, Object>>();
-
-    // String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1E1YMp7fYPFgqTGSph4wYAZC1KmCEPaKp");
-
+    String list, urlnew;
     String[] titles = new String[10];
     ViewPager pager;
     PagerAdapter pagerAdapter;
-
-
-
-    //--------------------------------------------------------
-
-
-    // @RequiresApi(api = Build.VERSION_CODES.M)
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        //contex = this;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //final SharedPreferences.Editor editor = getDefaultSharedPreferences(contex).edit();
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
-
         View viewpager = findViewById(R.id.pagerTabStrip);
         viewpager.setVisibility(View.VISIBLE);
         update();
@@ -108,27 +80,19 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + tit, null);
             cursor.moveToPosition(2);
             titles[tit] = cursor.getString(6);
-            //  Log.d("--"," "+titles[tit]);
             cursor.close();
         }
         titles[1]="Карельское ПМЭС";
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.imageload), false)) chekRecPhoto();
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.imagesavetodisk), false)) chekRecPhoto();
         pagerSet();
         ServiceStart();
-      //  final EditText editSearch = (EditText) findViewById(R.id.editSearch);
-        // editSearch.setVisibility(View.VISIBLE);
-       // editSearch.setOnClickListener(itemClickListenerText);
-
-        //  StartAdapter();
     }
 
-   // SearchView.OnClickListener itemClickListenerText = new SearchView.OnClickListener() {
    @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkSearch (String check) {
             if (check.equals("!")) {
@@ -146,7 +110,6 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                     Toast toast = Toast.makeText(this, "Пока! :(", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
-
                 }
                 check="";
             }
@@ -179,7 +142,6 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                  check="";
             }
             if (check.contains("*")) {
-
                 if (CallReceiver.phoneNumber==null) {
                     CallReceiver.phoneNumber = check;
                     CallReceiver.getuser(this);
@@ -190,15 +152,12 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                 }
                 check="";
             }
-
             if (!check.equals("")) {
                 Intent sec_intent = new Intent(this, search.class);
                 sec_intent.putExtra("searc", check);
                 check="";
                 startActivity(sec_intent);
             }
-
-
     }
 
     @Override
@@ -222,77 +181,11 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }
     }
 
-
-/*
-    //-----------------------Свайп
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // TODO Auto-generated method stub
-        return gestureDetector.onTouchEvent(event);
-    }  */
-
-
-  /*    GestureDetector.SimpleOnGestureListener simpleongesturelistener = new GestureDetector.SimpleOnGestureListener()
-
-    {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                               float velocityY) {
-            String swipe = "";
-            float sensitvity = 50;
-            SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
-            // TODO Auto-generated method stub
-            if ((e1.getX() - e2.getX()) > sensitvity) {
-                //swipe += "Swipe Left\n";
-                Log.d("--", "Лист"+list);
-                int x = Integer.parseInt(list);
-                x++;
-                if (x>num_list) x--;
-                list=String.valueOf(x--);
-                editor.putString("lst",list);
-                editor.commit();
-                Log.d("--", "Лист"+list);
-
-
-            } else if ((e2.getX() - e1.getX()) > sensitvity) {
-               //swipe += "Swipe Right\n";
-                Log.d("--", "Лист"+list);
-                int x = Integer.parseInt(list);
-                x--;
-                if (x==0) x=1;
-                list=String.valueOf(x);
-                editor.putString("lst",list);
-                editor.commit();
-                Log.d("--", "Лист"+list);
-
-            } else {
-                swipe += "\n";
-            }
-            StartAdap();
-    /*        if ((e1.getY() - e2.getY()) > sensitvity) {
-                swipe += "Swipe Up\n";
-            } else if ((e2.getY() - e1.getY()) > sensitvity) {
-                swipe += "Swipe Down\n";
-            } else {
-                swipe += "\n";
-            }
-*/
-/*Log.d("--",swipe);
-            return super.onFling(e1, e2, velocityX, velocityY);
-        }
-    };
-    GestureDetector gestureDetector = new GestureDetector(getBaseContext(),
-            simpleongesturelistener);
-
-*/
-
-    //-----------------------
     public int getVersionCode() {
         int ver = 0;
         try {
             ver = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            // Какая-то ошибка
         }
         return ver;
     }
@@ -307,7 +200,6 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         return true;
     }
 
-
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
@@ -320,8 +212,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         return false;
     }
 
-
-        @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.about:
@@ -377,9 +268,7 @@ void chekRec() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int canRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
             int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
             if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {
-                //просим разрешение
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -390,34 +279,10 @@ void chekRec() {
 
     public void ServiceStart() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean(getString(R.string.autoupdate), false)) {
-          //  Log.d("--", "галочка + Уведомление - " + prefs.getBoolean(getString(R.string.uvedom), false));
-        //    if (!EternalService.isRunning(this)) {
-                // Log.d("--", "Сервис обновления запущен");
-           //     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                 //   receiver = new EternalService.Alarm();
-                 //  intentFilter = new IntentFilter("net.multipi.ALARM");
-                   // registerReceiver(receiver, intentFilter);
-                    ComponentName receiver2 = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
-           // setReciever (receiver2, true);
-                    PackageManager pm = getPackageManager();
-
-                    pm.setComponentEnabledSetting(receiver2, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                  //    Log.d("--","Регистрация приёмника для API>26");
-             //   }
-               EternalService.Alarm.setAlarm(this);
-             //   startService(new Intent(this, EternalService.class));
-         //   }
-        } else {
-            ComponentName receiver3 = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
-         //   setReciever (receiver3, false);
-            PackageManager pm = getPackageManager();
-            pm.setComponentEnabledSetting(receiver3,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-          //  Log.d("--", "Сервис обновления остановлен");
-            EternalService.Alarm.cancelAlarm(this);
-       //     stopService(new Intent(this, EternalService.class));
-        }
-
+        if (prefs.getBoolean(getString(R.string.autoupdate), false))
+            setAlarm(true);
+         else
+            setAlarm(false);
         if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
             ShowAlertCheck();
             setReciever(true);
@@ -427,27 +292,21 @@ void chekRec() {
             setReciever(true);
         }
          else setReciever(false);
-
-
-
-           // IntentFilter intentFilter = new IntentFilter(Intent.ACTION_NEW_OUTGOING_CALL);
-           // registerReceiver(new OutgoingReceiver(), intentFilter);
-           // Log.d("--","Ready in Main "+CallReceiver.ready);
-           // CallReceiver.getusers(contex);
-
-
-     //       PackageManager pm = getPackageManager();
-      //      pm.setComponentEnabledSetting(receiver3,
-       //             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-       //             PackageManager.DONT_KILL_APP);
-
-         //   ComponentName receiver3 = new ComponentName(getApplicationContext(), CallReceiver.class);
-         //   PackageManager pm = getPackageManager();
-        //    setReciever (receiver3, false);
-         //   pm.setComponentEnabledSetting(receiver3,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
-
-
     }
+
+    void setAlarm (Boolean enadis) {
+        ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+        PackageManager pm = getPackageManager();
+        if (enadis) {
+            pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            EternalService.Alarm.setAlarm(this);
+        }
+        else {
+            pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            EternalService.Alarm.cancelAlarm(this);
+        }
+    }
+
     void setReciever (Boolean enadis) {
         ComponentName receiver = new ComponentName(getApplicationContext(), CallReceiver.class);
         PackageManager pm = getPackageManager();
@@ -458,25 +317,19 @@ void chekRec() {
     }
 
     void ShowAlertDialog(){
-
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Доступна новая версия программы. Обновить?");
         alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              // mytv.setText("Да");
-            //    Log.d("--","Да");
-                String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
+                //String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
+                if (urlnew==null) urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1UIa0Z7u0coVVn6k3lKJCT3VkCM-dBHWK");
                 downloadFile(urlnew);
-
                 }
         });
-
         alertDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              //  mytv.setText("Нет");
-            //    Log.d("--","Нет");
                 }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -592,16 +445,14 @@ private void update (){
     }
 
     Cursor cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
+    cursor.moveToPosition(3);
+    urlnew=cursor.getString(11);
     ver = getVersionCode();
     cursor.moveToPosition(2);
     Log.d("--", "ver !" + cursor.getInt(11) + "!");
     if (cursor.getInt(11) > getVersionCode()) {
         ShowAlertDialog();
-     //   getDefaultSharedPreferences(this).edit().putBoolean("Обновление доступно",false);
-      //  getDefaultSharedPreferences(this).edit().commit();
     }
-  //  if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("Обновление доступно", false)) ShowAlertDialog();
-
     Log.d("--", "-" + ver + "- ! -"+cursor.getInt(11)+"-");
     if (list.equals("1")){
         cursor.moveToPosition(2);
@@ -612,28 +463,23 @@ private void update (){
         actionBar.show();
     }
     cursor.close();
-
 }
 
     public void downloadFile(String url) {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        //String DB_PATH = this.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
         new AsyncTask<String, Integer, File>() {
             private Exception m_error = null;
             File sprkpmes;
             @Override
             protected void onPreExecute() {
-
                 progressDialog.setMessage("Обновление...");
                 progressDialog.setCancelable(false);
                 progressDialog.setMax(100);
                 progressDialog
                         .setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
                 progressDialog.show();
             }
-
             @Override
             protected File doInBackground(String... params) {
 
@@ -644,19 +490,15 @@ private void update (){
                 int downloadedSize;
                 byte[] buffer;
                 int bufferLength;
-
                 File file = null;
                 FileOutputStream fos = null;
-
-
                 try {
-
                     url = new URL(params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setConnectTimeout(20000); //время ожидания соединения
                     urlConnection.connect();
                     inputStream = urlConnection.getInputStream();
-                    totalSize = 7300000;//urlConnection.getContentLength();
+                    totalSize = 8400000;//urlConnection.getContentLength();
                     Log.d("--",Integer.toString(totalSize));
                     downloadedSize = 0;
                     buffer = new byte[1024];
@@ -666,7 +508,6 @@ private void update (){
                     // с каждой итерацией публикуем прогресс
                     sprkpmes  = File.createTempFile("Mustachify", "download");
                     fos = new FileOutputStream(sprkpmes);
-                    //fos = new FileOutputStream("/sdcard/sprkpmes.apk"); //выходящий в /data
                     while ((bufferLength = inputStream.read(buffer)) > 0) {
                         fos.write(buffer, 0, bufferLength);
                         downloadedSize += bufferLength;
@@ -676,7 +517,6 @@ private void update (){
                     Log.d("--","На выходе "+ downloadedSize);
                     fos.close();
                     inputStream.close();
-
                     return file;
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -685,11 +525,8 @@ private void update (){
                     e.printStackTrace();
                     m_error = e;
                 }
-
                 return null;
             }
-
-            // обновляем progressDialog
             protected void onProgressUpdate(Integer... values) {
                 progressDialog
                         .setProgress((int) ((values[0] / (float) values[1]) * 100));
@@ -706,7 +543,6 @@ private void update (){
                     toast.show();
                     return;
                 }
-                // если всё хорошо, закрываем прогресс и удаляем временный файл
                 progressDialog.hide();
                 Toast toast = Toast.makeText(getApplicationContext(), "Готово", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
@@ -729,8 +565,6 @@ private void update (){
             }
         }.execute(url);
     }
-
-
  }
 
 

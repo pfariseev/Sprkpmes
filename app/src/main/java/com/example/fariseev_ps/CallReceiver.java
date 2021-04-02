@@ -1,21 +1,14 @@
 package com.example.fariseev_ps;
 
 import android.content.BroadcastReceiver;
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Build;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
@@ -30,11 +23,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
-    public class CallReceiver extends BroadcastReceiver {
+public class CallReceiver extends BroadcastReceiver {
 
         static  WindowManager windowManager;
         static  ViewGroup windowLayout;
@@ -307,82 +298,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
             Log.d("--","Ready in Callreciever now "+ready);
         }
 */
-        public static void addContact(Context context, String name, String number) {
-            ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-            int rawContactInsertIndex = ops.size();
-            //Log.d("--",ContactsContract.Data.RAW_CONTACT_ID+" index");
 
-            ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                    .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-                    .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
-            ops.add(ContentProviderOperation
-                    .newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name) // Name of the person
-                    .build());
-            ops.add(ContentProviderOperation
-                    .newInsert(ContactsContract.Data.CONTENT_URI)
-                    .withValueBackReference(
-                            ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number) // Number of the person
-                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE).build()); // Type of mobile number
-            try {
-                ContentProviderResult[] res = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-                Log.d("--", name + " создан");
-            } catch (RemoteException e) {
-                // error
-                Log.d("--", "Ошибка 1");
-            } catch (OperationApplicationException e) {
-                Log.d("--", "Ошибка 2");
-                // error
-            }
-        }
-
-
-        private void deleteContact(ContentResolver contactHelper, String
-                number) {
-            ArrayList<ContentProviderOperation> ops = new
-                    ArrayList<ContentProviderOperation>();
-            String[] args = new String[]{String.valueOf(getContactID(contactHelper, number))};
-            //Log.d("--",args.toString()+" args");
-            ops.add(ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI).withSelection(ContactsContract.RawContacts.CONTACT_ID + "=?", args).build());
-            try {
-                contactHelper.applyBatch(ContactsContract.AUTHORITY, ops);
-                Log.d("--", number + " удалён");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                Log.d("--", "Ошибка 3");
-            } catch (OperationApplicationException e) {
-                e.printStackTrace();
-                Log.d("--", "Ошибка 4");
-            }
-        }
-
-        private static long getContactID(ContentResolver contactHelper, String
-                number) {
-            Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-            String[] projection = {ContactsContract.PhoneLookup._ID};
-            Cursor cursor = null;
-            try {
-                cursor = contactHelper.query(contactUri, projection, null, null, null);
-                if (cursor.moveToFirst()) {
-                    int personID = cursor.getColumnIndex(ContactsContract.PhoneLookup._ID);
-                    return cursor.getLong(personID);
-                }
-                return -1;
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("--", "Ошибка 5" + e.getMessage());
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                    cursor = null;
-                }
-            }
-            return -1;
-        }
 
     }
 
