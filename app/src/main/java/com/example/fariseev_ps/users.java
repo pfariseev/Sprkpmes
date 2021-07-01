@@ -75,7 +75,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class users extends Activity implements AdapterView.OnItemLongClickListener {
 
-    private static final int IDM_SMS = 101, IDM_COPY = 102;
+    private static final int IDM_SMS = 101, IDM_COPY = 102, EMail_COPY = 103;;
     Context context;
     static final int GALLERY_REQUEST = 1;
     final int CAMERA_RESULT = 3;
@@ -87,7 +87,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     private static String Name1;
     private String list, phoneMobile, phoneGorod;
     private String NumtoSMS;
-    private String NumtoCopy;
+    private String NumtoCopy, EMAILtoCOPY;
     private static String photoFolder;
     private static String password;
     MySimpleAdapter adapter;
@@ -193,6 +193,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
                         NumtoSMS = cursor.getString(4);
                         actionBar.setTitle(cursor.getString(6));
                         NumtoCopy = cursor.getString(0) + " " + cursor.getString(4);
+                        EMAILtoCOPY = cursor.getString(2);
                         clients.add(client);
                     }
                 }
@@ -255,20 +256,29 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     public boolean onItemLongClick(AdapterView<?> parent, View itemClicked, int position, long id) {
         // HashMap<String, Object> itemHashMap =(HashMap<String, Object>) parent.getItemAtPosition(position);
         registerForContextMenu(findViewById(R.id.textView3));
+        registerForContextMenu(findViewById(R.id.textView5));
         return false;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip;
         switch (item.getItemId()) {
             case IDM_SMS:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", NumtoSMS, null)));
                 break;
             case IDM_COPY:
-                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = android.content.ClipData.newPlainText("TAG", NumtoCopy);
+                clip = android.content.ClipData.newPlainText("TAG", NumtoCopy);
                 clipboard.setPrimaryClip(clip);
                 Toast toast = Toast.makeText(this, "Скопирован в буфер", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                break;
+            case EMail_COPY:
+                clip = android.content.ClipData.newPlainText("TAG", EMAILtoCOPY);
+                clipboard.setPrimaryClip(clip);
+                toast = Toast.makeText(this, "Скопирован в буфер", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
                 break;
@@ -286,6 +296,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             case R.id.textView3:
                 menu.add(Menu.NONE, IDM_SMS, Menu.NONE, "Послать СМС");
                 menu.add(Menu.NONE, IDM_COPY, Menu.NONE, "Скопировать имя и номер");
+                menu.add(Menu.NONE, EMail_COPY, Menu.NONE, "Скопировать EMAIL");
                 break;
 
         }
