@@ -1,5 +1,7 @@
 package com.example.fariseev_ps;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,8 +17,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class search extends Activity {
 

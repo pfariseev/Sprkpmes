@@ -1,5 +1,7 @@
 package com.example.fariseev_ps;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +24,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class CallReceiver extends BroadcastReceiver {
 

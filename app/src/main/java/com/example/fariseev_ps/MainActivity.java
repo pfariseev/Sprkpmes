@@ -1,5 +1,7 @@
 package com.example.fariseev_ps;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -48,8 +50,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-
 //import android.widget.SearchView;
 
 
@@ -93,71 +93,71 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         ServiceStart();
     }
 
-   @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkSearch (String check) {
-            if (check.equals("!")) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
-                if (!prefs.getBoolean(getString(R.string.admin), false)) {
-                    editor.putBoolean("adm", true);
-                    editor.commit();
-                    Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                } else {
-                    editor.putBoolean("adm", false);
-                    editor.commit();
-                    Toast toast = Toast.makeText(this, "Пока! :(", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
-                check="";
+        if (check.equals("!")) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
+            if (!prefs.getBoolean(getString(R.string.admin), false)) {
+                editor.putBoolean("adm", true);
+                editor.commit();
+                Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            } else {
+                editor.putBoolean("adm", false);
+                editor.commit();
+                Toast toast = Toast.makeText(this, "Пока! :(", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
-            if (check.equals("?")) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                boolean admin = prefs.getBoolean(getString(R.string.admin), false);
-                String day = prefs.getString("dayup", "");
-                NotificationUtils n = NotificationUtils.getInstance(this);
-                n.createInfoNotification("Admin - " + admin + ", LastUpd " + day);
-                check="";
+            check="";
+        }
+        if (check.equals("?")) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean admin = prefs.getBoolean(getString(R.string.admin), false);
+            String day = prefs.getString("dayup", "");
+            NotificationUtils n = NotificationUtils.getInstance(this);
+            n.createInfoNotification("Admin - " + admin + ", LastUpd " + day);
+            check="";
+        }
+        if (check.equals("s")) {
+            check="";
+            Intent sec_intent = new Intent(this, savephoto.class);
+            startActivity(sec_intent);
+        }
+        if (check.equals("up")) {
+            check="";
+            ShowAlertDialog();
+        }
+        if (check.equals("**")) {
+            if (CallReceiver.phoneNumber==null) {
+                CallReceiver.phoneNumber = "89214515390";
+                CallReceiver.getuser(this);
+            } else
+            {
+                CallReceiver.closeWindow(this);
+                CallReceiver.phoneNumber = null;
             }
-            if (check.equals("s")) {
-                check="";
-                Intent sec_intent = new Intent(this, savephoto.class);
-                startActivity(sec_intent);
+            check="";
+        }
+        if (check.contains("*")) {
+            if (CallReceiver.phoneNumber==null) {
+                CallReceiver.phoneNumber = check;
+                CallReceiver.getuser(this);
+            } else
+            {
+                CallReceiver.closeWindow(this);
+                CallReceiver.phoneNumber = null;
             }
-            if (check.equals("up")) {
-                check="";
-                ShowAlertDialog();
-            }
-             if (check.equals("**")) {
-                  if (CallReceiver.phoneNumber==null) {
-                       CallReceiver.phoneNumber = "89214515390";
-                       CallReceiver.getuser(this);
-                } else
-                 {
-                    CallReceiver.closeWindow(this);
-                    CallReceiver.phoneNumber = null;
-                 }
-                 check="";
-            }
-            if (check.contains("*")) {
-                if (CallReceiver.phoneNumber==null) {
-                    CallReceiver.phoneNumber = check;
-                    CallReceiver.getuser(this);
-                } else
-                {
-                    CallReceiver.closeWindow(this);
-                    CallReceiver.phoneNumber = null;
-                }
-                check="";
-            }
-            if (!check.equals("")) {
-                Intent sec_intent = new Intent(this, search.class);
-                sec_intent.putExtra("searc", check);
-                check="";
-                startActivity(sec_intent);
-            }
+            check="";
+        }
+        if (!check.equals("")) {
+            Intent sec_intent = new Intent(this, search.class);
+            sec_intent.putExtra("searc", check);
+            check="";
+            startActivity(sec_intent);
+        }
     }
 
     @Override
@@ -208,7 +208,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onQueryTextSubmit(String query) {
-    checkSearch(query);
+        checkSearch(query);
         return false;
     }
 
@@ -236,33 +236,33 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             String itemclicked = itemHashMap.get("otdels").toString();
             Intent sec_intent = new Intent(MainActivity.this, otdels.class);
             sec_intent.putExtra("otdel", itemclicked);
-           // startActivity(sec_intent);
+            // startActivity(sec_intent);
             Log.d("--",itemclicked);
             //    String descriptionItem = itemHashMap.get("dole").toString();
             //       Toast.makeText(getApplicationContext(),android.os.Build.VERSION.SDK_INT, Toast.LENGTH_SHORT).show();
         }
     };
 
-void chekRec() {
-    if (ContextCompat.checkSelfPermission(this,
-            Manifest.permission.READ_PHONE_STATE)
-            != PackageManager.PERMISSION_GRANTED) {
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.READ_PHONE_STATE))  {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {
-                            Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.READ_CALL_LOG,
-                          //  Manifest.permission.WRITE_CALL_LOG,
-                            Manifest.permission.PROCESS_OUTGOING_CALLS,
-                         //   Manifest.permission.READ_CONTACTS,
-                        //    Manifest.permission.WRITE_CONTACTS,
-                            Manifest.permission.SYSTEM_ALERT_WINDOW
-                    },
-                    7777);
+    void chekRec() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_PHONE_STATE))  {
+                ActivityCompat.requestPermissions(this,
+                        new String[] {
+                                Manifest.permission.READ_PHONE_STATE,
+                                Manifest.permission.READ_CALL_LOG,
+                                //  Manifest.permission.WRITE_CALL_LOG,
+                                Manifest.permission.PROCESS_OUTGOING_CALLS,
+                                //   Manifest.permission.READ_CONTACTS,
+                                //    Manifest.permission.WRITE_CONTACTS,
+                                Manifest.permission.SYSTEM_ALERT_WINDOW
+                        },
+                        7777);
+            }
         }
-        }
-}
+    }
 
     void chekRecPhoto() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -281,17 +281,17 @@ void chekRec() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean(getString(R.string.autoupdate), false))
             setAlarm(true);
-         else
+        else
             setAlarm(false);
         if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
             ShowAlertCheck();
             setReciever(true);
         }
-         else if (prefs.getBoolean(getString(R.string.outgoing), false)) {
+        else if (prefs.getBoolean(getString(R.string.outgoing), false)) {
             ShowAlertCheck();
             setReciever(true);
         }
-         else setReciever(false);
+        else setReciever(false);
     }
 
     void setAlarm (Boolean enadis) {
@@ -311,9 +311,9 @@ void chekRec() {
         ComponentName receiver = new ComponentName(getApplicationContext(), CallReceiver.class);
         PackageManager pm = getPackageManager();
         if (enadis)
-        pm.setComponentEnabledSetting(receiver,PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            pm.setComponentEnabledSetting(receiver,PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
         else
-        pm.setComponentEnabledSetting(receiver,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            pm.setComponentEnabledSetting(receiver,PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
     }
 
     void ShowAlertDialog(){
@@ -325,53 +325,30 @@ void chekRec() {
                 //String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
                 if (urlnew==null) urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1UIa0Z7u0coVVn6k3lKJCT3VkCM-dBHWK");
                 downloadFile(urlnew);
-                }
+            }
         });
         alertDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                }
+            }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
     public void ShowAlertCheck() {
-    boolean result=true;
+        boolean result=true;
         int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);
         if (result1 != PackageManager.PERMISSION_GRANTED)
             if (result2 != PackageManager.PERMISSION_GRANTED) {
-            result=false;
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Предоставить права на просмотр звонков?");
-            alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    chekRec();
-                }
-
-            });
-            alertDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        } else result=true;
-        if (result1 == PackageManager.PERMISSION_GRANTED)
-            if (result2 == PackageManager.PERMISSION_GRANTED)
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                 if (!Settings.canDrawOverlays(this)) {
-                  result=false;
-                  AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                  alertDialogBuilder.setMessage("Предоставить права на режим 'поверх других приложений'?");
-                  alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                result=false;
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Предоставить права на просмотр звонков?");
+                alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, 7777);
+                        chekRec();
                     }
 
                 });
@@ -382,88 +359,112 @@ void chekRec() {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+            } else result=true;
+        if (result1 == PackageManager.PERMISSION_GRANTED)
+            if (result2 == PackageManager.PERMISSION_GRANTED)
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!Settings.canDrawOverlays(this)) {
+                        result=false;
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                        alertDialogBuilder.setMessage("Предоставить права на режим 'поверх других приложений'?");
+                        alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                                startActivityForResult(intent, 7777);
+                            }
 
-            }
-        } else result=true;
+                        });
+                        alertDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+
+                    }
+                } else result=true;
         if (!result) {
-        Toast toast = Toast.makeText(getApplicationContext(), "Предоставлены не все разрешения. Проверка входящего звонка будет невозможна.", Toast.LENGTH_LONG);
-        toast.show();}
+            Toast toast = Toast.makeText(getApplicationContext(), "Предоставлены не все разрешения. Проверка входящего звонка будет невозможна.", Toast.LENGTH_LONG);
+            toast.show();}
 
     }
-public void pagerSet() {
-    pager = findViewById(R.id.pager1);
-    pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
-    pager.setAdapter(pagerAdapter);
-    pager.setCurrentItem(Integer.parseInt(list)-1,false);
+    public void pagerSet() {
+        pager = findViewById(R.id.pager1);
+        pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(pagerAdapter);
+        pager.setCurrentItem(Integer.parseInt(list)-1,false);
 
-    pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageSelected(int position) {
-            SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
-            Log.d("--", "onPageSelected, position = " + position);
-            list=String.valueOf(position+1);
-            editor.putString("lst",list);
-            editor.commit();
-            // ------------------------дата
-            Cursor cursor = mDb.rawQuery("SELECT * FROM Лист"+list, null);
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
+                Log.d("--", "onPageSelected, position = " + position);
+                list=String.valueOf(position+1);
+                editor.putString("lst",list);
+                editor.commit();
+                // ------------------------дата
+                Cursor cursor = mDb.rawQuery("SELECT * FROM Лист"+list, null);
+                cursor.moveToPosition(2);
+                actionBar = getActionBar();
+                actionBar.setTitle(cursor.getString(6));
+                if (list.equals("1")) {
+                    // actionBar.setTitle(cursor.getString(6));
+                    cursor.moveToFirst(); //дата
+                    actionBar.setSubtitle(cursor.getString(11));
+                } else actionBar.setSubtitle(" ");
+                actionBar.show();
+                cursor.close();
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+
+        });
+    }
+
+
+
+    private void update (){
+        mDBHelper = new DatabaseHelper(this);
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+        try {
+            mDb = mDBHelper.getWritableDatabase();
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
+
+        Cursor cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
+        cursor.moveToPosition(3);
+        urlnew=cursor.getString(11);
+        ver = getVersionCode();
+        cursor.moveToPosition(2);
+        Log.d("--", "ver !" + cursor.getInt(11) + "!");
+        if (cursor.getInt(11) > getVersionCode()) {
+            ShowAlertDialog();
+        }
+        Log.d("--", "-" + ver + "- ! -"+cursor.getInt(11)+"-");
+        if (list.equals("1")){
             cursor.moveToPosition(2);
             actionBar = getActionBar();
-            actionBar.setTitle(cursor.getString(6));
-            if (list.equals("1")) {
-               // actionBar.setTitle(cursor.getString(6));
-                cursor.moveToFirst(); //дата
-                actionBar.setSubtitle(cursor.getString(11));
-            } else actionBar.setSubtitle(" ");
+            actionBar.setTitle("Карельское ПМЭС");
+            cursor.moveToFirst();
+            actionBar.setSubtitle(cursor.getString(11));
             actionBar.show();
-            cursor.close();
         }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset,
-                                   int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
-
-    });
-}
-
-
-private void update (){
-    mDBHelper = new DatabaseHelper(this);
-    try {
-        mDBHelper.updateDataBase();
-    } catch (IOException mIOException) {
-        throw new Error("UnableToUpdateDatabase");
+        cursor.close();
     }
-    try {
-        mDb = mDBHelper.getWritableDatabase();
-    } catch (SQLException mSQLException) {
-        throw mSQLException;
-    }
-
-    Cursor cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
-    cursor.moveToPosition(3);
-    urlnew=cursor.getString(11);
-    ver = getVersionCode();
-    cursor.moveToPosition(2);
-    Log.d("--", "ver !" + cursor.getInt(11) + "!");
-    if (cursor.getInt(11) > getVersionCode()) {
-        ShowAlertDialog();
-    }
-    Log.d("--", "-" + ver + "- ! -"+cursor.getInt(11)+"-");
-    if (list.equals("1")){
-        cursor.moveToPosition(2);
-        actionBar = getActionBar();
-        actionBar.setTitle("Карельское ПМЭС");
-        cursor.moveToFirst();
-        actionBar.setSubtitle(cursor.getString(11));
-        actionBar.show();
-    }
-    cursor.close();
-}
 
     public void downloadFile(String url) {
 
@@ -565,9 +566,7 @@ private void update (){
             }
         }.execute(url);
     }
- }
-
-
+}
 
 
 

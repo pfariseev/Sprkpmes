@@ -3,34 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">>
+    android:layout_height="match_parent">
 
-        <CheckBoxPreference
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/newstyle"
+            android:title="@string/newstyle" />
+
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/autoupdate"
             android:title="@string/autoupdate" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/callreceiver"
             android:title="@string/callreceiver" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/outgoing"
             android:title="@string/outgoing" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/uvedom"
             android:title="@string/uvedom" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/imageload"
             android:title="@string/imageload" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/imagesavetodisk"
             android:title="@string/imagesavetodisk" />

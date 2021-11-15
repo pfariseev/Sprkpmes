@@ -1,5 +1,7 @@
 package com.example.fariseev_ps;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -14,15 +16,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+
+import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ScrollDirectionListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import java.util.Map;
 
 
 public class PageFragment extends Fragment {
@@ -42,6 +48,10 @@ public class PageFragment extends Fragment {
     ArrayList<HashMap<String, Object>> clients = new ArrayList<HashMap<String, Object>>();
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
     String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
+ //   ArrayList<ArrayList<Map<String, String>>> childDataItemList;
+    Map<String, String> map = new HashMap<>();
+    ArrayList<Map<String, String>> groupDataList = new ArrayList<>();
+    ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
 
     static PageFragment newInstance(int page) {
         PageFragment pageFragment = new PageFragment();
@@ -83,6 +93,8 @@ public class PageFragment extends Fragment {
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
         DB_PATH = contex.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
+        ArrayList<Map<String, String>> сhildDataItemList = new ArrayList<>();
+        сhildDataItemList = new ArrayList<>();
         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист"+ (pageNumber + 1), null);
         HashMap<String, Object> client;
         client = new HashMap<String, Object>();
@@ -92,34 +104,101 @@ public class PageFragment extends Fragment {
         client.put("otdels2", temp);
         clients.add(client);
         client.put(temp, cursor.getString(0));
+        map.put("nameclient", cursor.getString(0));
+        map.put("dole", cursor.getString(8));
+        if (cursor.getString(3) != null)
+            map.put("inter", "т.вн. " + cursor.getString(3));
+        if (cursor.getString(4) != null) {
+            map.put("sot", "т.моб. " + cursor.getString(4).replaceAll("\n","  "));;
+        }
+        if (cursor.getString(5) != null) {
+            map.put("gor", "т.гор. " + cursor.getString(5).replaceAll("\n","  "));
+        }
+        сhildDataItemList.add(map);
         cursor.moveToNext();
         client = new HashMap<String, Object>();
         while (!cursor.isAfterLast()) {
-            if (cursor.getString(7).equals(temp)) ;
-            else {
+              map = new HashMap<>();
+            if (!cursor.getString(7).equals(temp)) {
+                сhildDataList.add(сhildDataItemList);
+                сhildDataItemList = new ArrayList<>();
                 temp = cursor.getString(7);
                 client.put("otdels", temp);
                 clients.add(client);
                 client = new HashMap<String, Object>();
             }
+                map.put("nameclient", cursor.getString(0));
+                map.put("dole", cursor.getString(8));
+                if (cursor.getString(3) != null)
+                      map.put("inter", "т.вн. " + cursor.getString(3));
+                if (cursor.getString(4) != null)
+                      map.put("sot", "т.моб. " + cursor.getString(4).replaceAll("\n","  "));
+                if (cursor.getString(5) != null)
+                      map.put("gor", "т.гор. " + cursor.getString(5).replaceAll("\n","  "));
+            сhildDataItemList.add(map);
             cursor.moveToNext();
         }
         cursor.close();
+        сhildDataList.add(сhildDataItemList);
 
-        // Cursor cursor = mDb.rawQuery("SELECT * FROM Лист"+list, null);
         View view = inflater.inflate(R.layout.main_activity, container,false);
-       // final EditText editSearch = (EditText) view.findViewById(R.id.editSearch);
-       // editSearch.setVisibility(View.VISIBLE);
-       // editSearch.setOnClickListener(itemClickListenerText);
-        ListView listView = view.findViewById(R.id.listView);
-        MySimpleAdapter adapter = new MySimpleAdapter(contex, clients, R.layout.adapter_item, new String[]{"otdels"}, new int[]{R.id.textViewmain});
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(itemClickListener);
-        return view;
+        if (!prefs.getBoolean(getString(R.string.newstyle), false))
+        {
+            ListView listView;
+            MySimpleAdapter adapter = new MySimpleAdapter(contex, clients, R.layout.adapter_item, new String[]{"otdels"}, new int[]{R.id.textViewmain});
+            listView = view.findViewById(R.id.listView);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(itemClickListener);
 
+        } else {
+
+            MyExpandableListAdapter extadapter = new MyExpandableListAdapter(contex,
+                    clients, R.layout.parent_item, new String[]{"otdels"}, new int[]{R.id.listTitle},
+                    сhildDataList , R.layout.child_item, new String[]{"nameclient", "dole", "inter", "gor", "sot"}, new int[]{R.id.item2, R.id.item3, R.id.item4,R.id.item45 ,R.id.item5});
+            ExpandableListView expandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView2);
+            expandableListView.setVisibility(View.VISIBLE);
+            expandableListView.setAdapter(extadapter);
+            expandableListView.setOnChildClickListener((ExpandableListView.OnChildClickListener) itemClickChildListener);
+
+            FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int g = 0; g < expandableListView.getCount(); g++) {
+                        expandableListView.collapseGroup(g);
+                    }
+                }
+            });
+            fab.attachToListView(expandableListView, new ScrollDirectionListener() {
+                @Override
+                public void onScrollDown() {
+                    //Log.d("--", "onScrollDown()");
+                }
+
+                @Override
+                public void onScrollUp() {
+                   // Log.d("--", "onScrollUp()");
+                }
+            }, new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                 //   Log.d("--", "onScrollStateChanged()");
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                  //  Log.d("--", "onScroll()");
+                }
+            });
+        }
+
+        return view;
     }
 
+ //   View.OnClickListener fabCliclisner =new View.OnClickListener() {
 
+ //   };
 
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -131,8 +210,6 @@ public class PageFragment extends Fragment {
             sec_intent.putExtra("otdel", itemclicked);
 
             startActivity(sec_intent);
-            //    String descriptionItem = itemHashMap.get("dole").toString();
-            //       Toast.makeText(getApplicationContext(),android.os.Build.VERSION.SDK_INT, Toast.LENGTH_SHORT).show();
         }
     };
     /*
@@ -147,7 +224,24 @@ public class PageFragment extends Fragment {
                 editSearch.setText("");
                 startActivity(sec_intent); }
         }
-
     };
     */
+
+
+    ExpandableListView.OnChildClickListener itemClickChildListener = new ExpandableListView.OnChildClickListener() {
+        @Override
+        public boolean onChildClick(ExpandableListView parent, View v,
+                                    int groupPosition, int childPosition, long id) {
+            ArrayList<Map<String, String>> itemClients =  (ArrayList<Map<String, String>>) сhildDataList.get(groupPosition);
+            String userotd = clients.get(groupPosition).get("otdels").toString();
+            String name = itemClients.get(childPosition).get("nameclient");
+            Intent sec_intent = new Intent(contex, users.class);
+            sec_intent.putExtra("usermake", name);
+            sec_intent.putExtra("userotd", userotd);
+            startActivity(sec_intent);
+            return false;
+        };
+    };
+
+
 }

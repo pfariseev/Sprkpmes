@@ -4,6 +4,8 @@ package com.example.fariseev_ps;
  * Created by Fariseev-PS on 31.03.2018.
  */
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -70,8 +72,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-
 
 public class users extends Activity implements AdapterView.OnItemLongClickListener {
 
@@ -100,7 +100,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     public static Boolean uploadfinish = false;
     static String realPath = null;
     GitRobot gitRobot = new GitRobot();
-    private boolean dialog=false;
+    private static boolean dialog=false;
 
 
     @Override
@@ -114,7 +114,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     @Override
     public void onResume() {
         super.onResume();
-        if (dialog) showDialogSaveContact(Name1, phoneMobile, phoneGorod);
+        if (dialog) showDialogSaveContact(this,Name1, phoneMobile, phoneGorod);
         if (realPath!=null)
         {
             try {
@@ -132,6 +132,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     void Start() {
         String user = getIntent().getExtras().getString("usermake");
         String userotd = getIntent().getExtras().getString("userotd");
+        String intFromExpAdapter = getIntent().getExtras().getString("intToUsers");
+        Log.d("--","From user.java :"+intFromExpAdapter);
         SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
@@ -154,11 +156,28 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + list, null);
         cursor.moveToFirst(); //дата
         actionBar = getActionBar();
-        for (int activelist = 1; activelist < num_list + 1; activelist++) {
-            cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
-            cursor.moveToFirst(); //дата
-            client = new HashMap<String, Object>();
+        //   for (int activelist = 1; activelist < num_list + 1; activelist++) {
+        //        cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
+        //      cursor.moveToFirst(); //дата
+        client = new HashMap<String, Object>();
+        if (intFromExpAdapter!=null) {
             cursor.moveToPosition(2);
+            String[] tempOtdel = new String[100];
+            String tmp = cursor.getString(7);
+            int i = 0;
+            tempOtdel[i] = cursor.getString(7);
+            i++;
+            while (!cursor.isAfterLast()) {
+                if (!cursor.getString(7).equals(tmp)) {
+                    tmp = cursor.getString(7);
+                    tempOtdel[i] = tmp;
+                    i++;
+                }
+                cursor.moveToNext();
+            }
+            userotd = tempOtdel[Integer.parseInt(intFromExpAdapter)];
+        }
+        cursor.moveToPosition(2);
             while (!cursor.isAfterLast()) {
                 if (cursor.getString(0).equals(user)) {
                     if (cursor.getString(7).equals(userotd)) {
@@ -200,7 +219,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
                 cursor.moveToNext();
             }
             cursor.close();
-        }
+    //    }
         String[] from = {"name", "otd", "dole", "inter", "sot", "gor", "ema", "location"};
         int[] to = {R.id.textViewmain, R.id.textView0, R.id.textView1, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView8};
         adapter = new MySimpleAdapter(this, clients, R.layout.adapter_item3, from, to);
@@ -219,8 +238,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     @TargetApi(Build.VERSION_CODES.O)
     public void onClickAddContact (View v) {
         dialog=true;
-        if (chekReq())
-            showDialogSaveContact(Name1, phoneMobile, phoneGorod);
+        if (chekReq(this))
+            showDialogSaveContact(context, Name1, phoneMobile, phoneGorod);
     }
 
     public static void showAndSavePhoto(Context context, String name, ImageView photo) {
@@ -652,21 +671,21 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
 
     }
 
-    void showDialogSaveContact(final String nameContact, final String numberMobi, final String numberGorod ){//final ImageView photoContact){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    public static void showDialogSaveContact(Context ctx, final String nameContact, final String numberMobi, final String numberGorod ){//final ImageView photoContact){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx);
         alertDialogBuilder.setMessage("Добавить "+nameContact+" в Контакты?");
         alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             String newnumberMobi="", newnumberGorod="";
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            if (chekReq()) {
+            if (chekReq(ctx)) {
                         newnumberMobi = convertNumber(numberMobi);
                         newnumberGorod = convertNumber(numberGorod);
                 System.out.println("1: " + nameContact + " " + newnumberMobi + " " + newnumberGorod);
-                if (getContactID(getContentResolver(), newnumberMobi) < 0) {
-                    addContactNew(nameContact,newnumberMobi, newnumberGorod);
+                if (getContactID(ctx.getContentResolver(), newnumberMobi) < 0) {
+                    addContactNew(ctx, nameContact,newnumberMobi, newnumberGorod);
                 } else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Контакт уже существует", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(ctx, "Контакт уже существует", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
@@ -692,13 +711,13 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
       return newS;
     }
 
-    boolean chekReq() {
-        if (ContextCompat.checkSelfPermission(this,
+    static boolean chekReq(Context ctx) {
+        if (ContextCompat.checkSelfPermission(ctx,
                 Manifest.permission.WRITE_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale( this,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale((Activity) ctx,
                     Manifest.permission.WRITE_CONTACTS)) {
-                ActivityCompat.requestPermissions(this,
+                ActivityCompat.requestPermissions((Activity) ctx,
                         new String[]{
                                 Manifest.permission.WRITE_CONTACTS,
                                 Manifest.permission.READ_CONTACTS}, 7778);
@@ -765,14 +784,14 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         startActivityForResult(cameraIntent, CAMERA_RESULT);
     }
 
-        public void writeDisplayPhoto(long rawContactId, byte[] photo) {
+        public static void writeDisplayPhoto(Context ctx, long rawContactId, byte[] photo) {
         System.out.println(rawContactId+" rawContactId");
             Uri rawContactPhotoUri = Uri.withAppendedPath(
                     ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId),
                     ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
             try {
                 AssetFileDescriptor fd =
-                        getContentResolver().openAssetFileDescriptor(rawContactPhotoUri, "rw");
+                        ctx.getContentResolver().openAssetFileDescriptor(rawContactPhotoUri, "rw");
                 OutputStream os = fd.createOutputStream();
                 os.write(photo);
                 os.close();
@@ -781,7 +800,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             }
     }
 
-    public byte[] getByteArrayfromBitmap(Bitmap bitmap) {
+    public static byte[] getByteArrayfromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
         return bos.toByteArray();
@@ -830,41 +849,41 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         return -1;
     }
 
-    private void addContactNew(String name, String numberSot, String numberGor){
+    static void addContactNew(Context ctx, String name, String numberSot, String numberGor){
         if (numberSot!="" || numberGor!="") {
         Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
-        long rowContactId = getRawContactId();
+        long rowContactId = getRawContactId(ctx);
         String displayName = name;
-        insertContactDisplayName(addContactsUri, rowContactId, displayName);
-        insertContactPhoneNumber(addContactsUri, rowContactId, numberSot, numberGor, displayName);
-        Toast toast = Toast.makeText(context, name+" сохранён", Toast.LENGTH_LONG);
+        insertContactDisplayName(ctx, addContactsUri, rowContactId, displayName);
+        insertContactPhoneNumber(ctx, addContactsUri, rowContactId, numberSot, numberGor, displayName);
+        Toast toast = Toast.makeText(ctx, name+" сохранён", Toast.LENGTH_LONG);
         toast.show();
     } else {
-            Toast toast = Toast.makeText(context, "Нет номера", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(ctx, "Нет номера", Toast.LENGTH_LONG);
             toast.show();
         }
     }
 
-    private void insertContactDisplayName(Uri addContactsUri, long rawContactId, String displayName)
+    private static void insertContactDisplayName(Context ctx, Uri addContactsUri, long rawContactId, String displayName)
     {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
         contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
         contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName);
-        getContentResolver().insert(addContactsUri, contentValues);
+        ctx.getContentResolver().insert(addContactsUri, contentValues);
 
     }
 
 
-    private long getRawContactId()
+    private static long getRawContactId(Context ctx)
     {
         ContentValues contentValues = new ContentValues();
-        Uri rawContactUri = getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, contentValues);
+        Uri rawContactUri = ctx.getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, contentValues);
         long ret = ContentUris.parseId(rawContactUri);
         return ret;
     }
 
-    private void insertContactPhoneNumber(Uri addContactsUri, long rawContactId, String numberSot, String numberGor, String name) {
+    private static void insertContactPhoneNumber(Context ctx, Uri addContactsUri, long rawContactId, String numberSot, String numberGor, String name) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
         contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
@@ -872,17 +891,17 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, numberSot);
             contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
         }
-        getContentResolver().insert(addContactsUri, contentValues);
+        ctx.getContentResolver().insert(addContactsUri, contentValues);
         if (numberGor!=null) {
             contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, numberGor);
             contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
         }
-        getContentResolver().insert(addContactsUri, contentValues);
-        File fileForAddContact = new File(savephoto.folderToSaveVoid(context), name + ".jpg");
+        ctx.getContentResolver().insert(addContactsUri, contentValues);
+        File fileForAddContact = new File(savephoto.folderToSaveVoid(ctx), name + ".jpg");
         if (fileForAddContact!=null)
             if (fileForAddContact.exists()) {
                 byte[] photoData = getByteArrayfromBitmap(getBitmap(fileForAddContact.getAbsolutePath()));
-                writeDisplayPhoto(rawContactId, photoData);
+                writeDisplayPhoto(ctx, rawContactId, photoData);
         }
     }
 
