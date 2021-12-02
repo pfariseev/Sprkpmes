@@ -117,7 +117,6 @@ Context ctx;
                 }
 
                 void setButton (View view) {
-
                     TextView textView =  view.findViewById(R.id.textView3);
                     String newnumberMobi = textView.getText().toString();
                     TextView textView2 =  view.findViewById(R.id.textView4);

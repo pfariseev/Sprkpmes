@@ -16,10 +16,11 @@
     <string name="absYY">YY</string>
     <string name="DBPATH">DBPATH</string>
     <string name="dayupdate">dayup</string>
+    <string name="newstyle">Альтернативный стиль</string>
     <string name="uvedom">Уведомления</string>
     <string name="autoupdate">Обновлять базу автоматически</string>
     <string name="upd">upd</string>
-    <string name="imageload">Загружать фотографию</string>
+    <string name="imageload">Загружать фотографии</string>
     <string name="imagesavetodisk">Сохранять фотографии</string>
     <string name="text1_razmer">Средний</string>
     <string name="text2_razmer">Меленький</string>
@@ -36,7 +37,5 @@
     <string name="razmerdopshrift">Размер дополнительного шрифта</string>
     <string name="stildopshrift">Стиль дополнительного шрифта</string>
     <string name="clickPhone">clickPh</string>
-    <string name="todo1">TODO1</string>
-
 
 </resources>
