@@ -101,6 +101,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     static String realPath = null;
     GitRobot gitRobot = new GitRobot();
     private static boolean dialog=false;
+    SharedPreferences prefs;
+   // String blacklst="";
 
 
     @Override
@@ -134,10 +136,13 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         String userotd = getIntent().getExtras().getString("userotd");
         String intFromExpAdapter = getIntent().getExtras().getString("intToUsers");
         Log.d("--","From user.java :"+intFromExpAdapter);
-        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
+        Log.d("--",user+", "+userotd+", "+intFromExpAdapter);
+        prefs = getDefaultSharedPreferences(getApplicationContext());
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
         password = prefs.getString("psw", null);
+      //  blacklst = prefs.getString(getString(R.string.blacklist), "");
+
         mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
@@ -156,9 +161,9 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + list, null);
         cursor.moveToFirst(); //дата
         actionBar = getActionBar();
-        //   for (int activelist = 1; activelist < num_list + 1; activelist++) {
-        //        cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
-        //      cursor.moveToFirst(); //дата
+           for (int activelist = 1; activelist < num_list + 1; activelist++) {
+                cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
+              cursor.moveToFirst(); //дата
         client = new HashMap<String, Object>();
         if (intFromExpAdapter!=null) {
             cursor.moveToPosition(2);
@@ -219,7 +224,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
                 cursor.moveToNext();
             }
             cursor.close();
-    //    }
+        }
         String[] from = {"name", "otd", "dole", "inter", "sot", "gor", "ema", "location"};
         int[] to = {R.id.textViewmain, R.id.textView0, R.id.textView1, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView8};
         adapter = new MySimpleAdapter(this, clients, R.layout.adapter_item3, from, to);
@@ -227,7 +232,10 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(this);
         listView.setOnTouchListener(itemTouchListerner);
+
+
     }
+
 
     View.OnTouchListener itemTouchListerner = new AdapterView.OnTouchListener() {
         @Override

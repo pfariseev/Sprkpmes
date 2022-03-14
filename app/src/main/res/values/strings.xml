@@ -9,8 +9,8 @@
     <string name="password">psw</string>
     <string name="updatesprkpmes">Обновление доступно</string>
     <string name="list">lst</string>
-    <string name="callreceiver">Проверка входящего звонка</string>
-    <string name="outgoing">Проверка исходящего звонка</string>
+    <string name="callreceiver">Проверка входящего/исходящего звонка</string>
+    <string name="outgoing">Не показывать, если есть в Контактах</string>
     <string name="num_list">num_lst</string>
     <string name="absXX">XX</string>
     <string name="absYY">YY</string>
@@ -37,5 +37,6 @@
     <string name="razmerdopshrift">Размер дополнительного шрифта</string>
     <string name="stildopshrift">Стиль дополнительного шрифта</string>
     <string name="clickPhone">clickPh</string>
+    <string name="blacklist">blacklst</string>
 
 </resources>

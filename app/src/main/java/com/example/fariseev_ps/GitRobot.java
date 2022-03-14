@@ -45,7 +45,7 @@ public class GitRobot {
         }
         String commitMsg = new Date().toString();
         try {
-            github = new GitHubBuilder().withOAuthToken("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").build();
+            github = new GitHubBuilder().withOAuthToken("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").build();
             repo = github.getRepository(userId + "/" + RepoName);
         } catch (IOException e) {
             Log.d("--", "ERROR   " + e.getMessage());
