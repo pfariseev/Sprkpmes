@@ -57,8 +57,8 @@
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="18dp"
-        android:layout_height="23dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
 
@@ -66,8 +66,8 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        fab:fab_colorNormal="@color/fbutton_color_asbestos"
-        fab:fab_colorPressed="@color/fbutton_color_concrete"
-        fab:fab_colorRipple="@color/grey" />
+        fab:fab_colorNormal="@color/colorPrimaryDark"
+        fab:fab_colorPressed="@color/colorPrimary"
+        fab:fab_colorRipple="@color/light_blue" />
 
 </android.support.constraint.ConstraintLayout>

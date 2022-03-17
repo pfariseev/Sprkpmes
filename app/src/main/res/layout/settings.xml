@@ -5,14 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <PreferenceCategory
-            android:title="Основные"/>
-
         <SwitchPreference
             android:defaultValue="false"
             android:key="@string/newstyle"
             android:title="@string/newstyle" />
-
 
         <SwitchPreference
             android:defaultValue="false"
@@ -27,10 +23,12 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="@string/outgoing"
-            android:title="@string/outgoing"
-            android:dependency="@string/callreceiver"
-            android:summary="Не отображается информация при звонке об абоненте, если такой есть в Контактах"/>
+            android:title="@string/outgoing" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/uvedom"
+            android:title="@string/uvedom" />
 
         <SwitchPreference
             android:defaultValue="false"
@@ -40,13 +38,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="@string/imagesavetodisk"
-            android:title="@string/imagesavetodisk"
-            android:summary="Сохранять фотографии в память телефона"/>
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="@string/uvedom"
-            android:title="@string/uvedom" />
+            android:title="@string/imagesavetodisk" />
 
         <PreferenceCategory android:title="@string/nastrosnshrift">
 

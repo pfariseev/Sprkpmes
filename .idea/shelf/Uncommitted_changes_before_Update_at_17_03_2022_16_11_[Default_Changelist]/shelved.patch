@@ -1,0 +1,740 @@
+Index: app/src/main/res/layout/adapter_item3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<android.support.constraint.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:fbutton=\"http://schemas.android.com/apk/res-auto\"\r\n    android:id=\"@+id/linearLayout3\"\r\n    android:layout_width=\"match_parent\"\r\n\r\n    android:layout_height=\"match_parent\"\r\n    tools:layout_editor_absoluteY=\"81dp\">\r\n\r\n\r\n    <TextView\r\n        android:id=\"@+id/textViewmain\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:autoLink=\"none\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:minHeight=\"38dp\"\r\n        android:paddingLeft=\"0dp\"\r\n        android:textAllCaps=\"false\"\r\n        android:textColor=\"@color/colorPrimaryDark\"\r\n        android:textSize=\"22sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView1\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:autoLink=\"none\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:minHeight=\"33dp\"\r\n        android:paddingLeft=\"0dp\"\r\n        android:textColor=\"@android:color/black\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toStartOf=\"@+id/imageView2\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView0\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView2\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:layout_marginBottom=\"16dp\"\r\n        android:autoLink=\"none\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:minHeight=\"33dp\"\r\n        android:paddingLeft=\"0dp\"\r\n        android:textColor=\"@android:color/black\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/textView3\"\r\n        app:layout_constraintEnd_toStartOf=\"@+id/imageView2\"\r\n        app:layout_constraintStart_toStartOf=\"parent\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView3\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:autoLink=\"phone\"\r\n        android:clickable=\"true\"\r\n        android:focusable=\"true\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:longClickable=\"true\"\r\n        android:minHeight=\"33dp\"\r\n        android:paddingStart=\"0dp\"\r\n        android:textColor=\"@android:color/black\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/imageView2\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView4\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:autoLink=\"phone\"\r\n        android:clickable=\"true\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:longClickable=\"false\"\r\n        android:minHeight=\"33dp\"\r\n        android:paddingLeft=\"0dp\"\r\n        android:textColor=\"@android:color/black\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView3\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView5\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:autoLink=\"email\"\r\n        android:clickable=\"true\"\r\n        android:focusable=\"true\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:minHeight=\"33dp\"\r\n        android:paddingStart=\"0dp\"\r\n        android:textColor=\"@android:color/black\"\r\n        android:textColorLink=\"@color/colorPrimary\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView4\" />\r\n\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView0\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"24dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:autoLink=\"none\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:minHeight=\"33dp\"\r\n        android:paddingLeft=\"0dp\"\r\n        android:textColor=\"@android:color/black\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toStartOf=\"@+id/imageView2\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textViewmain\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView8\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"16dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:gravity=\"left|center_vertical\"\r\n        android:minHeight=\"33dp\"\r\n        android:paddingStart=\"0dp\"\r\n        android:textColor=\"@android:color/black\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView5\" />\r\n\r\n    <ImageView\r\n        android:id=\"@+id/imageView2\"\r\n        android:layout_width=\"150dp\"\r\n        android:layout_height=\"200dp\"\r\n        android:layout_marginTop=\"24dp\"\r\n        android:layout_marginEnd=\"16dp\"\r\n\r\n        android:contentDescription=\"@string/todo\"\r\n        android:onClick=\"ClickView\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textViewmain\"\r\n        tools:srcCompat=\"@tools:sample/avatars\" />\r\n\r\n    <info.hoang8f.widget.FButton\r\n        android:id=\"@+id/upLoad\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"24dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        android:fontFamily=\"sans-serif\"\r\n        android:gravity=\"center\"\r\n        android:onClick=\"onClickAddContact\"\r\n        android:text=\"Добавить в Контакты\"\r\n        android:textAllCaps=\"false\"\r\n        android:textColor=\"@android:color/white\"\r\n        android:textSize=\"18sp\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.5\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/textView8\"></info.hoang8f.widget.FButton>\r\n\r\n\r\n</android.support.constraint.ConstraintLayout>\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/adapter_item3.xml b/app/src/main/res/layout/adapter_item3.xml
+--- a/app/src/main/res/layout/adapter_item3.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/res/layout/adapter_item3.xml	(date 1638360337592)
+@@ -14,9 +14,9 @@
+         android:id="@+id/textViewmain"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+-        android:layout_marginEnd="8dp"
+         android:layout_marginStart="8dp"
+         android:layout_marginTop="16dp"
++        android:layout_marginEnd="8dp"
+         android:autoLink="none"
+         android:gravity="left|center_vertical"
+         android:minHeight="38dp"
+@@ -24,7 +24,7 @@
+         android:textAllCaps="false"
+         android:textColor="@color/colorPrimaryDark"
+         android:textSize="22sp"
+-        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintEnd_toStartOf="@+id/switch_compat"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+ 
+@@ -192,5 +192,18 @@
+         app:layout_constraintTop_toBottomOf="@+id/textView8"></info.hoang8f.widget.FButton>
+ 
+ 
++    <android.support.v7.widget.SwitchCompat
++        android:id="@+id/switch_compat"
++
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginEnd="8dp"
++        android:theme="@style/MySwitch"
++        android:thumb="@drawable/switch_thumb"
++        app:layout_constraintBottom_toBottomOf="@+id/textViewmain"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintTop_toTopOf="@+id/textViewmain" />
++
++
+ </android.support.constraint.ConstraintLayout>
+ 
+Index: app/src/main/java/com/example/fariseev_ps/MySimpleAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.fariseev_ps;\r\n\r\n\r\nimport android.annotation.SuppressLint;\r\nimport android.content.Context;\r\nimport android.content.SharedPreferences;\r\nimport android.graphics.Typeface;\r\nimport android.preference.PreferenceManager;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\nimport android.widget.SimpleAdapter;\r\nimport android.widget.TextView;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\nimport info.hoang8f.widget.FButton;\r\n\r\n\r\nclass MySimpleAdapter extends SimpleAdapter {\r\n\r\nFloat sOsn,sDop;\r\nint typeOsn, typeDop;\r\nBoolean loadPhoto, savephotoToDidsk;\r\nContext ctx;\r\n    public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {\r\n        super(context, data, resource, from, to);\r\n        ctx=context;\r\n        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);\r\n        loadPhoto = prefs.getBoolean(context.getString(R.string.imageload),false);\r\n        String sizeo=\"20\", typeO;\r\n        String sized=\"16\",typeD;\r\n        sizeo = prefs.getString(context.getString(R.string.text1_razmer), \"20\");\r\n        sized = prefs.getString(context.getString(R.string.text2_razmer), \"16\");\r\n        typeO = prefs.getString(context.getString(R.string.osn), \"\");\r\n        typeD = prefs.getString(context.getString(R.string.dop), \"\");\r\n        sOsn = Float.parseFloat(sizeo);\r\n        sDop = Float.parseFloat(sized);\r\n        typeOsn = Typeface.NORMAL;\r\n        typeDop = Typeface.NORMAL;\r\n        if (typeO.contains(\"Полужирный\"))\r\n            typeOsn += Typeface.BOLD;\r\n        if (typeO.contains(\"Курсив\"))\r\n            typeOsn += Typeface.ITALIC;\r\n        if (typeD.contains(\"Полужирный\"))\r\n            typeDop += Typeface.BOLD;\r\n        if (typeD.contains(\"Курсив\"))\r\n            typeDop += Typeface.ITALIC;\r\n\r\n }\r\n    @SuppressLint(\"ResourceType\")\r\n    @Override\r\n    public View getView(int position, View convertView, ViewGroup parent) {\r\n        View view = super.getView(position, convertView, parent);\r\n        FButton button = view.findViewById(R.id.upLoad);\r\n        if (button!=null) {\r\n            button.setButtonColor(ctx.getResources().getColor(R.color.colorPrimary));\r\n            button.setTextSize(sOsn);\r\n            button.setTypeface(null,typeOsn);\r\n            setButton(view);\r\n        }\r\n        if ((position & 1) != 0) {\r\n            view.setBackgroundColor(0xFFE9E9E9);\r\n        } else {\r\n            view.setBackgroundColor(0xFFFFFFFF);\r\n        }\r\n        if (loadPhoto) setPhoto (view);\r\n        return view;\r\n    }\r\n\r\n\r\n        @Override\r\n        public void setViewText (TextView v, String text){\r\n            super.setViewText(v, text);\r\n            if (v.getId()==R.id.textViewmain) {\r\n                v.setTextSize(sOsn);\r\n                v.setTypeface(null, typeOsn);}\r\n            if (v.getId() == R.id.textView0) {\r\n                v.setTextSize(sDop);\r\n                v.setTypeface(null, typeDop);}\r\n            if (v.getId() == R.id.textView1) {\r\n                v.setTextSize(sDop);\r\n                v.setTypeface(null, typeDop);}\r\n            if (v.getId() == R.id.textView2) {\r\n                v.setTextSize(sDop);\r\n                v.setTypeface(null, typeDop);}\r\n            if (v.getId() == R.id.textView3) {\r\n                v.setTextSize(sDop);\r\n                v.setTypeface(null,typeDop);}\r\n            if (v.getId() == R.id.textView4) {\r\n                v.setTextSize(sDop);\r\n                v.setTypeface(null, typeDop);}\r\n            if (v.getId() == R.id.textView5) {\r\n                v.setTextSize(sDop);\r\n                v.setTypeface(null, typeDop);}\r\n            if (v.getId() == R.id.textView8) {\r\n                v.setTextSize(sDop);\r\n                v.setTypeface(null, typeDop);}\r\n        }\r\n\r\n\r\n\r\n            public void setPhoto (View view){\r\n                TextView textView =  view.findViewById(R.id.textViewmain);\r\n                String name = (String) textView.getText();\r\n                ImageView photo = view.findViewById(R.id.imageView4);\r\n                if (photo!=null )\r\n                if (name!=null) {\r\n                    users.showAndSavePhoto(ctx, name, photo);\r\n                  //  new users.DownloadImageTask(photo).execute(users.convertName(name));\r\n                }\r\n                ImageView photoUser = view.findViewById(R.id.imageView2);\r\n                if (photoUser!=null )\r\n                    if (name!=null)\r\n                    users.showAndSavePhoto(ctx, name, photoUser);\r\n                }\r\n\r\n                void setButton (View view) {\r\n                    TextView textView =  view.findViewById(R.id.textView3);\r\n                    String newnumberMobi = textView.getText().toString();\r\n                    TextView textView2 =  view.findViewById(R.id.textView4);\r\n                    String newnumberGor = textView2.getText().toString();\r\n                    newnumberMobi=users.convertNumber(newnumberMobi.replaceAll(\"[^0-9]\", \"\"));\r\n                    newnumberGor=users.convertNumber(newnumberGor.replaceAll(\"[^0-9]\", \"\"));\r\n                    System.out.println(newnumberGor+ \" \"+newnumberMobi);\r\n                    if (users.convertNumber(newnumberMobi)!=\"\" || users.convertNumber(newnumberGor)!=\"\")\r\n                        if (users.getContactID(ctx.getContentResolver(), newnumberMobi) >=0)\r\n                            printButton(view,\"мобильный\");\r\n                        else if (users.getContactID(ctx.getContentResolver(), newnumberGor) >= 0)\r\n                            printButton(view, \"городской\");\r\n                }\r\n\r\n\r\nvoid printButton (View view, String text){\r\n    FButton button = view.findViewById(R.id.upLoad);\r\n    button.setText(\"Есть \"+text+\" в Контактах \");\r\n    button.setButtonColor(ctx.getResources().getColor(R.color.fbutton_color_green_sea));\r\n    button.setClickable(false);\r\n}\r\n\r\n      }\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/fariseev_ps/MySimpleAdapter.java b/app/src/main/java/com/example/fariseev_ps/MySimpleAdapter.java
+--- a/app/src/main/java/com/example/fariseev_ps/MySimpleAdapter.java	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/java/com/example/fariseev_ps/MySimpleAdapter.java	(date 1638525726129)
+@@ -1,16 +1,21 @@
+ package com.example.fariseev_ps;
+ 
+ 
++import static android.preference.PreferenceManager.getDefaultSharedPreferences;
++
+ import android.annotation.SuppressLint;
+ import android.content.Context;
+ import android.content.SharedPreferences;
+ import android.graphics.Typeface;
+-import android.preference.PreferenceManager;
++import android.support.v7.widget.SwitchCompat;
++import android.view.Gravity;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.CompoundButton;
+ import android.widget.ImageView;
+ import android.widget.SimpleAdapter;
+ import android.widget.TextView;
++import android.widget.Toast;
+ 
+ import java.util.List;
+ import java.util.Map;
+@@ -24,10 +29,13 @@
+ int typeOsn, typeDop;
+ Boolean loadPhoto, savephotoToDidsk;
+ Context ctx;
++SharedPreferences prefs;
++String blacklst="";
++
+     public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
+         super(context, data, resource, from, to);
+         ctx=context;
+-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
++        prefs = getDefaultSharedPreferences(context);
+         loadPhoto = prefs.getBoolean(context.getString(R.string.imageload),false);
+         String sizeo="20", typeO;
+         String sized="16",typeD;
+@@ -35,6 +43,7 @@
+         sized = prefs.getString(context.getString(R.string.text2_razmer), "16");
+         typeO = prefs.getString(context.getString(R.string.osn), "");
+         typeD = prefs.getString(context.getString(R.string.dop), "");
++
+         sOsn = Float.parseFloat(sizeo);
+         sDop = Float.parseFloat(sized);
+         typeOsn = Typeface.NORMAL;
+@@ -121,6 +130,8 @@
+                     String newnumberMobi = textView.getText().toString();
+                     TextView textView2 =  view.findViewById(R.id.textView4);
+                     String newnumberGor = textView2.getText().toString();
++                    TextView textView3 =  view.findViewById(R.id.textViewmain);
++                    String name = (String) textView3.getText();
+                     newnumberMobi=users.convertNumber(newnumberMobi.replaceAll("[^0-9]", ""));
+                     newnumberGor=users.convertNumber(newnumberGor.replaceAll("[^0-9]", ""));
+                     System.out.println(newnumberGor+ " "+newnumberMobi);
+@@ -129,7 +140,37 @@
+                             printButton(view,"мобильный");
+                         else if (users.getContactID(ctx.getContentResolver(), newnumberGor) >= 0)
+                             printButton(view, "городской");
++                    SwitchCompat swtch = view.findViewById(R.id.switch_compat);
++                    if (swtch != null) {
++                        blacklst = prefs.getString(ctx.getString(R.string.blacklist), "");
++                        if (name!=null)
++                        if (blacklst.contains(name))
++                            swtch.setChecked(false);
++                        else  swtch.setChecked(true);
++
++                        swtch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
++                            @Override
++                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
++                                if (isChecked) {
++                                    blacklst = blacklst.replace(name, "");
++                                    Toast toast = Toast.makeText(ctx, "Отображатется при вызове", Toast.LENGTH_LONG);
++                                    toast.setGravity(Gravity.TOP, 0, 0);
++                                    toast.show();
++                                }
++                                else {
++                                    blacklst = blacklst+name;
++                                    Toast toast = Toast.makeText(ctx, "Не отображатется при вызове", Toast.LENGTH_LONG);
++                                    toast.setGravity(Gravity.TOP, 0, 0);
++                                    toast.show();
++                                }
++                                SharedPreferences.Editor editor = getDefaultSharedPreferences(ctx.getApplicationContext()).edit();
++                                editor.putString("blacklst",blacklst);
++                                editor.commit();
++                            }
++                        });
++                    }
+                 }
++
+ 
+ 
+ void printButton (View view, String text){
+Index: app/src/main/java/com/example/fariseev_ps/CallReceiver.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.fariseev_ps;\r\n\r\nimport static android.preference.PreferenceManager.getDefaultSharedPreferences;\r\n\r\nimport android.content.BroadcastReceiver;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.content.SharedPreferences;\r\nimport android.database.Cursor;\r\nimport android.database.sqlite.SQLiteDatabase;\r\nimport android.graphics.PixelFormat;\r\nimport android.os.Build;\r\nimport android.preference.PreferenceManager;\r\nimport android.provider.Settings;\r\nimport android.support.annotation.RequiresApi;\r\nimport android.telephony.TelephonyManager;\r\nimport android.util.ArrayMap;\r\nimport android.util.Log;\r\nimport android.view.Gravity;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.view.WindowManager;\r\nimport android.widget.ImageView;\r\nimport android.widget.TextView;\r\n\r\npublic class CallReceiver extends BroadcastReceiver {\r\n\r\n        static  WindowManager windowManager;\r\n        static  ViewGroup windowLayout;\r\n\r\n        static int XX,YY;\r\n        static String phoneNumber;\r\n        static boolean checkCall, incomingCall, ready, outgoingCall;\r\n\r\n\r\n\r\n        @RequiresApi(api = Build.VERSION_CODES.M)\r\n        @Override\r\n\r\n        public void onReceive(Context context, Intent intent) {\r\n            //     if (!ready) getusers(context);\r\n            if (intent.getAction().equals(\"android.intent.action.NEW_OUTGOING_CALL\")) {\r\n                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false))\r\n                {\r\n                    phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);\r\n\r\n                }\r\n            } else {\r\n                if (intent.getAction().equals(\"android.intent.action.PHONE_STATE\"))\r\n\r\n                        if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_RINGING)) {\r\n                            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.callreceiver), false))\r\n                                phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);\r\n                            //         if (getContactID(context.getContentResolver(), phoneNumber) < 0) {\r\n                            //newClient = client.get(phoneNumber);\r\n                            if (phoneNumber != null) { //  if (newClient != null) {\r\n                                //    addContact(context, newClient, phoneNumber);\r\n                                if (!incomingCall) {\r\n                                    incomingCall = true;\r\n                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n                                        if (Settings.canDrawOverlays(context)) getuser(context);\r\n                                    } else getuser(context);\r\n                                    //     showWindow(context, phoneNumber);\r\n                                    //   onActivityResult(context,7777,1, new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION));\r\n                                }\r\n                            }\r\n                        } else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {\r\n\r\n                            if (incomingCall) {\r\n                                // deleteContact(context.getContentResolver(), phoneNumber);\r\n                              //  closeWindow(context);\r\n                             //   phoneNumber = null;\r\n                            //    incomingCall = false;\r\n                            } else {\r\n                                if (!outgoingCall) {\r\n                                    outgoingCall = true;\r\n                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n                                        if (Settings.canDrawOverlays(context)) getuser(context);\r\n                                    } else getuser(context);\r\n                                }\r\n                            }\r\n                        } else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_IDLE)) {\r\n                            if (incomingCall) {\r\n                                //  deleteContact(context.getContentResolver(), phoneNumber);\r\n                                //   if (incomingCall) {\r\n                                //              Log.d(\"--\",\"Close window.\");\r\n                                closeWindow(context);\r\n                                phoneNumber = null;\r\n                                incomingCall = false;\r\n                            }\r\n                            if (outgoingCall) {\r\n                                //  deleteContact(context.getContentResolver(), phoneNumber);\r\n                                //   if (incomingCall) {\r\n                                //              Log.d(\"--\",\"Close window.\");\r\n                                closeWindow(context);\r\n                                phoneNumber = null;\r\n                                outgoingCall = false;\r\n                            }\r\n                        }\r\n            }\r\n        }\r\n\r\n\r\n        @RequiresApi(api = Build.VERSION_CODES.M)\r\n        protected void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {\r\n            if (requestCode == 7777) {\r\n                if (Settings.canDrawOverlays(context)) {\r\n                    Log.d(\"--\", \"есть разрешение \");\r\n                } else {\r\n                    Log.d(\"--\", \"нет разрешения \");\r\n\r\n                }\r\n            }\r\n        }\r\n\r\n        @RequiresApi(api = Build.VERSION_CODES.M)\r\n        public static void getuser(Context context) {\r\n            ArrayMap<String, String> client = new ArrayMap<>();\r\n            DatabaseHelper mDBHelper;\r\n            SQLiteDatabase mDb;\r\n            int num_list;\r\n            SharedPreferences prefs = getDefaultSharedPreferences(context);\r\n            num_list = Integer.parseInt(prefs.getString(context.getString(R.string.num_list), \"6\"));\r\n            mDBHelper = new DatabaseHelper(context);\r\n            mDb = mDBHelper.getWritableDatabase();\r\n            if (phoneNumber!=null) {\r\n                for (int activelist = 1; activelist < num_list + 1; activelist++) {\r\n                    Cursor cursor = mDb.rawQuery(\"SELECT * FROM Лист\" + activelist, null);\r\n                    for (int xx = 4; xx < 6; xx++) {\r\n                        cursor.moveToPosition(2);\r\n                        String ss;\r\n                        while (!cursor.isAfterLast()) {\r\n                            if (cursor.getString(xx) != null) {\r\n                                //             x++;\r\n                                ss = cursor.getString(xx).replaceAll(\"[^0-9]\", \"\");\r\n\r\n                            int lenth = phoneNumber.length();\r\n                              /*  Log.d(\"--\", String.valueOf(lenth)+\" \"+phoneNumber.substring(lenth - 10, lenth));\r\n                                 {\r\n                                    do { */\r\n                                if (lenth > 10)\r\n                                       if (ss.contains(phoneNumber.substring(lenth - 10, lenth))) {\r\n                                            client.put(\"name\", cursor.getString(0));\r\n                                            client.put(\"mesto\", cursor.getString(6));\r\n                                            client.put(\"otdel\", cursor.getString(7));\r\n                                            client.put(\"doljnost\", cursor.getString(8));\r\n                                        }\r\n                                       /*\r\n                                        lenth = lenth - 11;\r\n                                    } while (lenth > 10);\r\n                                } else {\r\n                                    Log.d(\"--\", ss);\r\n                                } */\r\n                            }\r\n                            cursor.moveToNext();\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n            if (client.get(\"name\")!=null) showWindow(context,client.get(\"name\"),client.get(\"mesto\"),client.get(\"otdel\"),client.get(\"doljnost\") );\r\n        }\r\n\r\n        private static void showWindow(Context context, String name, String mesto, String otdel, String doljnost) {\r\n            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);\r\n            XX = Integer.parseInt(prefs.getString(context.getString(R.string.absXX), \"100\"));\r\n            YY = Integer.parseInt(prefs.getString(context.getString(R.string.absYY), \"200\"));\r\n            windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);\r\n            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);\r\n            int layout_parms;\r\n            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {\r\n                layout_parms = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;\r\n            } else {\r\n                layout_parms = WindowManager.LayoutParams.TYPE_PHONE;\r\n            }\r\n            final WindowManager.LayoutParams params = new WindowManager.LayoutParams(\r\n                    WindowManager.LayoutParams.WRAP_CONTENT,\r\n                    WindowManager.LayoutParams.WRAP_CONTENT,\r\n                    layout_parms,\r\n                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED\r\n                         //   | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON\r\n                           // | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON\r\n                            | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE\r\n                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,\r\n                    PixelFormat.TRANSLUCENT\r\n            );\r\n            params.gravity = Gravity.TOP | Gravity.LEFT;\r\n            params.x = XX;\r\n            params.y = YY;\r\n            windowLayout = (ViewGroup) layoutInflater.inflate(R.layout.info, null);\r\n            TextView info_name = windowLayout.findViewById(R.id.info_name);\r\n            TextView info_mesto = windowLayout.findViewById(R.id.info_mesto);\r\n            TextView info_otdel = windowLayout.findViewById(R.id.info_otdel);\r\n            TextView info_doljnost = windowLayout.findViewById(R.id.info_doljnost);\r\n            TextView info_label = windowLayout.findViewById(R.id.info_label);\r\n            if (incomingCall) info_label.setText(\"Справочник МЭС. Входящий вызов:\");\r\n            if (outgoingCall) info_label.setText(\"Справочник МЭС. Исходящий вызов:\");\r\n            info_name.setText(name);\r\n            info_mesto.setText(mesto);\r\n            info_otdel.setText(otdel);\r\n            info_doljnost.setText(doljnost);\r\n      //      try {\r\n      //          name1 = URLEncoder.encode(name, \"UTF-8\");\r\n      //          name1 = name1.replace(\"+\", \"%20\");\r\n      //          name1 = \"https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/\" + name + \".jpg\";\r\n      //          // Name1=\"http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1=\"+Name1;\r\n      //      } catch (UnsupportedEncodingException e) {\r\n      //          e.printStackTrace();\r\n      //      }\r\n            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imageload), false)) {\r\n                ImageView photo = windowLayout.findViewById(R.id.info_photo);\r\n                users.showAndSavePhoto(context,name, photo);\r\n              //  new users.DownloadImageTask(photo.execute(name1);\r\n            }\r\n                windowManager.addView(windowLayout, params);\r\n\r\n            windowLayout.setOnTouchListener(new View.OnTouchListener() {\r\n                private int initialX;\r\n                private int initialY;\r\n                private float initialTouchX;\r\n                private float initialTouchY;\r\n\r\n                @Override public boolean onTouch(View v, MotionEvent event) {\r\n                    switch (event.getAction()) {\r\n                        case MotionEvent.ACTION_DOWN:\r\n                            initialX = params.x;\r\n                            initialY = params.y;\r\n                            initialTouchX = event.getRawX();\r\n                            initialTouchY = event.getRawY();\r\n                            return true;\r\n                        case MotionEvent.ACTION_UP:\r\n                            return true;\r\n                        case MotionEvent.ACTION_MOVE:\r\n                            params.x = initialX + (int) (event.getRawX() - initialTouchX);\r\n                            params.y = initialY + (int) (event.getRawY() - initialTouchY);\r\n                            windowManager.updateViewLayout(windowLayout, params);\r\n                            XX =params.x;\r\n                            YY =params.y;\r\n                            return true;\r\n                    }\r\n                    return false;\r\n                }\r\n            });\r\n        }\r\n\r\n\r\n\r\n\r\n        public static void  closeWindow(Context context) {\r\n            if (windowLayout != null) {\r\n                SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();\r\n                editor.putString(\"XX\", String.valueOf(XX));\r\n                editor.putString(\"YY\", String.valueOf(YY));\r\n                editor.commit();\r\n                windowManager.removeView(windowLayout);\r\n               windowLayout = null;\r\n            }\r\n        }\r\n/*\r\n         public static void getusers(Context context) {\r\n            DatabaseHelper mDBHelper;\r\n            SQLiteDatabase mDb;\r\n            int num_list;\r\n            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());\r\n            num_list = Integer.parseInt(prefs.getString(context.getString(R.string.num_list), \"6\"));\r\n            mDBHelper = new DatabaseHelper(context);\r\n            mDb = mDBHelper.getWritableDatabase();\r\n            for (int activelist = 1; activelist < num_list + 1; activelist++) {\r\n                Cursor cursor = mDb.rawQuery(\"SELECT * FROM Лист\" + String.valueOf(activelist), null);\r\n                for (int xx = 4; xx < 6; xx++) {\r\n                    cursor.moveToPosition(2);\r\n                    String ss;\r\n                    while (!cursor.isAfterLast()) {\r\n                        if (cursor.getString(xx) != null) {\r\n                            //             x++;\r\n                            ss = cursor.getString(xx).replaceAll(\"[^0-9]\", \"\");\r\n                            int lenth=ss.length();\r\n                            if (lenth>10) {\r\n                            do {\r\n                              client.put(\"+\" + ss.subSequence(lenth-11, lenth), cursor.getString(0));\r\n\r\n\r\n                              lenth=lenth-11;\r\n                            } while (lenth>10);\r\n                        } else {\r\n                                Log.d(\"--\",ss);\r\n                            }\r\n                        }\r\n                        cursor.moveToNext();\r\n                    }\r\n                }\r\n\r\n            }\r\n\r\n            ready = true;\r\n            checkCall = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.callreceiver), false);\r\n            Log.d(\"--\",\"Ready in Callreciever now \"+ready);\r\n        }\r\n*/\r\n\r\n\r\n    }\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/fariseev_ps/CallReceiver.java b/app/src/main/java/com/example/fariseev_ps/CallReceiver.java
+--- a/app/src/main/java/com/example/fariseev_ps/CallReceiver.java	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/java/com/example/fariseev_ps/CallReceiver.java	(date 1638522250871)
+@@ -42,7 +42,7 @@
+         public void onReceive(Context context, Intent intent) {
+             //     if (!ready) getusers(context);
+             if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
+-                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false))
++                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.callreceiver), false))
+                 {
+                     phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+ 
+@@ -159,7 +159,20 @@
+                     }
+                 }
+             }
+-            if (client.get("name")!=null) showWindow(context,client.get("name"),client.get("mesto"),client.get("otdel"),client.get("doljnost") );
++            Boolean showWin=false;
++            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false)) {
++                if (users.getContactID(context.getContentResolver(), phoneNumber) <= 0)
++                    if (client.get("name") != null)
++                       showWin=true;
++            } else {
++                if (client.get("name") != null)
++                       showWin=true;
++            }
++            if (client.get("name") != null)
++            if (PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.blacklist),"").contains(client.get("name")))
++                showWin=false;
++            if (showWin)
++                showWindow(context, client.get("name"), client.get("mesto"), client.get("otdel"), client.get("doljnost"));
+         }
+ 
+         private static void showWindow(Context context, String name, String mesto, String otdel, String doljnost) {
+@@ -213,6 +226,7 @@
+                 users.showAndSavePhoto(context,name, photo);
+               //  new users.DownloadImageTask(photo.execute(name1);
+             }
++
+                 windowManager.addView(windowLayout, params);
+ 
+             windowLayout.setOnTouchListener(new View.OnTouchListener() {
+@@ -242,6 +256,7 @@
+                     return false;
+                 }
+             });
++
+         }
+ 
+ 
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\napply plugin: 'com.android.application'\r\n\r\nandroid {\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n        compileSdkVersion 29\r\n    defaultConfig {\r\n        applicationId \"com.example.fariseev_ps\"\r\n        minSdkVersion 26\r\n        targetSdkVersion 29\r\n        multiDexEnabled true\r\n        versionCode 9\r\n        versionName \"9.0\"\r\n        testInstrumentationRunner \"android.support.test.runner.AndroidJUnitRunner\"\r\n    }\r\n    buildTypes {\r\n    }\r\n    productFlavors {\r\n    }\r\n    buildToolsVersion '30.0.2'\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(include: ['*.jar'], dir: 'libs')\r\n    //noinspection GradleCompatible\r\n    implementation 'com.android.support:appcompat-v7:28.0.0'\r\n    implementation 'com.android.support.constraint:constraint-layout:2.0.4'\r\n    //noinspection GradleCompatible\r\n    implementation 'com.android.support:support-core-utils:28.0.0'\r\n    testImplementation 'junit:junit:4.13.1'\r\n    androidTestImplementation 'com.android.support.test:runner:1.0.2'\r\n    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'\r\n    //noinspection GradleCompatible\r\n    implementation 'com.android.support:support-v4:28.0.0'\r\n    implementation 'org.jetbrains:annotations-java5:15.0'\r\n    //noinspection GradlePath\r\n    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-3.10-min-0.1.5.jar')\r\n    //noinspection GradlePath\r\n    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-ooxml-schemas-3.10-reduced-more-0.1.5.jar')\r\n    //noinspection GradlePath\r\n    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/jsoup-1.11.3.jar')\r\n// https://mvnrepository.com/artifact/org.kohsuke/github-api\r\n    implementation group: 'org.kohsuke', name: 'github-api', version: '1.124'\r\n    implementation 'info.hoang8f:fbutton:1.0.5'\r\n    //noinspection GradleCompatible\r\n    implementation 'com.android.support:support-v4:28.0.0'\r\n    implementation 'com.melnykov:floatingactionbutton:1.3.0'\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/build.gradle	(date 1647521765776)
+@@ -21,7 +21,6 @@
+     }
+     productFlavors {
+     }
+-    buildToolsVersion '30.0.2'
+ }
+ 
+ dependencies {
+@@ -32,17 +31,18 @@
+     //noinspection GradleCompatible
+     implementation 'com.android.support:support-core-utils:28.0.0'
+     testImplementation 'junit:junit:4.13.1'
++    //noinspection GradleCompatible
+     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+     //noinspection GradleCompatible
+     implementation 'com.android.support:support-v4:28.0.0'
+     implementation 'org.jetbrains:annotations-java5:15.0'
+     //noinspection GradlePath
+-    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-3.10-min-0.1.5.jar')
++    implementation files('C:/Users/fariseev-ps/Documents/GitHub/Sprkpmes/.idea/caches/libs/aa-poi-3.10-min-0.1.5.jar')
+     //noinspection GradlePath
+-    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-ooxml-schemas-3.10-reduced-more-0.1.5.jar')
++    implementation files('C:/Users/fariseev-ps/Documents/GitHub/Sprkpmes/.idea/caches/libs/aa-poi-ooxml-schemas-3.10-reduced-more-0.1.5.jar')
+     //noinspection GradlePath
+-    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/jsoup-1.11.3.jar')
++    implementation files('C:/Users/fariseev-ps/Documents/GitHub/Sprkpmes/.idea/caches/libs/jsoup-1.11.3.jar')
+ // https://mvnrepository.com/artifact/org.kohsuke/github-api
+     implementation group: 'org.kohsuke', name: 'github-api', version: '1.124'
+     implementation 'info.hoang8f:fbutton:1.0.5'
+Index: app/src/main/java/com/example/fariseev_ps/GitRobot.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.fariseev_ps;\r\n\r\nimport android.annotation.TargetApi;\r\nimport android.os.Build;\r\nimport android.util.Log;\r\n\r\nimport org.kohsuke.github.GHRepository;\r\nimport org.kohsuke.github.GitHub;\r\nimport org.kohsuke.github.GitHubBuilder;\r\n\r\nimport java.io.File;\r\nimport java.io.FileOutputStream;\r\nimport java.io.IOException;\r\nimport java.io.InputStream;\r\nimport java.io.OutputStream;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.Path;\r\nimport java.nio.file.Paths;\r\nimport java.util.Date;\r\n\r\n\r\npublic class GitRobot {\r\n    public static void main(String args[]){\r\n    }\r\n    private String apiUrl = \"\";\r\n    private String userId = \"\";\r\n    private String password = \"\";\r\n\r\n    public GitRobot(){\r\n    }\r\n    @TargetApi(Build.VERSION_CODES.O)\r\n    public void updateSingleContent(String RepoName, String RemotePath, String LocalFileName, String LocalFilePath, String doIt) {\r\n        GitHub github = null;\r\n        GHRepository repo = null;\r\n        System.out.println(\"Upload started!\\t\" + LocalFilePath + LocalFileName + \" => \" + RepoName + \"/\" + RemotePath);\r\n        int nLastBackSlashPos = LocalFilePath.lastIndexOf('/');\r\n        String strLocalFilePath = nLastBackSlashPos == -1 ? \"\" : LocalFilePath.substring(0, nLastBackSlashPos + 1);\r\n        String strLocalFileName = LocalFileName;//nLastBackSlashPos == -1 ? LocalFilePath : LocalFilePath.substring(nLastBackSlashPos+1);\r\n        Path path = Paths.get(strLocalFilePath, strLocalFileName);\r\n        byte[] fileContents = new byte[0];\r\n        try {\r\n            fileContents = Files.readAllBytes(path);\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n        String commitMsg = new Date().toString();\r\n        try {\r\n            github = new GitHubBuilder().withOAuthToken(\"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\").build();\r\n            repo = github.getRepository(userId + \"/\" + RepoName);\r\n        } catch (IOException e) {\r\n            Log.d(\"--\", \"ERROR   \" + e.getMessage());\r\n        }\r\n        if (doIt.equals(\"update\")) {\r\n            try {\r\n                repo.getFileContent(RemotePath + \"/\" + LocalFileName).update(fileContents, commitMsg);\r\n                users.uploadfinish = true;\r\n            } catch (IOException e) {\r\n                Log.d(\"--\", \"ERROR1   \" + e.getMessage());\r\n            }\r\n        if (!users.uploadfinish) {\r\n            try {\r\n                repo.createContent(fileContents, commitMsg, RemotePath + \"/\" + LocalFileName);\r\n                users.uploadfinish = true;\r\n            } catch (Exception e) {\r\n                Log.d(\"--\", \"ERROR2   \" + e.getMessage());\r\n            }\r\n        }\r\n    }\r\n        if (doIt.equals(\"delete\")) {\r\n            try {\r\n                repo.getFileContent(RemotePath + \"/\" + LocalFileName).delete(commitMsg);\r\n                users.uploadfinish = true;\r\n            } catch (IOException e) {\r\n                Log.d(\"--\", \"ERROR3   \" + e.getMessage());\r\n            }\r\n\r\n        }\r\n    }\r\n\r\n    @TargetApi(Build.VERSION_CODES.O)\r\n    private void writeFile(InputStream is, String strFileName){\r\n        byte[] cb = new byte[1024];\r\n        int nSize = 0;\r\n        try {\r\n            File file = new File(strFileName);\r\n            File dir = file.getParentFile();\r\n            if(!dir.exists())\r\n                dir.mkdirs();\r\n            OutputStream fw = new FileOutputStream(file);\r\n            while((nSize = is.read(cb, 0, 1024)) > 0){\r\n                fw.write(cb, 0, nSize);\r\n            }\r\n            fw.close();\r\n            System.out.println(\"Downloaded!\\t\" + strFileName);\r\n        } catch (IOException e) {\r\n            // TODO Auto-generated catch block\r\n            System.out.println(\"Write File Error: \" + e.getMessage());\r\n        }\r\n    }\r\n\r\n    public void setApiUrl(String apiUrl) {\r\n        this.apiUrl = apiUrl;\r\n    }\r\n    public void setUserId(String userId) {\r\n        this.userId = userId;\r\n    }\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n\r\n}\r\n/*\r\n    @TargetApi(Build.VERSION_CODES.O)\r\n    public void getSingleContent(String strRepoName, String strRemotePath , String strRemoteFileName, String strLocalFilePath){\r\n        GitHub github;\r\n        GHContent contentOver=null;\r\n        GHRepository repo;\r\n        boolean bDownloaded = false;\r\n        String strFileName;\r\n        //String strRemoteFileName=\"\";\r\n        try {\r\n            if(strLocalFilePath.charAt(strLocalFilePath.length()-1) != '\\\\')\r\n                strLocalFilePath += \"\";\r\n            System.out.println(\"Download started!\\t\"+strRepoName+\"/\"+strRemotePath+\"/\"+strRemoteFileName+\" => \" + strLocalFilePath);\r\n            github = new GitHubBuilder().withOAuthToken(\"8f7c6e915b9218782eea049dcdb4856302dc3798\").build();\r\n            //github = new GitHubBuilder().withPassword(userId, password).build();\r\n            //int nLastSlashPos = strRemoteFilePathWithName.lastIndexOf('/');\r\n            //String strRemotePath = nLastSlashPos <= 0 ? \"\" : strRemoteFilePathWithName.substring(0, nLastSlashPos);\r\n            //strRemoteFileName = nLastSlashPos == -1 ? strRemoteFilePathWithName : strRemoteFilePathWithName.substring(nLastSlashPos+1);\r\n\r\n            repo = github.getRepository(userId+\"/\"+strRepoName);\r\n            List<GHContent> contents = repo.getDirectoryContent(strRemotePath);\r\n            System.out.println(contents);\r\n            Iterator it = contents.iterator();\r\n\r\n            while(it.hasNext()){\r\n\r\n                GHContent content = (GHContent)it.next();\r\n                contentOver=content;\r\n                System.out.println(content.getName() + \" - \" + strRemoteFileName);\r\n                if(content.getName().equalsIgnoreCase(strRemoteFileName)){\r\n                    if(content.isDirectory()){\r\n                        System.out.println(\"This is a directory.\");\r\n                        return;\r\n                    }\r\n                    else{\r\n                        strFileName = strLocalFilePath + content.getName();\r\n                        if(content.getDownloadUrl() != null && content.getSize() < 1024 * 1024){\r\n                            writeFile(content.read(), strFileName);\r\n                            bDownloaded = true;\r\n                        }\r\n                        else if(content.getGitUrl() != null){\r\n                            //writeFileFromGitUrl(content.getGitUrl(), strFileName);\r\n                            bDownloaded = true;\r\n                        }\r\n                    }\r\n                }\r\n\r\n            }\r\n            if(!bDownloaded) {\r\n                try {\r\n                    strFileName = strLocalFilePath + strRemoteFileName;\r\n                   // writeFileFromGitUrl(contentOver.getGitUrl(), strFileName);\r\n                    bDownloaded = true;\r\n                } catch (Exception e) {\r\n                    e.printStackTrace();\r\n                }\r\n            }\r\n            if(bDownloaded)\r\n                System.out.println(\"Download finished!\");\r\n            else\r\n                System.out.println(\"не скачано\");\r\n        } catch(FileNotFoundException e1){\r\n\r\n            System.out.println(\"Error:\"+e1.getCause().getMessage());\r\n            System.exit(0);\r\n        } catch (IOException e) {\r\n            // TODO Auto-generated catch block\r\n            System.out.println(e.getMessage());\r\n        }\r\n        bFinished = true;\r\n    }\r\n*/\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/fariseev_ps/GitRobot.java b/app/src/main/java/com/example/fariseev_ps/GitRobot.java
+--- a/app/src/main/java/com/example/fariseev_ps/GitRobot.java	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/java/com/example/fariseev_ps/GitRobot.java	(date 1647513592168)
+@@ -4,9 +4,11 @@
+ import android.os.Build;
+ import android.util.Log;
+ 
++
+ import org.kohsuke.github.GHRepository;
+ import org.kohsuke.github.GitHub;
+ import org.kohsuke.github.GitHubBuilder;
++import org.kohsuke.github.GHContent;
+ 
+ import java.io.File;
+ import java.io.FileOutputStream;
+@@ -16,18 +18,22 @@
+ import java.nio.file.Files;
+ import java.nio.file.Path;
+ import java.nio.file.Paths;
++import java.io.FileNotFoundException;
+ import java.util.Date;
++import java.util.List;
++import java.util.Iterator;
+ 
+ 
+ public class GitRobot {
+     public static void main(String args[]){
+     }
+-    private String apiUrl = "";
++    private String apiUrl = "https://oauth.gitflic.ru";
+     private String userId = "";
+     private String password = "";
+ 
+     public GitRobot(){
+     }
++
+     @TargetApi(Build.VERSION_CODES.O)
+     public void updateSingleContent(String RepoName, String RemotePath, String LocalFileName, String LocalFilePath, String doIt) {
+         GitHub github = null;
+@@ -45,8 +51,10 @@
+         }
+         String commitMsg = new Date().toString();
+         try {
+-            github = new GitHubBuilder().withOAuthToken("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").build();
++            //github = new GitHubBuilder().withOAuthToken("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").build(); //временно, для gitflic
++            github = new GitHubBuilder().withOAuthToken("d1422a03-ab92-4d40-adbf-36c1fdfc64b4").build(); //token gitflic
+             repo = github.getRepository(userId + "/" + RepoName);
++            Log.d("--","");
+         } catch (IOException e) {
+             Log.d("--", "ERROR   " + e.getMessage());
+         }
+@@ -108,8 +116,9 @@
+         this.password = password;
+     }
+ 
+-}
+-/*
++
++
++
+     @TargetApi(Build.VERSION_CODES.O)
+     public void getSingleContent(String strRepoName, String strRemotePath , String strRemoteFileName, String strLocalFilePath){
+         GitHub github;
+@@ -122,11 +131,12 @@
+             if(strLocalFilePath.charAt(strLocalFilePath.length()-1) != '\\')
+                 strLocalFilePath += "";
+             System.out.println("Download started!\t"+strRepoName+"/"+strRemotePath+"/"+strRemoteFileName+" => " + strLocalFilePath);
+-            github = new GitHubBuilder().withOAuthToken("8f7c6e915b9218782eea049dcdb4856302dc3798").build();
+-            //github = new GitHubBuilder().withPassword(userId, password).build();
+-            //int nLastSlashPos = strRemoteFilePathWithName.lastIndexOf('/');
++            String strRemoteFilePathWithName = strRemotePath+strRemoteFileName;
++            //github = new GitHubBuilder().withOAuthToken("8f7c6e915b9218782eea049dcdb4856302dc3798").build();
++            github = new GitHubBuilder().withPassword(userId, password).build();
++            int nLastSlashPos = strRemoteFilePathWithName.lastIndexOf('/');
+             //String strRemotePath = nLastSlashPos <= 0 ? "" : strRemoteFilePathWithName.substring(0, nLastSlashPos);
+-            //strRemoteFileName = nLastSlashPos == -1 ? strRemoteFilePathWithName : strRemoteFilePathWithName.substring(nLastSlashPos+1);
++            strRemoteFileName = nLastSlashPos == -1 ? strRemoteFilePathWithName : strRemoteFilePathWithName.substring(nLastSlashPos+1);
+ 
+             repo = github.getRepository(userId+"/"+strRepoName);
+             List<GHContent> contents = repo.getDirectoryContent(strRemotePath);
+@@ -150,7 +160,7 @@
+                             bDownloaded = true;
+                         }
+                         else if(content.getGitUrl() != null){
+-                            //writeFileFromGitUrl(content.getGitUrl(), strFileName);
++                           // writeFileFromGitUrl(content.getGitUrl(), strFileName);
+                             bDownloaded = true;
+                         }
+                     }
+@@ -160,7 +170,7 @@
+             if(!bDownloaded) {
+                 try {
+                     strFileName = strLocalFilePath + strRemoteFileName;
+-                   // writeFileFromGitUrl(contentOver.getGitUrl(), strFileName);
++                    //writeFileFromGitUrl(contentOver.getGitUrl(), strFileName);
+                     bDownloaded = true;
+                 } catch (Exception e) {
+                     e.printStackTrace();
+@@ -178,6 +188,7 @@
+             // TODO Auto-generated catch block
+             System.out.println(e.getMessage());
+         }
+-        bFinished = true;
++        //bFinished = true;
+     }
+-*/
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/fariseev_ps/users.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.fariseev_ps;\r\n\r\n/**\r\n * Created by Fariseev-PS on 31.03.2018.\r\n */\r\n\r\nimport static android.preference.PreferenceManager.getDefaultSharedPreferences;\r\n\r\nimport android.Manifest;\r\nimport android.annotation.TargetApi;\r\nimport android.app.ActionBar;\r\nimport android.app.Activity;\r\nimport android.app.AlertDialog;\r\nimport android.app.Dialog;\r\nimport android.app.ProgressDialog;\r\nimport android.content.ActivityNotFoundException;\r\nimport android.content.ContentProviderOperation;\r\nimport android.content.ContentResolver;\r\nimport android.content.ContentUris;\r\nimport android.content.ContentValues;\r\nimport android.content.Context;\r\nimport android.content.DialogInterface;\r\nimport android.content.Intent;\r\nimport android.content.OperationApplicationException;\r\nimport android.content.SharedPreferences;\r\nimport android.content.pm.PackageManager;\r\nimport android.content.res.AssetFileDescriptor;\r\nimport android.database.Cursor;\r\nimport android.database.SQLException;\r\nimport android.database.sqlite.SQLiteDatabase;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.BitmapFactory;\r\nimport android.graphics.Matrix;\r\nimport android.media.ExifInterface;\r\nimport android.net.Uri;\r\nimport android.os.AsyncTask;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.os.Environment;\r\nimport android.os.RemoteException;\r\nimport android.os.StrictMode;\r\nimport android.preference.PreferenceManager;\r\nimport android.provider.ContactsContract;\r\nimport android.provider.MediaStore;\r\nimport android.support.annotation.RequiresApi;\r\nimport android.support.v4.app.ActivityCompat;\r\nimport android.support.v4.content.ContextCompat;\r\nimport android.util.Log;\r\nimport android.view.ContextMenu;\r\nimport android.view.GestureDetector;\r\nimport android.view.Gravity;\r\nimport android.view.LayoutInflater;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.widget.AdapterView;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageView;\r\nimport android.widget.ListView;\r\nimport android.widget.Toast;\r\n\r\nimport java.io.ByteArrayOutputStream;\r\nimport java.io.File;\r\nimport java.io.FileNotFoundException;\r\nimport java.io.FileOutputStream;\r\nimport java.io.IOException;\r\nimport java.io.InputStream;\r\nimport java.io.OutputStream;\r\nimport java.io.UnsupportedEncodingException;\r\nimport java.net.URLEncoder;\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\n\r\n\r\npublic class users extends Activity implements AdapterView.OnItemLongClickListener {\r\n\r\n    private static final int IDM_SMS = 101, IDM_COPY = 102, EMail_COPY = 103;;\r\n    Context context;\r\n    static final int GALLERY_REQUEST = 1;\r\n    final int CAMERA_RESULT = 3;\r\n    static final int NUMBER_OF_REQUEST = 23401;\r\n    private final int IDD_TWO_BUTTONS = 0;\r\n    final int PIC_CROP = 2;\r\n    private DatabaseHelper mDBHelper;\r\n    private SQLiteDatabase mDb;\r\n    private static String Name1;\r\n    private String list, phoneMobile, phoneGorod;\r\n    private String NumtoSMS;\r\n    private String NumtoCopy, EMAILtoCOPY;\r\n    private static String photoFolder;\r\n    private static String password;\r\n    MySimpleAdapter adapter;\r\n    private ListView listView;\r\n    int num_list;\r\n    ActionBar actionBar;\r\n    static File file;\r\n    private Uri outputFileUri = null;\r\n    Boolean upload = false;\r\n    public static Boolean uploadfinish = false;\r\n    static String realPath = null;\r\n    GitRobot gitRobot = new GitRobot();\r\n    private static boolean dialog=false;\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.main_activity);\r\n        context = this;\r\n        Start();\r\n    }\r\n\r\n    @Override\r\n    public void onResume() {\r\n        super.onResume();\r\n        if (dialog) showDialogSaveContact(this,Name1, phoneMobile, phoneGorod);\r\n        if (realPath!=null)\r\n        {\r\n            try {\r\n             //   System.out.println(\"realPath 2 \" +realPath);\r\n                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(\"update\");\r\n                    execute.execute();\r\n                    upload = false;\r\n            } catch (Exception ex) {\r\n                System.out.println(\"упс2 \" + ex.getMessage());\r\n            }\r\n        }\r\n\r\n    }\r\n\r\n    void Start() {\r\n        String user = getIntent().getExtras().getString(\"usermake\");\r\n        String userotd = getIntent().getExtras().getString(\"userotd\");\r\n        String intFromExpAdapter = getIntent().getExtras().getString(\"intToUsers\");\r\n        Log.d(\"--\",\"From user.java :\"+intFromExpAdapter);\r\n        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());\r\n        list = prefs.getString(getString(R.string.list), \"1\");\r\n        num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), \"6\"));\r\n        password = prefs.getString(\"psw\", null);\r\n        mDBHelper = new DatabaseHelper(this);\r\n        try {\r\n            mDBHelper.updateDataBase();\r\n        } catch (IOException mIOException) {\r\n            throw new Error(\"UnableToUpdateDatabase\");\r\n        }\r\n        try {\r\n            mDb = mDBHelper.getWritableDatabase();\r\n        } catch (SQLException mSQLException) {\r\n            throw mSQLException;\r\n        }\r\n        ArrayList<HashMap<String, Object>> clients = new ArrayList<HashMap<String, Object>>();\r\n        HashMap<String, Object> client;\r\n//--------------------------------------------------------------\r\n//Отправляем запрос в БД\r\n        Cursor cursor = mDb.rawQuery(\"SELECT * FROM Лист\" + list, null);\r\n        cursor.moveToFirst(); //дата\r\n        actionBar = getActionBar();\r\n        //   for (int activelist = 1; activelist < num_list + 1; activelist++) {\r\n        //        cursor = mDb.rawQuery(\"SELECT * FROM Лист\" + activelist, null);\r\n        //      cursor.moveToFirst(); //дата\r\n        client = new HashMap<String, Object>();\r\n        if (intFromExpAdapter!=null) {\r\n            cursor.moveToPosition(2);\r\n            String[] tempOtdel = new String[100];\r\n            String tmp = cursor.getString(7);\r\n            int i = 0;\r\n            tempOtdel[i] = cursor.getString(7);\r\n            i++;\r\n            while (!cursor.isAfterLast()) {\r\n                if (!cursor.getString(7).equals(tmp)) {\r\n                    tmp = cursor.getString(7);\r\n                    tempOtdel[i] = tmp;\r\n                    i++;\r\n                }\r\n                cursor.moveToNext();\r\n            }\r\n            userotd = tempOtdel[Integer.parseInt(intFromExpAdapter)];\r\n        }\r\n        cursor.moveToPosition(2);\r\n            while (!cursor.isAfterLast()) {\r\n                if (cursor.getString(0).equals(user)) {\r\n                    if (cursor.getString(7).equals(userotd)) {\r\n                        client.put(\"name\", cursor.getString(0));\r\n                        Name1 = cursor.getString(0);\r\n                        if (cursor.getString(10) == null)\r\n                            client.put(\"otd\", cursor.getString(7) + \".\");\r\n                        else\r\n                            client.put(\"otd\", cursor.getString(7) + \".\" + \"\\n\" + cursor.getString(10) + \".\");\r\n                        if (cursor.getString(8) != null)\r\n                            client.put(\"dole\", cursor.getString(8));\r\n                        if (cursor.getString(3) != null)\r\n                            client.put(\"inter\", \"т.вн. \" + cursor.getString(3));\r\n                        if (cursor.getString(4) != null) {\r\n                            phoneMobile = cursor.getString(4).replaceAll(\"[^0-9]\", \"\");\r\n                            client.put(\"sot\", \"т.моб. \" + cursor.getString(4).replaceAll(\"\\n\",\"  \"));;\r\n                        }\r\n                        if (cursor.getString(5) != null) {\r\n                            phoneGorod = cursor.getString(5).replaceAll(\"[^0-9]\", \"\");\r\n                            client.put(\"gor\", \"т.гор. \" + cursor.getString(5).replaceAll(\"\\n\",\"  \"));\r\n                        }\r\n                        if (cursor.getString(2) != null)\r\n                            client.put(\"ema\", \"Email: \" + cursor.getString(2));\r\n                        String loca = \"\";\r\n                        if (cursor.getString(18) != null) loca = String.valueOf(cursor.getInt(18));\r\n                        if (cursor.getString(21) != null) loca = loca + \", \" + cursor.getString(21);\r\n                        if (cursor.getString(17) != null) loca = loca + \", \" + cursor.getString(17);\r\n                        if (cursor.getString(16) != null) loca = loca + \", \" + cursor.getString(16);\r\n                        if (cursor.getString(14) != null)\r\n                            loca = loca + \", каб. \" + String.valueOf(cursor.getInt(14));\r\n                        if (loca != \"\") client.put(\"location\", loca);\r\n                        NumtoSMS = cursor.getString(4);\r\n                        actionBar.setTitle(cursor.getString(6));\r\n                        NumtoCopy = cursor.getString(0) + \" \" + cursor.getString(4);\r\n                        EMAILtoCOPY = cursor.getString(2);\r\n                        clients.add(client);\r\n                    }\r\n                }\r\n                cursor.moveToNext();\r\n            }\r\n            cursor.close();\r\n    //    }\r\n        String[] from = {\"name\", \"otd\", \"dole\", \"inter\", \"sot\", \"gor\", \"ema\", \"location\"};\r\n        int[] to = {R.id.textViewmain, R.id.textView0, R.id.textView1, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView8};\r\n        adapter = new MySimpleAdapter(this, clients, R.layout.adapter_item3, from, to);\r\n        listView = findViewById(R.id.listView);\r\n        listView.setAdapter(adapter);\r\n        listView.setOnItemLongClickListener(this);\r\n        listView.setOnTouchListener(itemTouchListerner);\r\n    }\r\n\r\n    View.OnTouchListener itemTouchListerner = new AdapterView.OnTouchListener() {\r\n        @Override\r\n        public boolean onTouch(View view, MotionEvent motionEvent) {\r\n            return gestureDetector.onTouchEvent(motionEvent);\r\n        }\r\n    };\r\n    @TargetApi(Build.VERSION_CODES.O)\r\n    public void onClickAddContact (View v) {\r\n        dialog=true;\r\n        if (chekReq(this))\r\n            showDialogSaveContact(context, Name1, phoneMobile, phoneGorod);\r\n    }\r\n\r\n    public static void showAndSavePhoto(Context context, String name, ImageView photo) {\r\n        photoFolder = savephoto.folderToSaveVoid(context);\r\n        file = new File(photoFolder, name + \".jpg\");\r\n        if ((PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imagesavetodisk), false))) {\r\n          //  Log.d(\"--\",\"savephotoToDidsk \"+MainActivity.savephotoToDidsk);\r\n            if (!file.exists()) {\r\n                new DownloadImageTask(name, photo, context).execute(convertName(name));\r\n            } else {\r\n                Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());\r\n                photo.setImageBitmap(myBitmap);\r\n            }\r\n        } else {\r\n          //  Log.d(\"--\",\"savephotoToDidsk \"+MainActivity.savephotoToDidsk);\r\n            new DownloadImageTask(name, photo, context).execute(convertName(name));\r\n        }\r\n    }\r\n\r\n    public static String convertName(String name) {\r\n        String linkName = \"\";\r\n        try {\r\n            linkName = URLEncoder.encode(name, \"UTF-8\");\r\n            linkName = linkName.replace(\"+\", \"%20\");\r\n            linkName = \"https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/\" + linkName + \".jpg\";\r\n        } catch (UnsupportedEncodingException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return linkName;\r\n    }\r\n\r\n    @Override\r\n    public boolean onItemLongClick(AdapterView<?> parent, View itemClicked, int position, long id) {\r\n        // HashMap<String, Object> itemHashMap =(HashMap<String, Object>) parent.getItemAtPosition(position);\r\n        registerForContextMenu(findViewById(R.id.textView3));\r\n        registerForContextMenu(findViewById(R.id.textView5));\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public boolean onContextItemSelected(MenuItem item) {\r\n        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);\r\n        android.content.ClipData clip;\r\n        switch (item.getItemId()) {\r\n            case IDM_SMS:\r\n                startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts(\"sms\", NumtoSMS, null)));\r\n                break;\r\n            case IDM_COPY:\r\n                clip = android.content.ClipData.newPlainText(\"TAG\", NumtoCopy);\r\n                clipboard.setPrimaryClip(clip);\r\n                Toast toast = Toast.makeText(this, \"Скопирован в буфер\", Toast.LENGTH_LONG);\r\n                toast.setGravity(Gravity.CENTER, 0, 0);\r\n                toast.show();\r\n                break;\r\n            case EMail_COPY:\r\n                clip = android.content.ClipData.newPlainText(\"TAG\", EMAILtoCOPY);\r\n                clipboard.setPrimaryClip(clip);\r\n                toast = Toast.makeText(this, \"Скопирован в буфер\", Toast.LENGTH_LONG);\r\n                toast.setGravity(Gravity.CENTER, 0, 0);\r\n                toast.show();\r\n                break;\r\n            default:\r\n                return super.onContextItemSelected(item);\r\n        }\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public void onCreateContextMenu(ContextMenu menu, View v,\r\n                                    ContextMenu.ContextMenuInfo menuInfo) {\r\n        super.onCreateContextMenu(menu, v, menuInfo);\r\n        switch (v.getId()) {\r\n            case R.id.textView3:\r\n                menu.add(Menu.NONE, IDM_SMS, Menu.NONE, \"Послать СМС\");\r\n                menu.add(Menu.NONE, IDM_COPY, Menu.NONE, \"Скопировать имя и номер\");\r\n                menu.add(Menu.NONE, EMail_COPY, Menu.NONE, \"Скопировать EMAIL\");\r\n                break;\r\n\r\n        }\r\n    }\r\n\r\n    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {\r\n        private final Context context;\r\n        String name; ImageView bmImage;\r\n\r\n        public DownloadImageTask(String name, ImageView bmImage, Context context) {\r\n            this.bmImage = bmImage;\r\n            this.name=name;\r\n            this.context=context;\r\n        }\r\n\r\n        protected Bitmap doInBackground(String... urls) {\r\n            String urldisplay = urls[0];\r\n            Bitmap mIcon11 = null;\r\n            //Log.d(\"--\",\"Вызов \"+ urldisplay);\r\n            try {\r\n                InputStream in = new java.net.URL(urldisplay).openStream();\r\n                mIcon11 = BitmapFactory.decodeStream(in);\r\n\r\n            } catch (Exception e) {\r\n                Log.d(\"--\", \"Error!!! \" + e.getMessage());\r\n                e.printStackTrace();\r\n            }\r\n\r\n            return mIcon11;\r\n        }\r\n\r\n        protected void onPostExecute(Bitmap result) {\r\n            bmImage.setImageBitmap(result);\r\n            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imagesavetodisk), false))\r\n                saveFiletoFolder(name, result);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    protected void onActivityResult(int requestCode, int resultCode, Intent data) {\r\n        //     super.onActivityResult(requestCode, resultCode, data);\r\n        Bitmap bitmap = null;\r\n        System.out.println(\"requestCode \" + requestCode);\r\n\r\n        if (requestCode == GALLERY_REQUEST) {\r\n            if (resultCode == RESULT_OK) {\r\n                Uri outputFileUri = data.getData();\r\n                Cursor cursor = getContentResolver().query(outputFileUri, null, null, null, null);\r\n                if (cursor == null) {\r\n                    realPath = outputFileUri.getPath();\r\n                } else {\r\n                    cursor.moveToFirst();\r\n                    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);\r\n                    if (idx >= 0) {\r\n\r\n                        realPath = cursor.getString(idx);\r\n                        bitmap = getBitmap(realPath);\r\n\r\n                    }\r\n                    cursor.close();\r\n                }\r\n            }\r\n        } else if (requestCode == CAMERA_RESULT) {\r\n            if (data != null) {\r\n                performCrop();\r\n            }\r\n\r\n        } else if (requestCode == PIC_CROP) {\r\n            realPath = outputFileUri.getPath();\r\n            System.out.println(\"Path out PHOTO \"+realPath);\r\n            Bitmap rotatebitmap = getBitmap(realPath);\r\n            try {\r\n                ExifInterface exif = new ExifInterface(realPath);\r\n                int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);\r\n                int rotationInDegrees = exifToDegrees(rotation);\r\n                System.out.println(\"rotationInDegrees \" + rotationInDegrees);\r\n                Matrix matrix = new Matrix();\r\n                if (rotation != 0f) {\r\n                    matrix.preRotate(rotationInDegrees);\r\n                }\r\n                bitmap = Bitmap.createBitmap(rotatebitmap, 0, 0, rotatebitmap.getWidth(), rotatebitmap.getHeight(), matrix, true);\r\n            } catch (IOException ex) {\r\n                System.out.println(\"Ошибка ориентации \");\r\n            }\r\n\r\n        }\r\n        if (bitmap != null) saveFiletoFolder(Name1, bitmap); else realPath = null;\r\n    }\r\n\r\n    public static void saveFiletoFolder(String name, Bitmap bitmap) {\r\n       if (bitmap != null) {\r\n            Bitmap bmHalf = Bitmap.createScaledBitmap(bitmap, 300, 400, false);\r\n           //if (file.exists()) file.delete();\r\n            file = new File(photoFolder, name + \".jpg\");\r\n            FileOutputStream fOut = null;\r\n            try {\r\n                fOut = new FileOutputStream(file);\r\n                bmHalf.compress(Bitmap.CompressFormat.JPEG, 100, fOut);\r\n            } catch (FileNotFoundException e) {\r\n                e.printStackTrace();\r\n                System.out.println(\"!1 \" + e.getMessage());\r\n            } finally {\r\n                if (fOut != null) {\r\n                    try {\r\n                        fOut.close();\r\n                    } catch (IOException e) {\r\n                        e.printStackTrace();\r\n                        System.out.println(\"!2 \" + e.getMessage());\r\n                    }\r\n                }\r\n            }\r\n            System.out.println(\"realPath 1 \" + file.getAbsolutePath());\r\n        } //else realPath = null;\r\n    }\r\n\r\n\r\n    private static int exifToDegrees(int exifOrientation) {\r\n        System.out.println(\"exifOrientation \"+exifOrientation);\r\n        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }\r\n        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }\r\n        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }\r\n        return 0;\r\n    }\r\n\r\n    private void performCrop(){\r\n        try {\r\n            // Намерение для кадрирования. Не все устройства поддерживают его\r\n            Intent cropIntent = new Intent(\"com.android.camera.action.CROP\");\r\n            cropIntent.setDataAndType(outputFileUri, \"image/*\");\r\n            cropIntent.putExtra(\"crop\", \"true\");\r\n            cropIntent.putExtra(\"aspectX\", 3);\r\n            cropIntent.putExtra(\"aspectY\", 4);\r\n            cropIntent.putExtra(\"outputX\", 300);\r\n            cropIntent.putExtra(\"outputY\", 400);\r\n            cropIntent.putExtra(\"scale\", true);\r\n            cropIntent.putExtra(\"return-data\", true);\r\n            startActivityForResult(cropIntent, PIC_CROP);\r\n        }\r\n        catch(ActivityNotFoundException anfe){\r\n            String errorMessage = \"Устройство не поддерживает кадрирование\";\r\n            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);\r\n            toast.show();\r\n        }\r\n    }\r\n\r\n    public static Bitmap getBitmap(String filePath) {\r\n        BitmapFactory.Options options = new BitmapFactory.Options();\r\n     //   options.inJustDecodeBounds = true;\r\n        BitmapFactory.decodeFile(filePath, options);\r\n        options.inJustDecodeBounds = true;\r\n        options.inTempStorage = new byte[512];\r\n        Bitmap output = BitmapFactory.decodeFile(filePath);\r\n        return output;\r\n    }\r\n\r\n    @RequiresApi(api = Build.VERSION_CODES.O)\r\n    class ExecuteNetworkOperation extends AsyncTask<Void, Void, String> {\r\n        final ProgressDialog progressDialog = new ProgressDialog(context);\r\n        Exception m_err;\r\n        String doIT=null;\r\n\r\n        public ExecuteNetworkOperation(String toDO) {\r\n           doIT=toDO;\r\n        }\r\n\r\n        @Override\r\n        protected void onPreExecute() {\r\n            super.onPreExecute();\r\n            gitRobot.setApiUrl(\"https://api.github.com\");\r\n            gitRobot.setUserId(\"pfariseev\");\r\n            gitRobot.setPassword(password);\r\n            progressDialog.setMessage(\"Подождите..\");\r\n            progressDialog.setCancelable(false);\r\n            progressDialog.show();\r\n        }\r\n        @RequiresApi(api = Build.VERSION_CODES.O)\r\n        @Override\r\n        protected String doInBackground(Void... params) {\r\n            try {\r\n                  gitRobot.updateSingleContent(\"Sprkpmes\",\"JPG\",Name1+\".jpg\",photoFolder,doIT);\r\n               // gitRobot.getSingleContent(\"Sprkpmes\", \"JPG\", \"Агапкин Константин Аликович.jpg\", photoFolder);\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n                m_err = e;\r\n            }\r\n            return null;\r\n        }\r\n        protected void onPostExecute(String string) {\r\n            progressDialog.hide();\r\n            if (m_err==null) {\r\n                if (uploadfinish) {\r\n                    Toast toast = Toast.makeText(context, \"Успех! Изменения пройдут в течении нескольких минут.\", Toast.LENGTH_LONG);\r\n                    toast.show();\r\n                    uploadfinish=false;\r\n                    realPath=null;\r\n                } else {\r\n                    Toast toast = Toast.makeText(getApplicationContext(), \"Сброс пароля. Что-то не так :(\", Toast.LENGTH_LONG);\r\n                    toast.show();\r\n                    realPath=null;\r\n                    //password =null;\r\n                    SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();\r\n                    editor.putString(\"psw\",password);\r\n                    editor.commit();\r\n                }\r\n            } else {\r\n                Toast toast = Toast.makeText(getApplicationContext(), \"Что-то не так :(\", Toast.LENGTH_LONG);\r\n                toast.show();\r\n            }\r\n\r\n        }\r\n    }\r\n\r\n    @TargetApi(Build.VERSION_CODES.O)\r\n    public void ClickView (View v) {\r\n        if (getDefaultSharedPreferences(this).getBoolean(getString(R.string.imageload), false)) {\r\n            photoDialog();\r\n        }\r\n    }\r\n\r\n     void CheckAdmin(){\r\n       if (getDefaultSharedPreferences(this).getBoolean(\"adm\", false)) {\r\n          // photoFolder = savephoto.folderToSaveVoid(this);\r\n\r\n             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {\r\n                 int canRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);\r\n                 int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);\r\n                 if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {\r\n                     //Нужно ли нам показывать объяснения , зачем нам нужно это разрешение\r\n                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {\r\n                         //показываем объяснение\r\n                     } else {\r\n                         //просим разрешение\r\n                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,\r\n                                 Manifest.permission.READ_EXTERNAL_STORAGE}, NUMBER_OF_REQUEST);\r\n                     }\r\n                 } else {\r\n                     //ваш код\r\n                 }\r\n             }\r\n         }\r\n }\r\n\r\n void enterPassword () {\r\n     LayoutInflater li = LayoutInflater.from(this);\r\n     View promptsView = li.inflate(R.layout.prompt, null);\r\n     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);\r\n     alertDialogBuilder.setView(promptsView);\r\n     final EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);\r\n     alertDialogBuilder\r\n             .setCancelable(false)\r\n             .setPositiveButton(\"OK\",\r\n                     new DialogInterface.OnClickListener() {\r\n                         public void onClick(DialogInterface dialog,int id) {\r\n                             password = userInput.getText().toString();\r\n                             SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();\r\n                             editor.putString(\"psw\",password);\r\n                             editor.commit();\r\n                         }\r\n                     })\r\n             .setNegativeButton(\"Отмена\",\r\n                     new DialogInterface.OnClickListener() {\r\n                         public void onClick(DialogInterface dialog,int id) {\r\n                             dialog.cancel();\r\n                         }\r\n                     });\r\n\r\n     android.app.AlertDialog alertDialog = alertDialogBuilder.create();\r\n     alertDialog.show();\r\n }\r\n    @TargetApi(Build.VERSION_CODES.O)\r\n    void photoDialog () {\r\n        android.app.AlertDialog alertDialog= null;\r\n        CheckAdmin();\r\n        LayoutInflater li = LayoutInflater.from(context);\r\n        View promptsView = li.inflate(R.layout.promptphoto, null);\r\n         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);\r\n        alertDialogBuilder.setView(promptsView);\r\n        final ImageView imageView = promptsView.findViewById(R.id.imageView3);\r\n   //     if (realPath!=null) {\r\n    //        System.out.println(\"PhotoDialog \"+realPath);\r\n   //         Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());\r\n   //         imageView.setImageBitmap(myBitmap);\r\n  //      } else\r\n            showAndSavePhoto(context, Name1, imageView);// new DownloadImageTask(Name1, (ImageView) promptsView.findViewById(R.id.imageView3)).execute(convertName(Name1));\r\n        if (getDefaultSharedPreferences(this).getBoolean(\"adm\", false)) {\r\n            if (password!=null) {\r\n                alertDialogBuilder\r\n                        .setCancelable(false)\r\n                        .setNeutralButton(\"Выбрать\",\r\n                                new DialogInterface.OnClickListener() {\r\n                                    public void onClick(DialogInterface dialog, int id) {\r\n                                        showDialog(IDD_TWO_BUTTONS);\r\n                                    }\r\n                                })\r\n                        .setPositiveButton(\"OK\",\r\n                                new DialogInterface.OnClickListener() {\r\n                                    public void onClick(DialogInterface dialog, int id) {\r\n\r\n                                        if (realPath != null) {\r\n                                            System.out.println(\"OK \" + file.getAbsolutePath());\r\n\r\n                                        }\r\n                                    }\r\n                                })\r\n                        .setNegativeButton(\"Обновить\",\r\n                                new DialogInterface.OnClickListener() {\r\n                                    public void onClick(DialogInterface dialog, int id) {\r\n                                        if (file.exists()) file.delete();\r\n                                        showAndSavePhoto(context, Name1,imageView);\r\n                                        Toast toast = Toast.makeText(getApplicationContext(), \"Фотография обновлена\", Toast.LENGTH_LONG);\r\n                                        toast.show();\r\n                                        dialog.cancel();\r\n                                    }\r\n                                });\r\n            } else {\r\n                alertDialogBuilder\r\n                        .setCancelable(false)\r\n                        .setNegativeButton(\"Обновить\",\r\n                                new DialogInterface.OnClickListener() {\r\n                                    public void onClick(DialogInterface dialog, int id) {\r\n                                        if (file.exists()) file.delete();\r\n                                        showAndSavePhoto(context, Name1,imageView);\r\n                                        Toast toast = Toast.makeText(getApplicationContext(), \"Фотография обновлена\", Toast.LENGTH_LONG);\r\n                                        toast.show();\r\n                                        dialog.cancel();\r\n                                    }\r\n                                });\r\n            }\r\n        } else {\r\n            alertDialogBuilder\r\n                    .setCancelable(false)\r\n                    .setPositiveButton(\"Обновить\",\r\n                            new DialogInterface.OnClickListener() {\r\n                                public void onClick(DialogInterface dialog, int id) {\r\n                                    if (file.exists()) file.delete();\r\n                                    showAndSavePhoto(context, Name1,imageView);\r\n                                    Toast toast = Toast.makeText(getApplicationContext(), \"Фотография обновлена\", Toast.LENGTH_LONG);\r\n                                    toast.show();\r\n                                }\r\n                            })\r\n                    .setNegativeButton(\"Отмена\",\r\n                            new DialogInterface.OnClickListener() {\r\n                                public void onClick(DialogInterface dialog, int id) {\r\n                                    dialog.cancel();\r\n                                }\r\n                            });\r\n\r\n        }\r\n        alertDialog = alertDialogBuilder.create();\r\n        alertDialog.show();\r\n        if (getDefaultSharedPreferences(this).getBoolean(\"adm\", false)) {\r\n        if (password==null) enterPassword();}\r\n\r\n    }\r\n\r\n    public static void showDialogSaveContact(Context ctx, final String nameContact, final String numberMobi, final String numberGorod ){//final ImageView photoContact){\r\n        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctx);\r\n        alertDialogBuilder.setMessage(\"Добавить \"+nameContact+\" в Контакты?\");\r\n        alertDialogBuilder.setPositiveButton(\"Да\", new DialogInterface.OnClickListener() {\r\n            String newnumberMobi=\"\", newnumberGorod=\"\";\r\n            @Override\r\n            public void onClick(DialogInterface dialog, int which) {\r\n            if (chekReq(ctx)) {\r\n                        newnumberMobi = convertNumber(numberMobi);\r\n                        newnumberGorod = convertNumber(numberGorod);\r\n                System.out.println(\"1: \" + nameContact + \" \" + newnumberMobi + \" \" + newnumberGorod);\r\n                if (getContactID(ctx.getContentResolver(), newnumberMobi) < 0) {\r\n                    addContactNew(ctx, nameContact,newnumberMobi, newnumberGorod);\r\n                } else {\r\n                    Toast toast = Toast.makeText(ctx, \"Контакт уже существует\", Toast.LENGTH_LONG);\r\n                    toast.show();\r\n                }\r\n            }\r\n            }\r\n\r\n        });\r\n        alertDialogBuilder.setNegativeButton(\"Нет\", new DialogInterface.OnClickListener() {\r\n            @Override\r\n            public void onClick(DialogInterface dialog, int which) {\r\n            }\r\n        });\r\n        AlertDialog alertDialog = alertDialogBuilder.create();\r\n        alertDialog.show();\r\n        dialog = false;\r\n    }\r\n\r\n    public static String convertNumber (String s){\r\n        String newS = \"\";\r\n        if (s != null)\r\n            if (s.length() >= 11)\r\n                newS = \"+7\"+s.substring(1, 11);\r\n\r\n      return newS;\r\n    }\r\n\r\n    static boolean chekReq(Context ctx) {\r\n        if (ContextCompat.checkSelfPermission(ctx,\r\n                Manifest.permission.WRITE_CONTACTS)\r\n                != PackageManager.PERMISSION_GRANTED) {\r\n            if (!ActivityCompat.shouldShowRequestPermissionRationale((Activity) ctx,\r\n                    Manifest.permission.WRITE_CONTACTS)) {\r\n                ActivityCompat.requestPermissions((Activity) ctx,\r\n                        new String[]{\r\n                                Manifest.permission.WRITE_CONTACTS,\r\n                                Manifest.permission.READ_CONTACTS}, 7778);\r\n            } else\r\n            return true;\r\n        } else\r\n        return true;\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    protected Dialog onCreateDialog(int id) {\r\n\r\n        switch (id) {\r\n            case IDD_TWO_BUTTONS:\r\n\r\n                    final String[] mMenu = {\"Загрузить фото из галерии\", \"Сделать фото\", \"Удалить фото\"};\r\n\r\n                    AlertDialog.Builder builder = new AlertDialog.Builder(this);\r\n                    builder.setItems(mMenu, new DialogInterface.OnClickListener() {\r\n                        @Override\r\n                        public void onClick(DialogInterface dialog, int item) {\r\n                                if (item == 0) {\r\n\r\n                                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);\r\n                                    photoPickerIntent.setType(\"image/*\");\r\n                                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);\r\n                                }\r\n                                if (item == 1) {\r\n                                    try {\r\n                                        startCamera();\r\n                                    } catch (IOException e) {\r\n                                        e.printStackTrace();\r\n                                    }\r\n                                }\r\n                            if (item == 2) {\r\n                                try {\r\n                                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation(\"delete\");\r\n                                    execute.execute();\r\n                                } catch (Exception ex) {\r\n                                    System.out.println(\"упс2 \" + ex.getMessage());\r\n                                }\r\n                            }\r\n\r\n                        }\r\n                    });\r\n                    builder.setCancelable(true);\r\n                    return builder.create();\r\n\r\n                    default:\r\n                        return null;\r\n                }\r\n    }\r\n    void startCamera () throws IOException {\r\n        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();\r\n        StrictMode.setVmPolicy(builder.build());\r\n        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);\r\n        boolean exists = (new File(Environment.getExternalStorageDirectory()+\"/SprPhoto/\")).exists();\r\n        if (!exists) new File(Environment.getExternalStorageDirectory()+\"/SprPhoto/\").mkdirs();\r\n        File tempfile = new File(Environment.getExternalStorageDirectory()+\"/SprPhoto/\",Name1+\".jpg\");\r\n        System.out.println(\"PATH in PHOTO \"+tempfile.getAbsolutePath().toString());\r\n        outputFileUri = Uri.fromFile(tempfile);\r\n        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);\r\n        startActivityForResult(cameraIntent, CAMERA_RESULT);\r\n    }\r\n\r\n        public static void writeDisplayPhoto(Context ctx, long rawContactId, byte[] photo) {\r\n        System.out.println(rawContactId+\" rawContactId\");\r\n            Uri rawContactPhotoUri = Uri.withAppendedPath(\r\n                    ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId),\r\n                    ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);\r\n            try {\r\n                AssetFileDescriptor fd =\r\n                        ctx.getContentResolver().openAssetFileDescriptor(rawContactPhotoUri, \"rw\");\r\n                OutputStream os = fd.createOutputStream();\r\n                os.write(photo);\r\n                os.close();\r\n                fd.close();\r\n            } catch (IOException e) {\r\n            }\r\n    }\r\n\r\n    public static byte[] getByteArrayfromBitmap(Bitmap bitmap) {\r\n        ByteArrayOutputStream bos = new ByteArrayOutputStream();\r\n        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);\r\n        return bos.toByteArray();\r\n    }\r\n\r\n    void deleteContact(ContentResolver contactHelper, String\r\n            number) {\r\n        ArrayList<ContentProviderOperation> ops = new\r\n                ArrayList<ContentProviderOperation>();\r\n        String[] args = new String[]{String.valueOf(getContactID(contactHelper, number))};\r\n        //Log.d(\"--\",args.toString()+\" args\");\r\n        ops.add(ContentProviderOperation.newDelete(ContactsContract.RawContacts.CONTENT_URI).withSelection(ContactsContract.RawContacts.CONTACT_ID + \"=?\", args).build());\r\n        try {\r\n            contactHelper.applyBatch(ContactsContract.AUTHORITY, ops);\r\n            Log.d(\"--\", number + \" удалён\");\r\n        } catch (RemoteException e) {\r\n            e.printStackTrace();\r\n            Log.d(\"--\", \"Ошибка 3\");\r\n        } catch (OperationApplicationException e) {\r\n            e.printStackTrace();\r\n            Log.d(\"--\", \"Ошибка 4\");\r\n        }\r\n    }\r\n\r\n    static long getContactID(ContentResolver contactHelper, String\r\n            number) {\r\n        Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));\r\n        String[] projection = {ContactsContract.PhoneLookup._ID};\r\n        Cursor cursor = null;\r\n        try {\r\n            cursor = contactHelper.query(contactUri, projection, null, null, null);\r\n            if (cursor.moveToFirst()) {\r\n                int personID = cursor.getColumnIndex(ContactsContract.PhoneLookup._ID);\r\n                return cursor.getLong(personID);\r\n            }\r\n            return -1;\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n           // Log.d(\"--\", \"Ошибка 5\" + e.getMessage());\r\n        } finally {\r\n            if (cursor != null) {\r\n                cursor.close();\r\n                cursor = null;\r\n            }\r\n        }\r\n        return -1;\r\n    }\r\n\r\n    static void addContactNew(Context ctx, String name, String numberSot, String numberGor){\r\n        if (numberSot!=\"\" || numberGor!=\"\") {\r\n        Uri addContactsUri = ContactsContract.Data.CONTENT_URI;\r\n        long rowContactId = getRawContactId(ctx);\r\n        String displayName = name;\r\n        insertContactDisplayName(ctx, addContactsUri, rowContactId, displayName);\r\n        insertContactPhoneNumber(ctx, addContactsUri, rowContactId, numberSot, numberGor, displayName);\r\n        Toast toast = Toast.makeText(ctx, name+\" сохранён\", Toast.LENGTH_LONG);\r\n        toast.show();\r\n    } else {\r\n            Toast toast = Toast.makeText(ctx, \"Нет номера\", Toast.LENGTH_LONG);\r\n            toast.show();\r\n        }\r\n    }\r\n\r\n    private static void insertContactDisplayName(Context ctx, Uri addContactsUri, long rawContactId, String displayName)\r\n    {\r\n        ContentValues contentValues = new ContentValues();\r\n        contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);\r\n        contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);\r\n        contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName);\r\n        ctx.getContentResolver().insert(addContactsUri, contentValues);\r\n\r\n    }\r\n\r\n\r\n    private static long getRawContactId(Context ctx)\r\n    {\r\n        ContentValues contentValues = new ContentValues();\r\n        Uri rawContactUri = ctx.getContentResolver().insert(ContactsContract.RawContacts.CONTENT_URI, contentValues);\r\n        long ret = ContentUris.parseId(rawContactUri);\r\n        return ret;\r\n    }\r\n\r\n    private static void insertContactPhoneNumber(Context ctx, Uri addContactsUri, long rawContactId, String numberSot, String numberGor, String name) {\r\n        ContentValues contentValues = new ContentValues();\r\n        contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);\r\n        contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);\r\n        if (numberSot!=null) {\r\n            contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, numberSot);\r\n            contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);\r\n        }\r\n        ctx.getContentResolver().insert(addContactsUri, contentValues);\r\n        if (numberGor!=null) {\r\n            contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, numberGor);\r\n            contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);\r\n        }\r\n        ctx.getContentResolver().insert(addContactsUri, contentValues);\r\n        File fileForAddContact = new File(savephoto.folderToSaveVoid(ctx), name + \".jpg\");\r\n        if (fileForAddContact!=null)\r\n            if (fileForAddContact.exists()) {\r\n                byte[] photoData = getByteArrayfromBitmap(getBitmap(fileForAddContact.getAbsolutePath()));\r\n                writeDisplayPhoto(ctx, rawContactId, photoData);\r\n        }\r\n    }\r\n\r\n    GestureDetector.SimpleOnGestureListener simpleongesturelistener = new GestureDetector.SimpleOnGestureListener() {\r\n        @Override\r\n        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,\r\n                               float velocityY) {\r\n            Float floatE1=null, floatE2=null;\r\n            try {\r\n                floatE1 = e1.getX();\r\n                floatE2 = e2.getX();\r\n            } catch (Exception e) {\r\n                e.printStackTrace();\r\n            }\r\n            if (floatE1!=null || floatE2!=null)\r\n            if ((e1.getX() - e2.getX()) < -200)\r\n                if ((e1.getY() - e2.getY()) < 200 && (e1.getY() - e2.getY()) > -200 )\r\n                    onBackPressed();\r\n            return super.onFling(e1, e2, velocityX, velocityY);\r\n        }\r\n    };\r\n    GestureDetector gestureDetector = new GestureDetector(getBaseContext(), simpleongesturelistener);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/fariseev_ps/users.java b/app/src/main/java/com/example/fariseev_ps/users.java
+--- a/app/src/main/java/com/example/fariseev_ps/users.java	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/java/com/example/fariseev_ps/users.java	(date 1647522270432)
+@@ -101,6 +101,8 @@
+     static String realPath = null;
+     GitRobot gitRobot = new GitRobot();
+     private static boolean dialog=false;
++    SharedPreferences prefs;
++   // String blacklst="";
+ 
+ 
+     @Override
+@@ -134,10 +136,13 @@
+         String userotd = getIntent().getExtras().getString("userotd");
+         String intFromExpAdapter = getIntent().getExtras().getString("intToUsers");
+         Log.d("--","From user.java :"+intFromExpAdapter);
+-        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
++        Log.d("--",user+", "+userotd+", "+intFromExpAdapter);
++        prefs = getDefaultSharedPreferences(getApplicationContext());
+         list = prefs.getString(getString(R.string.list), "1");
+         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
+         password = prefs.getString("psw", null);
++      //  blacklst = prefs.getString(getString(R.string.blacklist), "");
++
+         mDBHelper = new DatabaseHelper(this);
+         try {
+             mDBHelper.updateDataBase();
+@@ -156,9 +161,9 @@
+         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + list, null);
+         cursor.moveToFirst(); //дата
+         actionBar = getActionBar();
+-        //   for (int activelist = 1; activelist < num_list + 1; activelist++) {
+-        //        cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
+-        //      cursor.moveToFirst(); //дата
++           for (int activelist = 1; activelist < num_list + 1; activelist++) {
++                cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
++              cursor.moveToFirst(); //дата
+         client = new HashMap<String, Object>();
+         if (intFromExpAdapter!=null) {
+             cursor.moveToPosition(2);
+@@ -219,7 +224,7 @@
+                 cursor.moveToNext();
+             }
+             cursor.close();
+-    //    }
++        }
+         String[] from = {"name", "otd", "dole", "inter", "sot", "gor", "ema", "location"};
+         int[] to = {R.id.textViewmain, R.id.textView0, R.id.textView1, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView8};
+         adapter = new MySimpleAdapter(this, clients, R.layout.adapter_item3, from, to);
+@@ -227,7 +232,10 @@
+         listView.setAdapter(adapter);
+         listView.setOnItemLongClickListener(this);
+         listView.setOnTouchListener(itemTouchListerner);
++
++
+     }
++
+ 
+     View.OnTouchListener itemTouchListerner = new AdapterView.OnTouchListener() {
+         @Override
+@@ -256,6 +264,7 @@
+         } else {
+           //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
+             new DownloadImageTask(name, photo, context).execute(convertName(name));
++          // GitRobot.getSingleContent() ;
+         }
+     }
+ 
+@@ -265,6 +274,10 @@
+             linkName = URLEncoder.encode(name, "UTF-8");
+             linkName = linkName.replace("+", "%20");
+             linkName = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + linkName + ".jpg";
++          //  name = URLEncoder.encode(name, "UTF-8");//временно, для проверки gitflic
++           // name = name.replace(" ", "+"); //временно, для проверки gitflic
++           // linkName = "https://gitflic.ru/project/pfariseev/sprkpmes/blob/raw?file=JPG%2F" + name + ".jpg";  //временно, для проверки gitflic
++           // Log.d("--",linkName);dfs
+         } catch (UnsupportedEncodingException e) {
+             e.printStackTrace();
+         }
+@@ -484,7 +497,8 @@
+         @Override
+         protected void onPreExecute() {
+             super.onPreExecute();
+-            gitRobot.setApiUrl("https://api.github.com");
++            //gitRobot.setApiUrl("https://api.github.com");
++            //gitRobot.setApiUrl("https://oauth.gitflic.ru");
+             gitRobot.setUserId("pfariseev");
+             gitRobot.setPassword(password);
+             progressDialog.setMessage("Подождите..");
+Index: app/src/main/res/layout/settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<PreferenceScreen xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n        <SwitchPreference\r\n            android:defaultValue=\"false\"\r\n            android:key=\"@string/newstyle\"\r\n            android:title=\"@string/newstyle\" />\r\n\r\n        <SwitchPreference\r\n            android:defaultValue=\"false\"\r\n            android:key=\"@string/autoupdate\"\r\n            android:title=\"@string/autoupdate\" />\r\n\r\n        <SwitchPreference\r\n            android:defaultValue=\"false\"\r\n            android:key=\"@string/callreceiver\"\r\n            android:title=\"@string/callreceiver\" />\r\n\r\n        <SwitchPreference\r\n            android:defaultValue=\"false\"\r\n            android:key=\"@string/outgoing\"\r\n            android:title=\"@string/outgoing\" />\r\n\r\n        <SwitchPreference\r\n            android:defaultValue=\"false\"\r\n            android:key=\"@string/uvedom\"\r\n            android:title=\"@string/uvedom\" />\r\n\r\n        <SwitchPreference\r\n            android:defaultValue=\"false\"\r\n            android:key=\"@string/imageload\"\r\n            android:title=\"@string/imageload\" />\r\n\r\n        <SwitchPreference\r\n            android:defaultValue=\"false\"\r\n            android:key=\"@string/imagesavetodisk\"\r\n            android:title=\"@string/imagesavetodisk\" />\r\n\r\n        <PreferenceCategory android:title=\"@string/nastrosnshrift\">\r\n\r\n                <ListPreference\r\n                    android:defaultValue=\"20\"\r\n                    android:entries=\"@array/text1_razmer\"\r\n                    android:entryValues=\"@array/text1_razmer2\"\r\n                    android:key=\"@string/text1_razmer\"\r\n                    android:title=\"@string/razmerosnshrift\" />\r\n\r\n                <ListPreference\r\n                    android:defaultValue=\"1\"\r\n                    android:dialogTitle=\"Выберите стиль для шрифта\"\r\n                    android:entries=\"@array/nazvanieosn\"\r\n                    android:entryValues=\"@array/nazvanieosn\"\r\n                    android:key=\"@string/osn\"\r\n                    android:title=\"@string/stilosnshrift\" />\r\n        </PreferenceCategory>\r\n\r\n        <PreferenceCategory android:title=\"@string/nastrdopshrift\">\r\n\r\n                <ListPreference\r\n                    android:defaultValue=\"16\"\r\n                    android:entries=\"@array/text1_razmer\"\r\n                    android:entryValues=\"@array/text1_razmer2\"\r\n                    android:key=\"@string/text2_razmer\"\r\n                    android:title=\"@string/razmerdopshrift\" />\r\n\r\n                <ListPreference\r\n                    android:defaultValue=\"1\"\r\n                    android:dialogTitle=\"Выберите стиль для шрифта\"\r\n                    android:entries=\"@array/nazvanieosn\"\r\n                    android:entryValues=\"@array/nazvanieosn\"\r\n                    android:key=\"@string/dop\"\r\n                    android:title=\"@string/stildopshrift\" />\r\n        </PreferenceCategory>\r\n</PreferenceScreen>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/settings.xml b/app/src/main/res/layout/settings.xml
+--- a/app/src/main/res/layout/settings.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/res/layout/settings.xml	(date 1638535800728)
+@@ -5,11 +5,15 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+ 
++        <PreferenceCategory
++            android:title="Основные"/>
++
+         <SwitchPreference
+             android:defaultValue="false"
+             android:key="@string/newstyle"
+             android:title="@string/newstyle" />
+ 
++
+         <SwitchPreference
+             android:defaultValue="false"
+             android:key="@string/autoupdate"
+@@ -23,12 +27,10 @@
+         <SwitchPreference
+             android:defaultValue="false"
+             android:key="@string/outgoing"
+-            android:title="@string/outgoing" />
++            android:title="@string/outgoing"
++            android:dependency="@string/callreceiver"
++            android:summary="Не отображается информация при звонке об абоненте, если такой есть в Контактах"/>
+ 
+-        <SwitchPreference
+-            android:defaultValue="false"
+-            android:key="@string/uvedom"
+-            android:title="@string/uvedom" />
+ 
+         <SwitchPreference
+             android:defaultValue="false"
+@@ -38,7 +40,13 @@
+         <SwitchPreference
+             android:defaultValue="false"
+             android:key="@string/imagesavetodisk"
+-            android:title="@string/imagesavetodisk" />
++            android:title="@string/imagesavetodisk"
++            android:summary="Сохранять фотографии в память телефона"/>
++
++        <SwitchPreference
++            android:defaultValue="false"
++            android:key="@string/uvedom"
++            android:title="@string/uvedom" />
+ 
+         <PreferenceCategory android:title="@string/nastrosnshrift">
+ 
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\n\r\nbuildscript {\r\n    \r\n    repositories {\r\n        google()\r\n        jcenter()\r\n    }\r\n    dependencies {\r\n        classpath 'com.android.tools.build:gradle:7.0.3'\r\n\r\n        \r\n\r\n        // NOTE: Do not place your application dependencies here; they belong\r\n        // in the individual module build.gradle files\r\n    }\r\n}\r\n\r\nallprojects {\r\n    repositories {\r\n        google()\r\n        jcenter()\r\n    }\r\n}\r\n\r\ntask clean(type: Delete) {\r\n    delete rootProject.buildDir\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle b/build.gradle
+--- a/build.gradle	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/build.gradle	(date 1647520818458)
+@@ -7,7 +7,7 @@
+         jcenter()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:7.0.3'
++        classpath 'com.android.tools.build:gradle:7.1.2'
+ 
+         
+ 
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n\r\n    <!-- Base application theme. -->\r\n    <style name=\"AppTheme\" parent=\"android:Theme.Material.Light.DarkActionBar\">\r\n        <!-- Customize your theme here. -->\r\n        <item name=\"colorPrimary\">@color/colorPrimary</item>\r\n        <item name=\"colorPrimaryDark\">@color/colorPrimaryDark</item>\r\n        <item name=\"colorAccent\">@color/colorAccent</item>\r\n        <item name=\"android:colorPrimary\">@color/colorPrimaryDark</item>\r\n    </style>\r\n\r\n    <style name=\"titleLight\" parent=\"android:Theme.Material.Light.DarkActionBar\" >\r\n        <item name=\"android:colorPrimary\">@color/colorPrimaryDark</item>\r\n\r\n    </style>\r\n\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/styles.xml b/app/src/main/res/values/styles.xml
+--- a/app/src/main/res/values/styles.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/res/values/styles.xml	(date 1638360627873)
+@@ -13,5 +13,15 @@
+         <item name="android:colorPrimary">@color/colorPrimaryDark</item>
+ 
+     </style>
++    <style name="MySwitch" parent="Theme.AppCompat.Light">
++        <!-- активное состояние (30% прозрачности для фона) -->
++        <item name="colorControlActivated">@android:color/darker_gray</item>
++
++        <!-- неактивное состояние ползунка -->
++        <item name="colorSwitchThumbNormal">@android:color/darker_gray</item>
++
++        <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
++        <item name="android:colorForeground">@android:color/darker_gray</item>
++    </style>
+ 
+ </resources>
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"API_KEY\">AIzaSyA4fePSRFYo9jVr2jGXpRX2M_R-TTAJu64</string>\r\n    <string name=\"app_name\">Справочник МЭС С-З</string>\r\n    <string name=\"action_about\">О программе</string>\r\n    <string name=\"action_settings\">Настройки</string>\r\n    <string name=\"Версия\">Версия</string>\r\n    <string name=\"about_text\">Карельское ПМЭС - филиал ПАО ФСК ЕЭС\\n Справочник абонентов\\n 185003, Республика Карелия, \\nг.Петрозаводск, проспект А.Невского,д.53А \\n тел/ф. (8142) 716068, 716059 \\n email: kpmes@kp.sz.fsk-ees.ru \\n http://www.tcc.fsk-ees.ru\\n \\n \\n Фарисеев П.С.</string>\r\n    <string name=\"admin\">adm</string>\r\n    <string name=\"password\">psw</string>\r\n    <string name=\"updatesprkpmes\">Обновление доступно</string>\r\n    <string name=\"list\">lst</string>\r\n    <string name=\"callreceiver\">Проверка входящего звонка</string>\r\n    <string name=\"outgoing\">Проверка исходящего звонка</string>\r\n    <string name=\"num_list\">num_lst</string>\r\n    <string name=\"absXX\">XX</string>\r\n    <string name=\"absYY\">YY</string>\r\n    <string name=\"DBPATH\">DBPATH</string>\r\n    <string name=\"dayupdate\">dayup</string>\r\n    <string name=\"newstyle\">Альтернативный стиль</string>\r\n    <string name=\"uvedom\">Уведомления</string>\r\n    <string name=\"autoupdate\">Обновлять базу автоматически</string>\r\n    <string name=\"upd\">upd</string>\r\n    <string name=\"imageload\">Загружать фотографии</string>\r\n    <string name=\"imagesavetodisk\">Сохранять фотографии</string>\r\n    <string name=\"text1_razmer\">Средний</string>\r\n    <string name=\"text2_razmer\">Меленький</string>\r\n    <string name=\"osn\">1</string>\r\n    <string name=\"dop\">2</string>\r\n    <string name=\"lastUpdateTime\">Сервис</string>\r\n    <string name=\"textview\">TextView</string>\r\n    <string name=\"Updatespr\">Обновить базу справочника</string>\r\n    <string name=\"todo\">TODO</string>\r\n    <string name=\"nastrosnshrift\">Настройки основного шрифта</string>\r\n    <string name=\"razmerosnshrift\">Размер основного шрифта</string>\r\n    <string name=\"stilosnshrift\">Стиль основного шрифта</string>\r\n    <string name=\"nastrdopshrift\">Настройки дополнительного шрифта</string>\r\n    <string name=\"razmerdopshrift\">Размер дополнительного шрифта</string>\r\n    <string name=\"stildopshrift\">Стиль дополнительного шрифта</string>\r\n    <string name=\"clickPhone\">clickPh</string>\r\n\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+--- a/app/src/main/res/values/strings.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/res/values/strings.xml	(date 1638509650507)
+@@ -9,8 +9,8 @@
+     <string name="password">psw</string>
+     <string name="updatesprkpmes">Обновление доступно</string>
+     <string name="list">lst</string>
+-    <string name="callreceiver">Проверка входящего звонка</string>
+-    <string name="outgoing">Проверка исходящего звонка</string>
++    <string name="callreceiver">Проверка входящего/исходящего звонка</string>
++    <string name="outgoing">Не показывать, если есть в Контактах</string>
+     <string name="num_list">num_lst</string>
+     <string name="absXX">XX</string>
+     <string name="absYY">YY</string>
+@@ -37,5 +37,6 @@
+     <string name="razmerdopshrift">Размер дополнительного шрифта</string>
+     <string name="stildopshrift">Стиль дополнительного шрифта</string>
+     <string name="clickPhone">clickPh</string>
++    <string name="blacklist">blacklst</string>
+ 
+ </resources>
+Index: app/src/main/res/layout/main_activity.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<android.support.constraint.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:fab=\"http://schemas.android.com/apk/res-auto\"\r\n    android:id=\"@+id/constrantLayout\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@android:color/background_light\"\r\n    android:orientation=\"vertical\"\r\n    tools:context=\"com.example.fariseev_ps.MainActivity\">\r\n\r\n\r\n    <ListView\r\n        android:id=\"@+id/listView\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.0\" />\r\n\r\n    <ExpandableListView\r\n        android:id=\"@+id/expandableListView2\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:divider=\"#A4C739\"\r\n        android:dividerHeight=\"1dp\"\r\n        android:visibility=\"invisible\"\r\n        android:indicatorLeft=\"?android:attr/expandableListPreferredItemIndicatorLeft\" />\r\n\r\n    <android.support.v4.view.ViewPager\r\n        android:id=\"@+id/pager1\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.0\">\r\n\r\n        <android.support.v4.view.PagerTabStrip\r\n            android:id=\"@+id/pagerTabStrip\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"top\"\r\n            android:visibility=\"invisible\">\r\n\r\n        </android.support.v4.view.PagerTabStrip>\r\n    </android.support.v4.view.ViewPager>\r\n\r\n\r\n    <com.melnykov.fab.FloatingActionButton\r\n        android:id=\"@+id/fab\"\r\n        android:layout_width=\"20dp\"\r\n        android:layout_height=\"20dp\"\r\n        android:layout_gravity=\"bottom|right\"\r\n        android:layout_margin=\"16dp\"\r\n\r\n        android:src=\"@android:drawable/arrow_down_float\"\r\n        android:visibility=\"invisible\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        fab:fab_colorNormal=\"@color/colorPrimaryDark\"\r\n        fab:fab_colorPressed=\"@color/colorPrimary\"\r\n        fab:fab_colorRipple=\"@color/light_blue\" />\r\n\r\n</android.support.constraint.ConstraintLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/main_activity.xml b/app/src/main/res/layout/main_activity.xml
+--- a/app/src/main/res/layout/main_activity.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/app/src/main/res/layout/main_activity.xml	(date 1639653158372)
+@@ -57,8 +57,8 @@
+ 
+     <com.melnykov.fab.FloatingActionButton
+         android:id="@+id/fab"
+-        android:layout_width="20dp"
+-        android:layout_height="20dp"
++        android:layout_width="18dp"
++        android:layout_height="23dp"
+         android:layout_gravity="bottom|right"
+         android:layout_margin="16dp"
+ 
+@@ -66,8 +66,8 @@
+         android:visibility="invisible"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        fab:fab_colorNormal="@color/colorPrimaryDark"
+-        fab:fab_colorPressed="@color/colorPrimary"
+-        fab:fab_colorRipple="@color/light_blue" />
++        fab:fab_colorNormal="@color/fbutton_color_asbestos"
++        fab:fab_colorPressed="@color/fbutton_color_concrete"
++        fab:fab_colorRipple="@color/grey" />
+ 
+ </android.support.constraint.ConstraintLayout>
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectModuleManager\">\r\n    <modules>\r\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/Sprkpmes.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/Sprkpmes.iml\" />\r\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.iml\" />\r\n      <module fileurl=\"file://$PROJECT_DIR$/app/app.iml\" filepath=\"$PROJECT_DIR$/app/app.iml\" />\r\n    </modules>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/.idea/modules.xml	(date 1647518116129)
+@@ -4,7 +4,6 @@
+     <modules>
+       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Sprkpmes.iml" filepath="$PROJECT_DIR$/.idea/modules/Sprkpmes.iml" />
+       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CMakeSettings\">\r\n    <configurations>\r\n      <configuration PROFILE_NAME=\"Debug\" CONFIG_NAME=\"Debug\" />\r\n    </configurations>\r\n  </component>\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/background_gradient.xml\" value=\"0.23385416666666667\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/background_gradient_expanded.xml\" value=\"0.178125\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/info_round1.xml\" value=\"0.3507692307692308\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/info_round2.xml\" value=\"0.3507692307692308\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/info_round3.xml\" value=\"0.3507692307692308\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/info_round4.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/selector.xml\" value=\"0.1953125\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/separator.xml\" value=\"0.1953125\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/about.xml\" value=\"0.1625\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/activity_temp.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/adapter_item.xml\" value=\"0.10520833333333333\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/adapter_item2.xml\" value=\"0.1625\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/adapter_item3.xml\" value=\"0.10520833333333333\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/child_item.xml\" value=\"0.33\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/info.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/main_activity.xml\" value=\"0.16\" />\r\n        <entry key=\"..\\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/layout/parent_item.xml\" value=\"0.22\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/.idea/misc.xml	(date 1647520770513)
+@@ -8,6 +8,7 @@
+   <component name="DesignSurface">
+     <option name="filePathToZoomLevelMap">
+       <map>
++        <entry key="..\:/Users/fariseev-ps/Documents/GitHub/Sprkpmes/app/src/main/res/drawable/info_round1.xml" value="0.1715" />
+         <entry key="..\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/background_gradient.xml" value="0.23385416666666667" />
+         <entry key="..\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/background_gradient_expanded.xml" value="0.178125" />
+         <entry key="..\:/Users/fariseev-ps/StudioProjects/Sprkpmes/app/src/main/res/drawable/info_round1.xml" value="0.3507692307692308" />
+@@ -28,7 +29,7 @@
+       </map>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+new file mode 100644
+--- /dev/null	(date 1647520875594)
++++ b/.idea/deploymentTargetDropDown.xml	(date 1647520875594)
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="deploymentTargetDropDown">
++    <targetSelectedWithDropDown>
++      <Target>
++        <type value="QUICK_BOOT_TARGET" />
++        <deviceKey>
++          <Key>
++            <type value="VIRTUAL_DEVICE_PATH" />
++            <value value="C:\Users\fariseev-ps\.android\avd\Pixel_2_API_29.avd" />
++          </Key>
++        </deviceKey>
++      </Target>
++    </targetSelectedWithDropDown>
++    <timeTargetWasSelectedWithDropDown value="2022-03-17T12:40:29.704686900Z" />
++  </component>
++</project>
+\ No newline at end of file
+Index: gradle/wrapper/gradle-wrapper.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#Sun Jan 31 11:52:59 MSK 2021\r\ndistributionBase=GRADLE_USER_HOME\r\ndistributionPath=wrapper/dists\r\nzipStoreBase=GRADLE_USER_HOME\r\nzipStorePath=wrapper/dists\r\ndistributionUrl=https\\://services.gradle.org/distributions/gradle-7.0.2-all.zip\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/gradle/wrapper/gradle-wrapper.properties b/gradle/wrapper/gradle-wrapper.properties
+--- a/gradle/wrapper/gradle-wrapper.properties	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/gradle/wrapper/gradle-wrapper.properties	(date 1647520818403)
+@@ -3,4 +3,4 @@
+ distributionPath=wrapper/dists
+ zipStoreBase=GRADLE_USER_HOME
+ zipStorePath=wrapper/dists
+-distributionUrl=https\://services.gradle.org/distributions/gradle-7.0.2-all.zip
++distributionUrl=https\://services.gradle.org/distributions/gradle-7.2-all.zip
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"delegatedBuild\" value=\"false\" />\r\n        <option name=\"testRunner\" value=\"GRADLE\" />\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision f4350130b03bd0c971bc2505bb9329493e150093)
++++ b/.idea/gradle.xml	(date 1647520668896)
+@@ -4,7 +4,6 @@
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+-        <option name="delegatedBuild" value="false" />
+         <option name="testRunner" value="GRADLE" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+@@ -14,6 +13,7 @@
+             <option value="$PROJECT_DIR$/app" />
+           </set>
+         </option>
++        <option name="resolveExternalAnnotations" value="false" />
+         <option name="resolveModulePerSourceSet" value="false" />
+       </GradleProjectSettings>
+     </option>

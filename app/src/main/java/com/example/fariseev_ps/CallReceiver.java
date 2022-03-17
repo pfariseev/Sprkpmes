@@ -42,7 +42,7 @@ public class CallReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             //     if (!ready) getusers(context);
             if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
-                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.callreceiver), false))
+                if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false))
                 {
                     phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 
@@ -159,20 +159,7 @@ public class CallReceiver extends BroadcastReceiver {
                     }
                 }
             }
-            Boolean showWin=false;
-            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false)) {
-                if (users.getContactID(context.getContentResolver(), phoneNumber) <= 0)
-                    if (client.get("name") != null)
-                       showWin=true;
-            } else {
-                if (client.get("name") != null)
-                       showWin=true;
-            }
-            if (client.get("name") != null)
-            if (PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.blacklist),"").contains(client.get("name")))
-                showWin=false;
-            if (showWin)
-                showWindow(context, client.get("name"), client.get("mesto"), client.get("otdel"), client.get("doljnost"));
+            if (client.get("name")!=null) showWindow(context,client.get("name"),client.get("mesto"),client.get("otdel"),client.get("doljnost") );
         }
 
         private static void showWindow(Context context, String name, String mesto, String otdel, String doljnost) {
@@ -226,7 +213,6 @@ public class CallReceiver extends BroadcastReceiver {
                 users.showAndSavePhoto(context,name, photo);
               //  new users.DownloadImageTask(photo.execute(name1);
             }
-
                 windowManager.addView(windowLayout, params);
 
             windowLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -256,7 +242,6 @@ public class CallReceiver extends BroadcastReceiver {
                     return false;
                 }
             });
-
         }
 
 

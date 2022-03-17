@@ -13,15 +13,5 @@
         <item name="android:colorPrimary">@color/colorPrimaryDark</item>
 
     </style>
-    <style name="MySwitch" parent="Theme.AppCompat.Light">
-        <!-- активное состояние (30% прозрачности для фона) -->
-        <item name="colorControlActivated">@android:color/darker_gray</item>
-
-        <!-- неактивное состояние ползунка -->
-        <item name="colorSwitchThumbNormal">@android:color/darker_gray</item>
-
-        <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
-        <item name="android:colorForeground">@android:color/darker_gray</item>
-    </style>
 
 </resources>

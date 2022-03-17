@@ -1,21 +1,16 @@
 package com.example.fariseev_ps;
 
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.support.v7.widget.SwitchCompat;
-import android.view.Gravity;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
@@ -29,13 +24,10 @@ Float sOsn,sDop;
 int typeOsn, typeDop;
 Boolean loadPhoto, savephotoToDidsk;
 Context ctx;
-SharedPreferences prefs;
-String blacklst="";
-
     public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
         super(context, data, resource, from, to);
         ctx=context;
-        prefs = getDefaultSharedPreferences(context);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         loadPhoto = prefs.getBoolean(context.getString(R.string.imageload),false);
         String sizeo="20", typeO;
         String sized="16",typeD;
@@ -43,7 +35,6 @@ String blacklst="";
         sized = prefs.getString(context.getString(R.string.text2_razmer), "16");
         typeO = prefs.getString(context.getString(R.string.osn), "");
         typeD = prefs.getString(context.getString(R.string.dop), "");
-
         sOsn = Float.parseFloat(sizeo);
         sDop = Float.parseFloat(sized);
         typeOsn = Typeface.NORMAL;
@@ -130,8 +121,6 @@ String blacklst="";
                     String newnumberMobi = textView.getText().toString();
                     TextView textView2 =  view.findViewById(R.id.textView4);
                     String newnumberGor = textView2.getText().toString();
-                    TextView textView3 =  view.findViewById(R.id.textViewmain);
-                    String name = (String) textView3.getText();
                     newnumberMobi=users.convertNumber(newnumberMobi.replaceAll("[^0-9]", ""));
                     newnumberGor=users.convertNumber(newnumberGor.replaceAll("[^0-9]", ""));
                     System.out.println(newnumberGor+ " "+newnumberMobi);
@@ -140,37 +129,7 @@ String blacklst="";
                             printButton(view,"мобильный");
                         else if (users.getContactID(ctx.getContentResolver(), newnumberGor) >= 0)
                             printButton(view, "городской");
-                    SwitchCompat swtch = view.findViewById(R.id.switch_compat);
-                    if (swtch != null) {
-                        blacklst = prefs.getString(ctx.getString(R.string.blacklist), "");
-                        if (name!=null)
-                        if (blacklst.contains(name))
-                            swtch.setChecked(false);
-                        else  swtch.setChecked(true);
-
-                        swtch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                if (isChecked) {
-                                    blacklst = blacklst.replace(name, "");
-                                    Toast toast = Toast.makeText(ctx, "Отображатется при вызове", Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.TOP, 0, 0);
-                                    toast.show();
-                                }
-                                else {
-                                    blacklst = blacklst+name;
-                                    Toast toast = Toast.makeText(ctx, "Не отображатется при вызове", Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.TOP, 0, 0);
-                                    toast.show();
-                                }
-                                SharedPreferences.Editor editor = getDefaultSharedPreferences(ctx.getApplicationContext()).edit();
-                                editor.putString("blacklst",blacklst);
-                                editor.commit();
-                            }
-                        });
-                    }
                 }
-
 
 
 void printButton (View view, String text){

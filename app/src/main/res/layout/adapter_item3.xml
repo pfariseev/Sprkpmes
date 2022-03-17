@@ -14,9 +14,9 @@
         android:id="@+id/textViewmain"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:autoLink="none"
         android:gravity="left|center_vertical"
         android:minHeight="38dp"
@@ -24,7 +24,7 @@
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="22sp"
-        app:layout_constraintEnd_toStartOf="@+id/switch_compat"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -190,19 +190,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"></info.hoang8f.widget.FButton>
-
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switch_compat"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:theme="@style/MySwitch"
-        android:thumb="@drawable/switch_thumb"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewmain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewmain" />
 
 
 </android.support.constraint.ConstraintLayout>
