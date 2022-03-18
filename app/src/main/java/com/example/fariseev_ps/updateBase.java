@@ -137,7 +137,7 @@ class updateBase {
                 return null;
             }
 
-            // обновляем progressDialog
+            // обновляем progressDialog, да
             protected void onProgressUpdate(Integer... values) {
                 progressDialog
                         .setProgress((int) ((values[0] / (float) values[1]) * 100));
