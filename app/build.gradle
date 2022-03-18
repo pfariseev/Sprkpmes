@@ -3,10 +3,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
         compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.fariseev_ps"
@@ -21,7 +18,7 @@ android {
     }
     productFlavors {
     }
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '32.0.0'
 }
 
 dependencies {
@@ -32,6 +29,7 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:support-core-utils:28.0.0'
     testImplementation 'junit:junit:4.13.1'
+    //noinspection GradleCompatible
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //noinspection GradleCompatible
