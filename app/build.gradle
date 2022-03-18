@@ -38,11 +38,11 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'org.jetbrains:annotations-java5:15.0'
     //noinspection GradlePath
-    implementation files('C:/Users/fariseev-ps/Documents/GitHub/Sprkpmes/.idea/caches/libs/aa-poi-3.10-min-0.1.5.jar')
+    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-3.10-min-0.1.5.jar')
     //noinspection GradlePath
-    implementation files('C:/Users/fariseev-ps/Documents/GitHub/Sprkpmes/.idea/caches/libs/aa-poi-ooxml-schemas-3.10-reduced-more-0.1.5.jar')
+    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/aa-poi-ooxml-schemas-3.10-reduced-more-0.1.5.jar')
     //noinspection GradlePath
-    implementation files('C:/Users/fariseev-ps/Documents/GitHub/Sprkpmes/.idea/caches/libs/jsoup-1.11.3.jar')
+    implementation files('C:/Users/fariseev-ps/StudioProjects/Sprkpmes/.idea/caches/libs/jsoup-1.11.3.jar')
 // https://mvnrepository.com/artifact/org.kohsuke/github-api
     implementation group: 'org.kohsuke', name: 'github-api', version: '1.124'
     implementation 'info.hoang8f:fbutton:1.0.5'
