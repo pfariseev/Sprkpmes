@@ -60,7 +60,7 @@ class updateBase {
     public static void downloadFile() {
         Log.d("--", "TrueUpdate 2");
         //String url = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1-QPwhkO1LyMj8epeBJUmpHB2q9zuY5F4");//временно
-        String url = ("https://github.com/pfariseev/Sprkpmes/raw/master/bs/bs.xlsx");
+        String url = ("https://github.com/pfariseev/Sprkpmes/raw/master/bd/bd.xlsx");
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //list=prefs.getString(getString(R.string.list), "1");
         final ProgressDialog progressDialog = new ProgressDialog(context);
