@@ -101,6 +101,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     static String realPath = null;
     GitRobot gitRobot = new GitRobot();
     private static boolean dialog=false;
+    SharedPreferences prefs;
+    // String blacklst="";
 
 
     @Override
@@ -118,10 +120,10 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         if (realPath!=null)
         {
             try {
-             //   System.out.println("realPath 2 " +realPath);
-                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation("update");
-                    execute.execute();
-                    upload = false;
+                //   System.out.println("realPath 2 " +realPath);
+                AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation("update");
+                execute.execute();
+                upload = false;
             } catch (Exception ex) {
                 System.out.println("упс2 " + ex.getMessage());
             }
@@ -134,10 +136,13 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         String userotd = getIntent().getExtras().getString("userotd");
         String intFromExpAdapter = getIntent().getExtras().getString("intToUsers");
         Log.d("--","From user.java :"+intFromExpAdapter);
-        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
+        Log.d("--",user+", "+userotd+", "+intFromExpAdapter);
+        prefs = getDefaultSharedPreferences(getApplicationContext());
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
         password = prefs.getString("psw", null);
+        //  blacklst = prefs.getString(getString(R.string.blacklist), "");
+
         mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();
@@ -156,28 +161,28 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + list, null);
         cursor.moveToFirst(); //дата
         actionBar = getActionBar();
-        //   for (int activelist = 1; activelist < num_list + 1; activelist++) {
-        //        cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
-        //      cursor.moveToFirst(); //дата
-        client = new HashMap<String, Object>();
-        if (intFromExpAdapter!=null) {
-            cursor.moveToPosition(2);
-            String[] tempOtdel = new String[100];
-            String tmp = cursor.getString(7);
-            int i = 0;
-            tempOtdel[i] = cursor.getString(7);
-            i++;
-            while (!cursor.isAfterLast()) {
-                if (!cursor.getString(7).equals(tmp)) {
-                    tmp = cursor.getString(7);
-                    tempOtdel[i] = tmp;
-                    i++;
+        for (int activelist = 1; activelist < num_list + 1; activelist++) {
+            cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
+            cursor.moveToFirst(); //дата
+            client = new HashMap<String, Object>();
+            if (intFromExpAdapter!=null) {
+                cursor.moveToPosition(2);
+                String[] tempOtdel = new String[100];
+                String tmp = cursor.getString(7);
+                int i = 0;
+                tempOtdel[i] = cursor.getString(7);
+                i++;
+                while (!cursor.isAfterLast()) {
+                    if (!cursor.getString(7).equals(tmp)) {
+                        tmp = cursor.getString(7);
+                        tempOtdel[i] = tmp;
+                        i++;
+                    }
+                    cursor.moveToNext();
                 }
-                cursor.moveToNext();
+                userotd = tempOtdel[Integer.parseInt(intFromExpAdapter)];
             }
-            userotd = tempOtdel[Integer.parseInt(intFromExpAdapter)];
-        }
-        cursor.moveToPosition(2);
+            cursor.moveToPosition(2);
             while (!cursor.isAfterLast()) {
                 if (cursor.getString(0).equals(user)) {
                     if (cursor.getString(7).equals(userotd)) {
@@ -219,7 +224,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
                 cursor.moveToNext();
             }
             cursor.close();
-    //    }
+        }
         String[] from = {"name", "otd", "dole", "inter", "sot", "gor", "ema", "location"};
         int[] to = {R.id.textViewmain, R.id.textView0, R.id.textView1, R.id.textView2, R.id.textView3, R.id.textView4, R.id.textView5, R.id.textView8};
         adapter = new MySimpleAdapter(this, clients, R.layout.adapter_item3, from, to);
@@ -227,7 +232,10 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(this);
         listView.setOnTouchListener(itemTouchListerner);
+
+
     }
+
 
     View.OnTouchListener itemTouchListerner = new AdapterView.OnTouchListener() {
         @Override
@@ -246,7 +254,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         photoFolder = savephoto.folderToSaveVoid(context);
         file = new File(photoFolder, name + ".jpg");
         if ((PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imagesavetodisk), false))) {
-          //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
+            //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
             if (!file.exists()) {
                 new DownloadImageTask(name, photo, context).execute(convertName(name));
             } else {
@@ -254,8 +262,9 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
                 photo.setImageBitmap(myBitmap);
             }
         } else {
-          //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
+            //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
             new DownloadImageTask(name, photo, context).execute(convertName(name));
+            // GitRobot.getSingleContent() ;
         }
     }
 
@@ -265,6 +274,10 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             linkName = URLEncoder.encode(name, "UTF-8");
             linkName = linkName.replace("+", "%20");
             linkName = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + linkName + ".jpg";
+            //  name = URLEncoder.encode(name, "UTF-8");//временно, для проверки gitflic
+            // name = name.replace(" ", "+"); //временно, для проверки gitflic
+            // linkName = "https://gitflic.ru/project/pfariseev/sprkpmes/blob/raw?file=JPG%2F" + name + ".jpg";  //временно, для проверки gitflic
+            // Log.d("--",linkName);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -406,9 +419,9 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     }
 
     public static void saveFiletoFolder(String name, Bitmap bitmap) {
-       if (bitmap != null) {
+        if (bitmap != null) {
             Bitmap bmHalf = Bitmap.createScaledBitmap(bitmap, 300, 400, false);
-           //if (file.exists()) file.delete();
+            //if (file.exists()) file.delete();
             file = new File(photoFolder, name + ".jpg");
             FileOutputStream fOut = null;
             try {
@@ -463,7 +476,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
 
     public static Bitmap getBitmap(String filePath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-     //   options.inJustDecodeBounds = true;
+        //   options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(filePath, options);
         options.inJustDecodeBounds = true;
         options.inTempStorage = new byte[512];
@@ -478,13 +491,14 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         String doIT=null;
 
         public ExecuteNetworkOperation(String toDO) {
-           doIT=toDO;
+            doIT=toDO;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            gitRobot.setApiUrl("https://api.github.com");
+            //gitRobot.setApiUrl("https://api.github.com");
+            //gitRobot.setApiUrl("https://oauth.gitflic.ru");
             gitRobot.setUserId("pfariseev");
             gitRobot.setPassword(password);
             progressDialog.setMessage("Подождите..");
@@ -495,8 +509,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         @Override
         protected String doInBackground(Void... params) {
             try {
-                  gitRobot.updateSingleContent("Sprkpmes","JPG",Name1+".jpg",photoFolder,doIT);
-               // gitRobot.getSingleContent("Sprkpmes", "JPG", "Агапкин Константин Аликович.jpg", photoFolder);
+                gitRobot.updateSingleContent("Sprkpmes","JPG",Name1+".jpg",photoFolder,doIT);
+                // gitRobot.getSingleContent("Sprkpmes", "JPG", "Агапкин Константин Аликович.jpg", photoFolder);
             } catch (Exception e) {
                 e.printStackTrace();
                 m_err = e;
@@ -535,71 +549,71 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         }
     }
 
-     void CheckAdmin(){
-       if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-          // photoFolder = savephoto.folderToSaveVoid(this);
+    void CheckAdmin(){
+        if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
+            // photoFolder = savephoto.folderToSaveVoid(this);
 
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                 int canRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-                 int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                 if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {
-                     //Нужно ли нам показывать объяснения , зачем нам нужно это разрешение
-                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                         //показываем объяснение
-                     } else {
-                         //просим разрешение
-                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                 Manifest.permission.READ_EXTERNAL_STORAGE}, NUMBER_OF_REQUEST);
-                     }
-                 } else {
-                     //ваш код
-                 }
-             }
-         }
- }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                int canRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+                int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {
+                    //Нужно ли нам показывать объяснения , зачем нам нужно это разрешение
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        //показываем объяснение
+                    } else {
+                        //просим разрешение
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE}, NUMBER_OF_REQUEST);
+                    }
+                } else {
+                    //ваш код
+                }
+            }
+        }
+    }
 
- void enterPassword () {
-     LayoutInflater li = LayoutInflater.from(this);
-     View promptsView = li.inflate(R.layout.prompt, null);
-     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-     alertDialogBuilder.setView(promptsView);
-     final EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);
-     alertDialogBuilder
-             .setCancelable(false)
-             .setPositiveButton("OK",
-                     new DialogInterface.OnClickListener() {
-                         public void onClick(DialogInterface dialog,int id) {
-                             password = userInput.getText().toString();
-                             SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
-                             editor.putString("psw",password);
-                             editor.commit();
-                         }
-                     })
-             .setNegativeButton("Отмена",
-                     new DialogInterface.OnClickListener() {
-                         public void onClick(DialogInterface dialog,int id) {
-                             dialog.cancel();
-                         }
-                     });
+    void enterPassword () {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptsView);
+        final EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                password = userInput.getText().toString();
+                                SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
+                                editor.putString("psw",password);
+                                editor.commit();
+                            }
+                        })
+                .setNegativeButton("Отмена",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
 
-     android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-     alertDialog.show();
- }
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
     @TargetApi(Build.VERSION_CODES.O)
     void photoDialog () {
         android.app.AlertDialog alertDialog= null;
         CheckAdmin();
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.promptphoto, null);
-         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
+        final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptsView);
         final ImageView imageView = promptsView.findViewById(R.id.imageView3);
-   //     if (realPath!=null) {
-    //        System.out.println("PhotoDialog "+realPath);
-   //         Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-   //         imageView.setImageBitmap(myBitmap);
-  //      } else
-            showAndSavePhoto(context, Name1, imageView);// new DownloadImageTask(Name1, (ImageView) promptsView.findViewById(R.id.imageView3)).execute(convertName(Name1));
+        //     if (realPath!=null) {
+        //        System.out.println("PhotoDialog "+realPath);
+        //         Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        //         imageView.setImageBitmap(myBitmap);
+        //      } else
+        showAndSavePhoto(context, Name1, imageView);// new DownloadImageTask(Name1, (ImageView) promptsView.findViewById(R.id.imageView3)).execute(convertName(Name1));
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
             if (password!=null) {
                 alertDialogBuilder
@@ -667,7 +681,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-        if (password==null) enterPassword();}
+            if (password==null) enterPassword();}
 
     }
 
@@ -678,17 +692,17 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             String newnumberMobi="", newnumberGorod="";
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            if (chekReq(ctx)) {
-                        newnumberMobi = convertNumber(numberMobi);
-                        newnumberGorod = convertNumber(numberGorod);
-                System.out.println("1: " + nameContact + " " + newnumberMobi + " " + newnumberGorod);
-                if (getContactID(ctx.getContentResolver(), newnumberMobi) < 0) {
-                    addContactNew(ctx, nameContact,newnumberMobi, newnumberGorod);
-                } else {
-                    Toast toast = Toast.makeText(ctx, "Контакт уже существует", Toast.LENGTH_LONG);
-                    toast.show();
+                if (chekReq(ctx)) {
+                    newnumberMobi = convertNumber(numberMobi);
+                    newnumberGorod = convertNumber(numberGorod);
+                    System.out.println("1: " + nameContact + " " + newnumberMobi + " " + newnumberGorod);
+                    if (getContactID(ctx.getContentResolver(), newnumberMobi) < 0) {
+                        addContactNew(ctx, nameContact,newnumberMobi, newnumberGorod);
+                    } else {
+                        Toast toast = Toast.makeText(ctx, "Контакт уже существует", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
                 }
-            }
             }
 
         });
@@ -708,7 +722,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             if (s.length() >= 11)
                 newS = "+7"+s.substring(1, 11);
 
-      return newS;
+        return newS;
     }
 
     static boolean chekReq(Context ctx) {
@@ -722,9 +736,9 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
                                 Manifest.permission.WRITE_CONTACTS,
                                 Manifest.permission.READ_CONTACTS}, 7778);
             } else
-            return true;
+                return true;
         } else
-        return true;
+            return true;
         return false;
     }
 
@@ -734,42 +748,42 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         switch (id) {
             case IDD_TWO_BUTTONS:
 
-                    final String[] mMenu = {"Загрузить фото из галерии", "Сделать фото", "Удалить фото"};
+                final String[] mMenu = {"Загрузить фото из галерии", "Сделать фото", "Удалить фото"};
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setItems(mMenu, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int item) {
-                                if (item == 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setItems(mMenu, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (item == 0) {
 
-                                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                                    photoPickerIntent.setType("image/*");
-                                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-                                }
-                                if (item == 1) {
-                                    try {
-                                        startCamera();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            if (item == 2) {
-                                try {
-                                    AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation("delete");
-                                    execute.execute();
-                                } catch (Exception ex) {
-                                    System.out.println("упс2 " + ex.getMessage());
-                                }
-                            }
-
+                            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                            photoPickerIntent.setType("image/*");
+                            startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
                         }
-                    });
-                    builder.setCancelable(true);
-                    return builder.create();
+                        if (item == 1) {
+                            try {
+                                startCamera();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if (item == 2) {
+                            try {
+                                AsyncTask<Void, Void, String> execute = new ExecuteNetworkOperation("delete");
+                                execute.execute();
+                            } catch (Exception ex) {
+                                System.out.println("упс2 " + ex.getMessage());
+                            }
+                        }
 
-                    default:
-                        return null;
-                }
+                    }
+                });
+                builder.setCancelable(true);
+                return builder.create();
+
+            default:
+                return null;
+        }
     }
     void startCamera () throws IOException {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -784,20 +798,20 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         startActivityForResult(cameraIntent, CAMERA_RESULT);
     }
 
-        public static void writeDisplayPhoto(Context ctx, long rawContactId, byte[] photo) {
+    public static void writeDisplayPhoto(Context ctx, long rawContactId, byte[] photo) {
         System.out.println(rawContactId+" rawContactId");
-            Uri rawContactPhotoUri = Uri.withAppendedPath(
-                    ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId),
-                    ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
-            try {
-                AssetFileDescriptor fd =
-                        ctx.getContentResolver().openAssetFileDescriptor(rawContactPhotoUri, "rw");
-                OutputStream os = fd.createOutputStream();
-                os.write(photo);
-                os.close();
-                fd.close();
-            } catch (IOException e) {
-            }
+        Uri rawContactPhotoUri = Uri.withAppendedPath(
+                ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId),
+                ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
+        try {
+            AssetFileDescriptor fd =
+                    ctx.getContentResolver().openAssetFileDescriptor(rawContactPhotoUri, "rw");
+            OutputStream os = fd.createOutputStream();
+            os.write(photo);
+            os.close();
+            fd.close();
+        } catch (IOException e) {
+        }
     }
 
     public static byte[] getByteArrayfromBitmap(Bitmap bitmap) {
@@ -839,7 +853,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             return -1;
         } catch (Exception e) {
             e.printStackTrace();
-           // Log.d("--", "Ошибка 5" + e.getMessage());
+            // Log.d("--", "Ошибка 5" + e.getMessage());
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -851,14 +865,14 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
 
     static void addContactNew(Context ctx, String name, String numberSot, String numberGor){
         if (numberSot!="" || numberGor!="") {
-        Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
-        long rowContactId = getRawContactId(ctx);
-        String displayName = name;
-        insertContactDisplayName(ctx, addContactsUri, rowContactId, displayName);
-        insertContactPhoneNumber(ctx, addContactsUri, rowContactId, numberSot, numberGor, displayName);
-        Toast toast = Toast.makeText(ctx, name+" сохранён", Toast.LENGTH_LONG);
-        toast.show();
-    } else {
+            Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
+            long rowContactId = getRawContactId(ctx);
+            String displayName = name;
+            insertContactDisplayName(ctx, addContactsUri, rowContactId, displayName);
+            insertContactPhoneNumber(ctx, addContactsUri, rowContactId, numberSot, numberGor, displayName);
+            Toast toast = Toast.makeText(ctx, name+" сохранён", Toast.LENGTH_LONG);
+            toast.show();
+        } else {
             Toast toast = Toast.makeText(ctx, "Нет номера", Toast.LENGTH_LONG);
             toast.show();
         }
@@ -902,7 +916,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             if (fileForAddContact.exists()) {
                 byte[] photoData = getByteArrayfromBitmap(getBitmap(fileForAddContact.getAbsolutePath()));
                 writeDisplayPhoto(ctx, rawContactId, photoData);
-        }
+            }
     }
 
     GestureDetector.SimpleOnGestureListener simpleongesturelistener = new GestureDetector.SimpleOnGestureListener() {
@@ -917,9 +931,9 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
                 e.printStackTrace();
             }
             if (floatE1!=null || floatE2!=null)
-            if ((e1.getX() - e2.getX()) < -200)
-                if ((e1.getY() - e2.getY()) < 200 && (e1.getY() - e2.getY()) > -200 )
-                    onBackPressed();
+                if ((e1.getX() - e2.getX()) < -200)
+                    if ((e1.getY() - e2.getY()) < 200 && (e1.getY() - e2.getY()) > -200 )
+                        onBackPressed();
             return super.onFling(e1, e2, velocityX, velocityY);
         }
     };

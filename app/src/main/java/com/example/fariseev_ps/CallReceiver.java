@@ -159,7 +159,20 @@ public class CallReceiver extends BroadcastReceiver {
                     }
                 }
             }
-            if (client.get("name")!=null) showWindow(context,client.get("name"),client.get("mesto"),client.get("otdel"),client.get("doljnost") );
+            Boolean showWin=false;
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.outgoing), false)) {
+                if (users.getContactID(context.getContentResolver(), phoneNumber) <= 0)
+                    if (client.get("name") != null)
+                        showWin=true;
+            } else {
+                if (client.get("name") != null)
+                    showWin=true;
+            }
+            if (client.get("name") != null)
+                if (PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.blacklist),"").contains(client.get("name")))
+                    showWin=false;
+            if (showWin)
+                showWindow(context, client.get("name"), client.get("mesto"), client.get("otdel"), client.get("doljnost"));
         }
 
         private static void showWindow(Context context, String name, String mesto, String otdel, String doljnost) {

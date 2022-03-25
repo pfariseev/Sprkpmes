@@ -21,17 +21,17 @@ import info.hoang8f.widget.FButton;
 
 class MyExpandableListAdapter extends SimpleExpandableListAdapter {
 
-Float sOsn,sDop;
-int typeOsn, typeDop;
-Boolean loadPhoto;
-Context ctx;
-private static List<? extends Map<String, ?>> parent;
+    Float sOsn,sDop;
+    int typeOsn, typeDop;
+    Boolean loadPhoto;
+    Context ctx;
+    private static List<? extends Map<String, ?>> parent;
 
 
     public MyExpandableListAdapter(Context context,
                                    List<? extends Map<String, ?>> parent, int parentresource, String[] parentfrom, int[] parentto,
                                    ArrayList<ArrayList<Map<String, String>>> child, int childesource, String[] childfrom, int[] childto )
-            {
+    {
         super(context, parent, parentresource, parentfrom, parentto, child, childesource, childfrom, childto);
         ctx=context;
         this.parent = parent;
@@ -56,21 +56,21 @@ private static List<? extends Map<String, ?>> parent;
         if (typeD.contains("Курсив"))
             typeDop += Typeface.ITALIC;
 
- }
+    }
 
     @SuppressLint("ResourceType")
     @Override
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-       View view = super.getGroupView(listPosition, isExpanded, convertView, parent);
-            TextView v = (TextView) view.findViewById(R.id.listTitle);
-            v.setTextSize(sOsn);
-            v.setTypeface(null, typeOsn);
-            if (isExpanded) {
-                v.setBackgroundResource(R.drawable.info_round4);
-            }
-             else
-                 v.setBackgroundResource(R.drawable.info_round3);
+        View view = super.getGroupView(listPosition, isExpanded, convertView, parent);
+        TextView v = (TextView) view.findViewById(R.id.listTitle);
+        v.setTextSize(sOsn);
+        v.setTypeface(null, typeOsn);
+        if (isExpanded) {
+            v.setBackgroundResource(R.drawable.info_round4);
+        }
+        else
+            v.setBackgroundResource(R.drawable.info_round3);
         return view;
     }
 
@@ -141,8 +141,8 @@ private static List<? extends Map<String, ?>> parent;
                 sec_intent.putExtra("intToUsers", String.valueOf(position));
                 ctx.startActivity(sec_intent);
             }
-            });
-        }
+        });
+    }
 
 
     String str (TextView s){String m=s.getText().toString().replaceAll("[^0-9]", "");return m;}

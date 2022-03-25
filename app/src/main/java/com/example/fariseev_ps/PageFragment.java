@@ -48,7 +48,7 @@ public class PageFragment extends Fragment {
     ArrayList<HashMap<String, Object>> clients = new ArrayList<HashMap<String, Object>>();
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
     String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
- //   ArrayList<ArrayList<Map<String, String>>> childDataItemList;
+    //   ArrayList<ArrayList<Map<String, String>>> childDataItemList;
     Map<String, String> map = new HashMap<>();
     ArrayList<Map<String, String>> groupDataList = new ArrayList<>();
     ArrayList<ArrayList<Map<String, String>>> сhildDataList = new ArrayList<>();
@@ -118,7 +118,7 @@ public class PageFragment extends Fragment {
         cursor.moveToNext();
         client = new HashMap<String, Object>();
         while (!cursor.isAfterLast()) {
-              map = new HashMap<>();
+            map = new HashMap<>();
             if (!cursor.getString(7).equals(temp)) {
                 сhildDataList.add(сhildDataItemList);
                 сhildDataItemList = new ArrayList<>();
@@ -127,14 +127,14 @@ public class PageFragment extends Fragment {
                 clients.add(client);
                 client = new HashMap<String, Object>();
             }
-                map.put("nameclient", cursor.getString(0));
-                map.put("dole", cursor.getString(8));
-                if (cursor.getString(3) != null)
-                      map.put("inter", "т.вн. " + cursor.getString(3));
-                if (cursor.getString(4) != null)
-                      map.put("sot", "т.моб. " + cursor.getString(4).replaceAll("\n","  "));
-                if (cursor.getString(5) != null)
-                      map.put("gor", "т.гор. " + cursor.getString(5).replaceAll("\n","  "));
+            map.put("nameclient", cursor.getString(0));
+            map.put("dole", cursor.getString(8));
+            if (cursor.getString(3) != null)
+                map.put("inter", "т.вн. " + cursor.getString(3));
+            if (cursor.getString(4) != null)
+                map.put("sot", "т.моб. " + cursor.getString(4).replaceAll("\n","  "));
+            if (cursor.getString(5) != null)
+                map.put("gor", "т.гор. " + cursor.getString(5).replaceAll("\n","  "));
             сhildDataItemList.add(map);
             cursor.moveToNext();
         }
@@ -178,17 +178,17 @@ public class PageFragment extends Fragment {
 
                 @Override
                 public void onScrollUp() {
-                   // Log.d("--", "onScrollUp()");
+                    // Log.d("--", "onScrollUp()");
                 }
             }, new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
-                 //   Log.d("--", "onScrollStateChanged()");
+                    //   Log.d("--", "onScrollStateChanged()");
                 }
 
                 @Override
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                  //  Log.d("--", "onScroll()");
+                    //  Log.d("--", "onScroll()");
                 }
             });
         }
@@ -196,9 +196,9 @@ public class PageFragment extends Fragment {
         return view;
     }
 
- //   View.OnClickListener fabCliclisner =new View.OnClickListener() {
+    //   View.OnClickListener fabCliclisner =new View.OnClickListener() {
 
- //   };
+    //   };
 
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
