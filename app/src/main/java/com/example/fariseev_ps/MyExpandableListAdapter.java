@@ -110,6 +110,19 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
         g.setTextSize(sDop);
         g.setTypeface(null, typeDop);
         if (loadPhoto) setPhoto(view, v);
+        View photo = view.findViewById(R.id.photoToExpAdapter);
+/*        photo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Map<String, String> itemClients = (Map<String, String>) getGroup(listPosition);
+                String otdel = itemClients.get("otdels").toString();
+                Intent sec_intent = new Intent(ctx, users.class);
+                sec_intent.putExtra("usermake", v.getText().toString());
+                sec_intent.putExtra("userotd", otdel);
+                sec_intent.putExtra("intToUsers", listPosition);
+                ctx.startActivity(sec_intent);
+            }
+        });*/
         FButton addContact = view.findViewById(R.id.upLoad2);
         if (addContact != null) {
             addContact.setButtonColor(ctx.getResources().getColor(R.color.colorPrimary));
@@ -123,27 +136,32 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
             });
             setButton(view);
         }
-        toContactClick(v, v.getText().toString(), listPosition);
-        toContactClick(d, v.getText().toString(), listPosition);
-        toContactClick(i, v.getText().toString(), listPosition);
+        toContactClick(photo, v, v.getText().toString(), listPosition);
+        toContactClick(photo, d, v.getText().toString(), listPosition);
+        toContactClick(photo, i, v.getText().toString(), listPosition);
         return view;
     }
 
-    private void toContactClick (TextView tv, final String nameStr, int position){
+    private void toContactClick (View photo, TextView tv, final String nameStr, int position){
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> itemClients = (Map<String, String>) getGroup(position);
-                String otdel = itemClients.get("otdels").toString();
-                Intent sec_intent = new Intent(ctx, users.class);
-                sec_intent.putExtra("usermake", nameStr);
-                sec_intent.putExtra("userotd", otdel);
-                sec_intent.putExtra("intToUsers", String.valueOf(position));
-                ctx.startActivity(sec_intent);
-            }
-        });
-    }
+                colicky(nameStr, position);}});
+            photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colicky(nameStr, position);}});
+        }
 
+  void colicky(String nameStr, int position) {
+      Map<String, String> itemClients = (Map<String, String>) getGroup(position);
+      String otdel = itemClients.get("otdels").toString();
+      Intent sec_intent = new Intent(ctx, users.class);
+      sec_intent.putExtra("usermake", nameStr);
+      sec_intent.putExtra("userotd", otdel);
+      sec_intent.putExtra("intToUsers", String.valueOf(position));
+      ctx.startActivity(sec_intent);
+  }
 
     String str (TextView s){String m=s.getText().toString().replaceAll("[^0-9]", "");return m;}
 
