@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_gradient"
-    android:orientation="vertical"
     android:adjustViewBounds="true"
-    android:divider="#ff0000">
+    android:background="@drawable/background_gradient"
+    android:divider="#ff0000"
+    android:orientation="vertical">
 
 
     <LinearLayout
