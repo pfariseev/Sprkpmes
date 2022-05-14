@@ -4,6 +4,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -297,14 +298,29 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     void setAlarm (Boolean enadis) {
         ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
         PackageManager pm = getPackageManager();
+   //     final Intent intentService;
+   //     intentService = new Intent(this,EternalService.class);
         if (enadis) {
-            pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            EternalService.Alarm.setAlarm(this);
+        //    pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+        //    EternalService.Alarm.setAlarm(this);
+            this.startService(new Intent(this, EternalService.class));
         }
         else {
-            pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-            EternalService.Alarm.cancelAlarm(this);
+         //   pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        //    EternalService.Alarm.cancelAlarm(this);
+            this.stopService(new Intent(this, EternalService.class));
         }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(this.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     void setReciever (Boolean enadis) {

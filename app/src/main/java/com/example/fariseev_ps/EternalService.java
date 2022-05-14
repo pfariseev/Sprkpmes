@@ -3,20 +3,30 @@ package com.example.fariseev_ps;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EternalService extends Service {
+    private Thread thr;
 
     //Date date = Calendar.getInstance().getTime();
    // static String DB_PATH = "", DBPATH="";
@@ -25,16 +35,24 @@ public class EternalService extends Service {
     //static String lastdayupdate;
     //static boolean admin, uvedom;
 
+    public void onCreate() {
+        super.onCreate();
 
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    @SuppressLint("WrongConstant")
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+      //  ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+     //   PackageManager pm = getPackageManager();
+    //    pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+   //     EternalService.Alarm.setAlarm(this);
+
+            //   pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            //      EternalService.Alarm.setAlarm(this);
        // context = this;
     //    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
@@ -45,9 +63,59 @@ public class EternalService extends Service {
         //Log.d("--","DBPATH "+DBPATH);
         //admin = prefs.getBoolean("adm", false);
     //    lastdayupdate = prefs.getString("dayup", "");
-        return super.onStartCommand(intent, flags, startId);
+        Log.d("--","StartService");
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel(notificationManager) : "";
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
+        Notification notification = notificationBuilder.setOngoing(true)
+               // .setSmallIcon(R.mipmap.sprkpmesicon)
+               // .setPriority(PRIORITY_MIN)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setContentText("Запуск службы")
+                .build();
+        startForeground(101, notification);
+        startForeground(getApplicationContext());
+        stopSelf();
+        startLoop();
+        return START_REDELIVER_INTENT;//super.onStartCommand(intent, flags, startId);
+
     }
 
+    private void startForeground(Context applicationContext) {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private String createNotificationChannel(NotificationManager notificationManager){
+        String channelId = "my_service_channelid";
+        String channelName = "My Foreground Service";
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+        // omitted the LED color
+        channel.setImportance(NotificationManager.IMPORTANCE_NONE);
+        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        notificationManager.createNotificationChannel(channel);
+        return channelId;
+    }
+    private void startLoop() {
+        thr = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+                    Log.d("--","Обновление..");
+                    Update(getApplicationContext());
+                    try {
+                        Thread.sleep(5*1000);
+
+                    } catch (Exception e) {
+                        Log.i("chat",
+                                "+ FoneService - ошибка процесса: "
+                                        + e.getMessage());
+                    }
+                }
+            }
+        });
+        thr.setDaemon(true);
+        thr.start();
+    }
     public static boolean isRunning(Context ctx) {
         ActivityManager manager = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -60,16 +128,44 @@ public class EternalService extends Service {
 
     @Override
     public void onDestroy() {
-
+        Log.d("--","StopService");
+        super.onDestroy();
+        stopSelf();
     }
+    static final String ALARM_EVENT = "net.multipi.ALARM";
+    static final int ALARM_INTERVAL_SEC = 3600;
 
-
+    int timeUp = 7;
+    public void Update(Context context) {
+        //count=10;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        //DB_PATH = prefs.getString("DBPATH", "");
+        //admin = prefs.getBoolean("adm", false);
+        //uvedom = prefs.getBoolean("Уведомления", false);
+        String lastdayupdate = prefs.getString("dayup", "");
+        Date currentDate = new Date();
+        SimpleDateFormat fmt = new SimpleDateFormat("HH");
+        SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
+        String day= fmtday.format(currentDate);
+        String hour = fmt.format(currentDate);
+        //if (lastdayupdate.equals("")) lastdayupdate=day;
+        //Log.d("--", "День  "+day);
+        Log.d("--", "Сейчас " + day+" "+hour + "ч. Обновление после " + timeUp);
+        if (!day.equals(lastdayupdate)) {
+            Log.d("--","сегодня "+day+", "+"последнее обновление "+lastdayupdate);
+            if (Integer.parseInt(hour) > timeUp) {
+                Log.d("--", "TrueUpdate");
+                updateBase.getInstance(context);
+                if (prefs.getBoolean("Обновлять базу автоматически", false)) updateBase.downloadFile();
+            }
+        }
+        else {
+            Log.d("--","Сегодня обновление уже было. "+day+"="+lastdayupdate);
+        }
+    }
     public static class Alarm extends BroadcastReceiver {
 
-        static final String ALARM_EVENT = "net.multipi.ALARM";
-        static final int ALARM_INTERVAL_SEC = 3600;
 
-        int timeUp = 7;
         //private String hour;
         //private String day;
         //private static Context contex;
@@ -79,10 +175,13 @@ public class EternalService extends Service {
         public void onReceive(Context context, Intent intent) {
           //  contex = context;
             if (intent.getAction().equals(ALARM_EVENT)) {
-                //  Log.d("--","Обновление  ");
+                  Log.d("--","Обновление  ");
                 //    if (!CallReceiver.ready) CallReceiver.getusers(context);
                 // if (count--==0)
-                Update(context);
+         //   Update(context);
+           //     Intent intentService = new Intent(context, EternalService.class);
+          //      context.startService(intentService);
+
             }
        }
 
@@ -104,33 +203,7 @@ public class EternalService extends Service {
         // }
 
 
-        public void Update(Context context) {
-            //count=10;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            //DB_PATH = prefs.getString("DBPATH", "");
-            //admin = prefs.getBoolean("adm", false);
-            //uvedom = prefs.getBoolean("Уведомления", false);
-            String lastdayupdate = prefs.getString("dayup", "");
-            Date currentDate = new Date();
-            SimpleDateFormat fmt = new SimpleDateFormat("HH");
-            SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
-            String day= fmtday.format(currentDate);
-            String hour = fmt.format(currentDate);
-            //if (lastdayupdate.equals("")) lastdayupdate=day;
-            //Log.d("--", "День  "+day);
-            Log.d("--", "Сейчас " + day+" "+hour + "ч. Обновление после " + timeUp);
-            if (!day.equals(lastdayupdate)) {
-                Log.d("--","сегодня "+day+", "+"последнее обновление "+lastdayupdate);
-                if (Integer.parseInt(hour) > timeUp) {
-                    Log.d("--", "TrueUpdate");
-                    updateBase.getInstance(context);
-                    if (prefs.getBoolean("Обновлять базу автоматически", false)) updateBase.downloadFile();
-                }
-            }
-            else {
-                Log.d("--","Сегодня обновление уже было. "+day+"="+lastdayupdate);
-            }
-        }
+
 /*
         public void Run() {
 

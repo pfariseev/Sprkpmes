@@ -106,7 +106,7 @@ class updateBase {
 
                     url = new URL(params[0]);
                     urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setConnectTimeout(20000); //время ожидания соединения
+                    urlConnection.setConnectTimeout(30000); //время ожидания соединения
                     urlConnection.connect();
                     inputStream = urlConnection.getInputStream();
                     totalSize = urlConnection.getContentLength();
