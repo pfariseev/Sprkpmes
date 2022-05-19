@@ -22,16 +22,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -41,6 +31,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,6 +72,10 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        Bundle bundle = getIntent().getExtras(); // для получения сообщений из PUSH
+        if (bundle != null) {
+            Log.d("--","Дата из MainActivity, ключ qwe - "+bundle.getString("qwe"));
+        }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
@@ -298,17 +303,17 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     void setAlarm (Boolean enadis) {
         ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
         PackageManager pm = getPackageManager();
-   //     final Intent intentService;
-   //     intentService = new Intent(this,EternalService.class);
+        //     final Intent intentService;
+        //     intentService = new Intent(this,EternalService.class);
         if (enadis) {
-        //    pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-        //    EternalService.Alarm.setAlarm(this);
+                pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                EternalService.Alarm.setAlarm(this);
             this.startService(new Intent(this, EternalService.class));
         }
         else {
-         //   pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-        //    EternalService.Alarm.cancelAlarm(this);
-            this.stopService(new Intent(this, EternalService.class));
+               pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                EternalService.Alarm.cancelAlarm(this);
+       //     this.stopService(new Intent(this, EternalService.class));
         }
     }
 
@@ -583,7 +588,3 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }.execute(url);
     }
 }
-
-
-
-

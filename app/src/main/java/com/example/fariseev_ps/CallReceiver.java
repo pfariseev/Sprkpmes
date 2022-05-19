@@ -12,7 +12,6 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -24,6 +23,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+
 
 public class CallReceiver extends BroadcastReceiver {
 
@@ -294,8 +296,6 @@ public class CallReceiver extends BroadcastReceiver {
                             if (lenth>10) {
                             do {
                               client.put("+" + ss.subSequence(lenth-11, lenth), cursor.getString(0));
-
-
                               lenth=lenth-11;
                             } while (lenth>10);
                         } else {
@@ -305,9 +305,7 @@ public class CallReceiver extends BroadcastReceiver {
                         cursor.moveToNext();
                     }
                 }
-
             }
-
             ready = true;
             checkCall = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.callreceiver), false);
             Log.d("--","Ready in Callreciever now "+ready);
@@ -316,6 +314,3 @@ public class CallReceiver extends BroadcastReceiver {
 
 
 }
-
-
-

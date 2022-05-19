@@ -3,120 +3,69 @@ package com.example.fariseev_ps;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-public class EternalService extends Service {
-    private Thread thr;
-
+public class EternalService extends Service{
     //Date date = Calendar.getInstance().getTime();
-   // static String DB_PATH = "", DBPATH="";
+    // static String DB_PATH = "", DBPATH="";
     //static Context context;
-
     //static String lastdayupdate;
     //static boolean admin, uvedom;
-
-    public void onCreate() {
-        super.onCreate();
-
-    }
-
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent intent){
         return null;
     }
-
-    public int onStartCommand(Intent intent, int flags, int startId) {
-      //  ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
-     //   PackageManager pm = getPackageManager();
-    //    pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-   //     EternalService.Alarm.setAlarm(this);
-
-            //   pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            //      EternalService.Alarm.setAlarm(this);
-       // context = this;
-    //    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
-        //DB_PATH = this.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
-        //editor.putString("DBPATH",DB_PATH);
-        //editor.commit();
-        //DBPATH = prefs.getString("DBPATH", "");
-        //Log.d("--","DBPATH "+DBPATH);
-        //admin = prefs.getBoolean("adm", false);
-    //    lastdayupdate = prefs.getString("dayup", "");
-        Log.d("--","StartService");
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel(notificationManager) : "";
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
-        Notification notification = notificationBuilder.setOngoing(true)
-               // .setSmallIcon(R.mipmap.sprkpmesicon)
-               // .setPriority(PRIORITY_MIN)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setContentText("Запуск службы")
-                .build();
-        startForeground(101, notification);
-        startForeground(getApplicationContext());
-        stopSelf();
-        startLoop();
-        return START_REDELIVER_INTENT;//super.onStartCommand(intent, flags, startId);
-
-    }
-
-    private void startForeground(Context applicationContext) {
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private String createNotificationChannel(NotificationManager notificationManager){
-        String channelId = "my_service_channelid";
-        String channelName = "My Foreground Service";
-        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-        // omitted the LED color
-        channel.setImportance(NotificationManager.IMPORTANCE_NONE);
-        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        notificationManager.createNotificationChannel(channel);
-        return channelId;
-    }
-    private void startLoop() {
-        thr = new Thread(new Runnable() {
-            public void run() {
-                while (true) {
-                    Log.d("--","Обновление..");
-                    Update(getApplicationContext());
-                    try {
-                        Thread.sleep(5*1000);
-
-                    } catch (Exception e) {
-                        Log.i("chat",
-                                "+ FoneService - ошибка процесса: "
-                                        + e.getMessage());
+    @SuppressLint("WrongConstant")
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                            msg = getString(R.string.msg_subscribe_failed);
+                        }
+                        Log.d("--", "EternalService onStartCommand 1 "+msg);
                     }
-                }
-            }
-        });
-        thr.setDaemon(true);
-        thr.start();
+                });
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("--", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        String token = task.getResult();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d("--","EternalService onStartCommand 2 "+ msg);
+                    }
+                });
+
+
+        return super.onStartCommand(intent, flags, startId);
     }
-    public static boolean isRunning(Context ctx) {
+    public static boolean isRunning(Context ctx){
         ActivityManager manager = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (EternalService.class.getName().equals(service.service.getClassName())) {
@@ -125,67 +74,29 @@ public class EternalService extends Service {
         }
         return false;
     }
-
     @Override
-    public void onDestroy() {
-        Log.d("--","StopService");
-        super.onDestroy();
-        stopSelf();
+    public void onDestroy(){
     }
-    static final String ALARM_EVENT = "net.multipi.ALARM";
-    static final int ALARM_INTERVAL_SEC = 3600;
-
-    int timeUp = 7;
-    public void Update(Context context) {
-        //count=10;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        //DB_PATH = prefs.getString("DBPATH", "");
-        //admin = prefs.getBoolean("adm", false);
-        //uvedom = prefs.getBoolean("Уведомления", false);
-        String lastdayupdate = prefs.getString("dayup", "");
-        Date currentDate = new Date();
-        SimpleDateFormat fmt = new SimpleDateFormat("HH");
-        SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
-        String day= fmtday.format(currentDate);
-        String hour = fmt.format(currentDate);
-        //if (lastdayupdate.equals("")) lastdayupdate=day;
-        //Log.d("--", "День  "+day);
-        Log.d("--", "Сейчас " + day+" "+hour + "ч. Обновление после " + timeUp);
-        if (!day.equals(lastdayupdate)) {
-            Log.d("--","сегодня "+day+", "+"последнее обновление "+lastdayupdate);
-            if (Integer.parseInt(hour) > timeUp) {
-                Log.d("--", "TrueUpdate");
-                updateBase.getInstance(context);
-                if (prefs.getBoolean("Обновлять базу автоматически", false)) updateBase.downloadFile();
-            }
-        }
-        else {
-            Log.d("--","Сегодня обновление уже было. "+day+"="+lastdayupdate);
-        }
-    }
-    public static class Alarm extends BroadcastReceiver {
-
-
+    public static class Alarm extends BroadcastReceiver{
+        static final String ALARM_EVENT = "net.multipi.ALARM";
+        static final int ALARM_INTERVAL_SEC = 3600;
+        int timeUp = 7;
         //private String hour;
         //private String day;
         //private static Context contex;
-
-
         @Override
-        public void onReceive(Context context, Intent intent) {
-          //  contex = context;
+        public void onReceive(Context context, Intent intent){
+            //  contex = context;
             if (intent.getAction().equals(ALARM_EVENT)) {
-                  Log.d("--","Обновление  ");
+                Log.d("--","Обновление из Alarm_receiver ");
                 //    if (!CallReceiver.ready) CallReceiver.getusers(context);
                 // if (count--==0)
-         //   Update(context);
-           //     Intent intentService = new Intent(context, EternalService.class);
-          //      context.startService(intentService);
-
+                Update(context);
             }
-       }
-
-        public static void setAlarm(Context context) {
+        }
+        public static void setAlarm(Context context){
+            Log.d("--","setAlarm. вызов обновления от "+context.getClass().getSimpleName());
+            Log.d("--","Установка таймера "+ALARM_INTERVAL_SEC+" сек.");
             Intent intent = new Intent(ALARM_EVENT);
             intent.setClass(context, EternalService.Alarm.class);
             //PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, _intent, 0);
@@ -194,25 +105,46 @@ public class EternalService extends Service {
             am.cancel(pi);
             am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * ALARM_INTERVAL_SEC, pi);
         }
-
-        public static void cancelAlarm(Context context) {
+        public static void cancelAlarm(Context context){
+            Log.d("--","Отмена таймера");
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, new Intent(ALARM_EVENT), 0);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(sender);
         }
         // }
-
-
-
+        public void Update(Context context){
+            Log.d("--","EternalService. вызов обновления от "+context.getClass().getSimpleName());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            //DB_PATH = prefs.getString("DBPATH", "");
+            //admin = prefs.getBoolean("adm", false);
+            //uvedom = prefs.getBoolean("Уведомления", false);
+            String lastdayupdate = prefs.getString("dayup", "");
+            Date currentDate = new Date();
+            SimpleDateFormat fmt = new SimpleDateFormat("HH");
+            SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
+            String day= fmtday.format(currentDate);
+            String hour = fmt.format(currentDate);
+            //if (lastdayupdate.equals("")) lastdayupdate=day;
+            //Log.d("--", "День  "+day);
+            Log.d("--", "Сейчас " + day+" "+hour + "ч. Обновление после " + timeUp);
+            if (!day.equals(lastdayupdate)) {
+                Log.d("--","сегодня "+day+", "+"последнее обновление "+lastdayupdate);
+                if (Integer.parseInt(hour) > timeUp) {
+                    Log.d("--", "TrueUpdate");
+                    updateBase.getInstance(context);
+                    if (prefs.getBoolean("Обновлять базу автоматически", false)) updateBase.downloadFile();
+                }
+            }
+            else {
+                Log.d("--","Сегодня обновление уже было. "+day+"="+lastdayupdate);
+            }
+        }
 /*
-        public void Run() {
-
+        public void Run(){
                // final ProgressDialog progressDialog = new ProgressDialog(context);
             Log.d("--", "TrueUpdate 2");
                 new AsyncTask<String, Integer, File>() {
-
                     private Exception m_error = null;
-
                   ///   @Override
                    //       protected void onPreExecute() {
                     //progressDialog.setMessage("Обновление...");
@@ -220,12 +152,10 @@ public class EternalService extends Service {
                     // progressDialog.setMax(100);
                     //progressDialog
                     //         .setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
                     //progressDialog.show();
                    //   }
-
                     @Override
-                    protected File doInBackground(String... params) {
+                    protected File doInBackground(String... params){
                         Log.d("--", "Второй этап");
                         URL url1;
                         HttpURLConnection urlConnection;
@@ -234,10 +164,8 @@ public class EternalService extends Service {
                         int downloadedSize;
                         byte[] buffer;
                         int bufferLength;
-
                         File file = null;
                         FileOutputStream fos = null;
-
                         Log.d("--", "Начато копирование");
                         try {
                             url1 = new URL(url);
@@ -258,7 +186,6 @@ public class EternalService extends Service {
                                 downloadedSize += bufferLength;
                                 //publishProgress(downloadedSize, totalSize);
                             }
-
                             mOutput.close();
                             inputStream.close();
                             Log.d("--", "Скачивание завершено!");
@@ -273,11 +200,9 @@ public class EternalService extends Service {
                       //  Log.d("--","DBPATH "+DB_PATH+ " Admin "+admin);
                         return null;
                     }
-
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
-                    protected void onPostExecute(File file) {
-
+                    protected void onPostExecute(File file){
                         // отображаем сообщение, если возникла ошибка
                         //    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                         //  SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
@@ -293,12 +218,10 @@ public class EternalService extends Service {
                             //      Toast toast = Toast.makeText(getApplicationContext(), "Что-то пошло не так :(, может включить интернет..?", Toast.LENGTH_LONG);
                             //      toast.setGravity(Gravity.CENTER, 0, 0);
                             //       toast.show();
-
                             return;
                         }
                         // если всё хорошо, закрываем прогресс и удаляем временный файл
                         //progressDialog.hide();
-
                         mDBHelper = new DatabaseHelper(contex);
                         Log.d("--", "DBPATH " + DB_PATH + " Admin " + admin);
                         try {
@@ -311,10 +234,8 @@ public class EternalService extends Service {
                         } catch (SQLException mSQLException) {
                             throw mSQLException;
                         }
-
                         File filexls = new File(DB_PATH + "temp.xslx");
                         Log.d("--", "Переделка в SQL");
-
                         try {
                             Workbook wb = WorkbookFactory.create(filexls);
                             int lists = wb.getNumberOfSheets();
@@ -328,7 +249,6 @@ public class EternalService extends Service {
                             ContentValues newValues = new ContentValues();
                             String value = new String(), SQL_CREATES_TABLE;
                             ;
-
                             for (int x = 0; x < xx; x++) {
                                 value = row.getCell(x).toString();
                                 newValues.put("Column" + String.valueOf(x + 1), value);
@@ -351,14 +271,10 @@ public class EternalService extends Service {
                                     newValues.put("Column" + String.valueOf(x + 1), value);
                                 }
                                 mDb.insert("Лист1", null, newValues);
-
                             }
                             cursor.close();
-
-
                */ /*
                             for (int activelist = 0; activelist < lists; activelist++) {
-
                                 String listsString = String.valueOf(activelist + 1);
                                 Log.d("--", "Лист" + listsString + " начат");
                                 sheet = wb.getSheetAt(activelist);
@@ -423,7 +339,6 @@ public class EternalService extends Service {
                             admin = prefs.getBoolean("adm", false);
                             Log.d("--", "Admin " + admin + ", LastDayUp " + lastdayupdate);
                         }
-
                         else {
                                 SharedPreferences.Editor editor = getDefaultSharedPreferences(contex).edit();
                                 cursor.close();
@@ -434,9 +349,7 @@ public class EternalService extends Service {
                                     n.createInfoNotification("Обновление не требуется " + dataupdate);
                                 }
                             }
-
                         } catch (Exception ex) {
-
                             //     Toast toast = Toast.makeText(getApplicationContext(), "Ошибка копирования базы", Toast.LENGTH_LONG);
                             //     toast.setGravity(Gravity.CENTER, 0, 0);
                             //     toast.show();
@@ -446,13 +359,9 @@ public class EternalService extends Service {
                             }
                             Log.d("--", "Ошибка копирования базы");
                         }
-
                     }
                 }.execute(url);
-
             }
 */
-        }
-
-
     }
+}

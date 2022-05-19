@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 
-public class settings extends PreferenceActivity {
+
+public class settings extends  PreferenceActivity {
 
 
     @Override

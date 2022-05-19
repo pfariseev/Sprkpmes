@@ -16,10 +16,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,7 +59,7 @@ public class savephoto extends Activity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
-      //  TextView copyrovanie = findViewById(R.id.textok);
+        //  TextView copyrovanie = findViewById(R.id.textok);
 
         //copyrovanie.setText("Начать копирование ?");
         folderToSave=folderToSaveVoid(this);
@@ -79,19 +80,19 @@ public class savephoto extends Activity {
             int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
             if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {
-                    //просим разрешение
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE}, NUMBER_OF_REQUEST);
-                }
+                //просим разрешение
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, NUMBER_OF_REQUEST);
+            }
 
         }
 
     }
 
     public void onClickSavePhoto(View v) {
-          Run();
+        Run();
     }
 
     public static String folderToSaveVoid(Context context){
@@ -213,7 +214,7 @@ public class savephoto extends Activity {
                     }
 
                 }
-return null;
+                return null;
             }
 
             protected void onProgressUpdate(Integer... values) {
@@ -222,15 +223,15 @@ return null;
             }
 
 
-           @Override
+            @Override
             protected void onPostExecute(File file) {
-               progressDialog.hide();
-            //   Toast toast = Toast.makeText(getApplicationContext(), "Всё! :)", Toast.LENGTH_LONG);
-            //   toast.setGravity(Gravity.CENTER, 0, 0);
-            //   toast.show();
-               TextView copyrovanie = findViewById(R.id.textok);
-               copyrovanie.setText("Готово.");
-           }
+                progressDialog.hide();
+                //   Toast toast = Toast.makeText(getApplicationContext(), "Всё! :)", Toast.LENGTH_LONG);
+                //   toast.setGravity(Gravity.CENTER, 0, 0);
+                //   toast.show();
+                TextView copyrovanie = findViewById(R.id.textok);
+                copyrovanie.setText("Готово.");
+            }
         }.execute();
 
     }

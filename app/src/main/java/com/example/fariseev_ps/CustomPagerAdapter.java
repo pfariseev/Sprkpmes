@@ -1,34 +1,12 @@
 package com.example.fariseev_ps;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Vector;
-
-import android.app.ActionBar;
 import android.content.Context;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import androidx.viewpager.widget.PagerAdapter;
+
+import java.util.Vector;
 
 public class CustomPagerAdapter extends PagerAdapter {
 

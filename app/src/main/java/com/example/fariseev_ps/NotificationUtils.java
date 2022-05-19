@@ -7,9 +7,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import java.util.HashMap;
 
@@ -17,11 +18,11 @@ class NotificationUtils {
 
 
 
-     static NotificationUtils instance;
+    static NotificationUtils instance;
 
     static Context context;
-   // public static final String NOTIFICATION_CHANNEL_ID_SERVICE = "com.mypackage.service";
-   // public static final String NOTIFICATION_CHANNEL_ID_INFO = "com.mypackage.download_info";
+    // public static final String NOTIFICATION_CHANNEL_ID_SERVICE = "com.mypackage.service";
+    // public static final String NOTIFICATION_CHANNEL_ID_INFO = "com.mypackage.download_info";
 
     //NotificationManager manager; // Системная утилита, упарляющая уведомлениями
     int lastId = 0; //постоянно увеличивающееся поле, уникальный номер каждого уведомления
@@ -70,13 +71,13 @@ class NotificationUtils {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
             builder.setContentTitle("Справочник")  // required
-                    .setSmallIcon(R.mipmap.sprkpmesicon) // required
+                    .setSmallIcon(R.drawable.sprkpmes) // required
                     .setContentText(message)  // required
                     //.setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent);
-                   // .setTicker(message)
-                    //.setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            // .setTicker(message)
+            //.setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 
 
         }
@@ -94,7 +95,7 @@ class NotificationUtils {
             // .setDefaults(Notification.DEFAULT_ALL); // звук, вибро и диодный индикатор выставляются по умолчанию
 
             Log.d("--", "Уведомление - " + message);
-          //  notificationManager.notify(lastId, builder.build());
+            //  notificationManager.notify(lastId, builder.build());
             notifications.put(lastId, builder.build()); //теперь мы можем обращаться к нему по id
         }
         Notification notification = builder.build();

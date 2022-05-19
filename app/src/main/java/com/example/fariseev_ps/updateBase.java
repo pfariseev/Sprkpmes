@@ -1,5 +1,7 @@
 package com.example.fariseev_ps;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,10 +12,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -30,8 +33,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 class updateBase {
 
@@ -57,18 +58,16 @@ class updateBase {
         return instance;
     }
 
+
     public static void downloadFile() {
+        Log.d("--","updateBase. вызов обновления от "+context.getClass().getSimpleName());
         Log.d("--", "TrueUpdate 2");
         //String url = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1-QPwhkO1LyMj8epeBJUmpHB2q9zuY5F4");//временно
         String url = ("https://github.com/pfariseev/Sprkpmes/raw/master/bd/bd.xlsx");
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //list=prefs.getString(getString(R.string.list), "1");
         final ProgressDialog progressDialog = new ProgressDialog(context);
-        if (android.os.Build.VERSION.SDK_INT >= 17) //проверка версии android
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
-        else
-            DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
-
         new AsyncTask<String, Integer, File>() {
             private Exception m_error = null;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -81,7 +80,7 @@ class updateBase {
                     progressDialog.setCancelable(false);
                     //progressDialog.setMax(100);
                     //progressDialog
-                            //.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    //.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
                     progressDialog.show();
                 }
@@ -101,7 +100,7 @@ class updateBase {
                 File file = null;
                 FileOutputStream fos = null;
 
-
+                Log.d("--", "TrueUpdate 4");
                 try {
 
                     url = new URL(params[0]);
@@ -119,7 +118,7 @@ class updateBase {
                     while ((bufferLength = inputStream.read(buffer)) > 0) {
                         mOutput.write(buffer, 0, bufferLength);
                         downloadedSize += bufferLength;
-                     //   if (prefs.getBoolean("Обновлять базу справочника автоматически", false))publishProgress(downloadedSize, totalSize);
+                        //   if (prefs.getBoolean("Обновлять базу справочника автоматически", false))publishProgress(downloadedSize, totalSize);
                     }
 
                     mOutput.close();
@@ -153,7 +152,7 @@ class updateBase {
                         NotificationUtils n = NotificationUtils.getInstance(context);
                         n.createInfoNotification("Ошибка при скачивании базы.");
                     }
-                   // if (prefs.getBoolean("Обновлять базу справочника автоматически", false)) progressDialog.hide();
+                    // if (prefs.getBoolean("Обновлять базу справочника автоматически", false)) progressDialog.hide();
                     if (context.getClass().getSimpleName().equals("about")) {
                         Toast toast = Toast.makeText(context, "Что-то пошло не так :(, может включить интернет..?", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -198,7 +197,7 @@ class updateBase {
             sheet = wb.getSheetAt(0);
             row = sheet.getRow(0);
             String dataupdate = row.getCell(11).toString();
-         //   cursor.moveToPosition(2);
+            //   cursor.moveToPosition(2);
    /*         if (!newver) {
                 if (cursor.getString(11) != sheet.getRow(2).getCell(11).toString()) {
                     NotificationUtils n = NotificationUtils.getInstance(context);
@@ -260,21 +259,21 @@ class updateBase {
                     Log.d("--", "Лист" + listsString + " скопирован, всего " + lists);
                     cursor.close();
                 }
-                    SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
-                    editor.putString("num_lst", String.valueOf(lists));
-                    editor.commit();
-                    if (context.getClass().getSimpleName().equals("about")) {
+                SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
+                editor.putString("num_lst", String.valueOf(lists));
+                editor.commit();
+                if (context.getClass().getSimpleName().equals("about")) {
                     Toast toast = Toast.makeText(context, "Готово.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show(); }
-                    if (prefs.getBoolean("adm", false)) {
-                        NotificationUtils n = NotificationUtils.getInstance(context);
-                        n.createInfoNotification("Обновлён " + dataupdate);
-                    }
-                    if (prefs.getBoolean("Уведомления", false)) {
-                        NotificationUtils n = NotificationUtils.getInstance(context);
-                        n.createInfoNotification("Обновлён " + dataupdate);
-                    }
+                if (prefs.getBoolean("adm", false)) {
+                    NotificationUtils n = NotificationUtils.getInstance(context);
+                    n.createInfoNotification("Обновлён " + dataupdate);
+                }
+                if (prefs.getBoolean("Уведомления", false)) {
+                    NotificationUtils n = NotificationUtils.getInstance(context);
+                    n.createInfoNotification("Обновлён " + dataupdate);
+                }
 
             }else {
                 if (context.getClass().getSimpleName().equals("about")) {
@@ -284,8 +283,8 @@ class updateBase {
                 if (prefs.getBoolean("adm", false)) {
                     NotificationUtils n = NotificationUtils.getInstance(context);
                     n.createInfoNotification("Обновление не требуется " + dataupdate);
-                    }
                 }
+            }
 
             Date currentDate = new Date();
             SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
@@ -296,9 +295,9 @@ class updateBase {
 
         } catch (Exception ex) {
             if (context.getClass().getSimpleName().equals("about")) {
-            Toast toast = Toast.makeText(context, "Ошибка копирования базы", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show(); }
+                Toast toast = Toast.makeText(context, "Ошибка копирования базы", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show(); }
         }
 
     }
@@ -316,3 +315,4 @@ class updateBase {
         mInput.close();
     }
 }
+
