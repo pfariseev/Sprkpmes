@@ -587,4 +587,5 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             }
         }.execute(url);
     }
+
 }

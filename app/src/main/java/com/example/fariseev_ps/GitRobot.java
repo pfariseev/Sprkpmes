@@ -38,14 +38,16 @@ public class GitRobot {
         String strLocalFileName = LocalFileName;//nLastBackSlashPos == -1 ? LocalFilePath : LocalFilePath.substring(nLastBackSlashPos+1);
         Path path = Paths.get(strLocalFilePath, strLocalFileName);
         byte[] fileContents = new byte[0];
+
         try {
             fileContents = Files.readAllBytes(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
         String commitMsg = new Date().toString();
+        String accessToken = BuildConfig.GITHUB_TOKEN;
         try {
-            github = new GitHubBuilder().withOAuthToken("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").build();
+            github = new GitHubBuilder().withOAuthToken(accessToken).build();
             repo = github.getRepository(userId + "/" + RepoName);
         } catch (IOException e) {
             Log.d("--", "ERROR   " + e.getMessage());
