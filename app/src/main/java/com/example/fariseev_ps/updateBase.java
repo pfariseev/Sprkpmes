@@ -262,6 +262,8 @@ class updateBase {
                 SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
                 editor.putString("num_lst", String.valueOf(lists));
                 editor.commit();
+
+
                 if (context.getClass().getSimpleName().equals("about")) {
                     Toast toast = Toast.makeText(context, "Готово.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
