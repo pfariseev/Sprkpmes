@@ -185,7 +185,7 @@ public class CallReceiver extends BroadcastReceiver {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int layout_parms;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            layout_parms = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+            layout_parms = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
         } else {
             layout_parms = WindowManager.LayoutParams.TYPE_PHONE;
         }

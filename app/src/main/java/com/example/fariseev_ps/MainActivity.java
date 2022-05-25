@@ -300,7 +300,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         else setReciever(false);
     }
 
-    static void setAlarm (Boolean enadis) {
+     void setAlarm (Boolean enadis) {
         ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
         PackageManager pm = getPackageManager();
         //     final Intent intentService;
