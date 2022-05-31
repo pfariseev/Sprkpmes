@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.role.RoleManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -263,11 +264,25 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                                 Manifest.permission.PROCESS_OUTGOING_CALLS,
                                 //   Manifest.permission.READ_CONTACTS,
                                 //    Manifest.permission.WRITE_CONTACTS,
-                                Manifest.permission.SYSTEM_ALERT_WINDOW
+                                Manifest.permission.SYSTEM_ALERT_WINDOW,
+
                         },
+
                         7777);
             }
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 7777);
+            }
+
         }
+        RoleManager roleManager = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            roleManager = (RoleManager) getSystemService(this.ROLE_SERVICE);
+
+            Intent intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_REDIRECTION);
+            startActivityForResult(intent, 1);}
     }
 
     void chekRecPhoto() {

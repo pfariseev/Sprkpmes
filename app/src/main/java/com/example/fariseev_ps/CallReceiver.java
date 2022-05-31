@@ -9,9 +9,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.telecom.CallRedirectionService;
+import android.telecom.PhoneAccountHandle;
 import android.telephony.TelephonyManager;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -24,8 +27,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-
 
 public class CallReceiver extends BroadcastReceiver {
 
@@ -42,7 +45,7 @@ public class CallReceiver extends BroadcastReceiver {
     @Override
 
     public void onReceive(Context context, Intent intent) {
-        //     if (!ready) getusers(context);
+        Log.d("--",intent.getStringExtra(TelephonyManager.EXTRA_STATE));
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.callreceiver), false))
             {
@@ -69,13 +72,14 @@ public class CallReceiver extends BroadcastReceiver {
                         }
                     }
                 } else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-
+Log.d("--","d "+incomingCall);
                     if (incomingCall) {
                         // deleteContact(context.getContentResolver(), phoneNumber);
                         //  closeWindow(context);
                         //   phoneNumber = null;
                         //    incomingCall = false;
                     } else {
+
                         if (!outgoingCall) {
                             outgoingCall = true;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -139,15 +143,16 @@ public class CallReceiver extends BroadcastReceiver {
                             ss = cursor.getString(xx).replaceAll("[^0-9]", "");
 
                             int lenth = phoneNumber.length();
-                              /*  Log.d("--", String.valueOf(lenth)+" "+phoneNumber.substring(lenth - 10, lenth));
-                                 {
-                                    do { */
+                             Log.d("--", String.valueOf(lenth)+" "+phoneNumber.substring(lenth - 10, lenth));
+                               //  {
+                                //    do { */
                             if (lenth > 10)
                                 if (ss.contains(phoneNumber.substring(lenth - 10, lenth))) {
                                     client.put("name", cursor.getString(0));
                                     client.put("mesto", cursor.getString(6));
                                     client.put("otdel", cursor.getString(7));
                                     client.put("doljnost", cursor.getString(8));
+                                    Log.d("--","Один есть"+ phoneNumber );
                                 }
                                        /*
                                         lenth = lenth - 11;
@@ -185,7 +190,7 @@ public class CallReceiver extends BroadcastReceiver {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int layout_parms;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            layout_parms = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
+            layout_parms = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
             layout_parms = WindowManager.LayoutParams.TYPE_PHONE;
         }
