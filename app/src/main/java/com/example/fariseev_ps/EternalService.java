@@ -27,6 +27,7 @@ public class EternalService extends Service{
     //static Context context;
     //static String lastdayupdate;
     //static boolean admin, uvedom;
+
     @Override
     public IBinder onBind(Intent intent){
         return null;
@@ -42,7 +43,7 @@ public class EternalService extends Service{
                         if (!task.isSuccessful()) {
                             msg = getString(R.string.msg_subscribe_failed);
                         }
-                        Log.d("--", "EternalService onStartCommand 1 "+msg);
+                        Log.d("--", "Сообщение: "+msg);
                     }
                 });
         FirebaseMessaging.getInstance().getToken()
@@ -58,7 +59,9 @@ public class EternalService extends Service{
 
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d("--","EternalService onStartCommand 2 "+ msg);
+                        Log.d("--","Token: "+ msg);
+
+
                     }
                 });
 

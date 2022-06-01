@@ -7,6 +7,11 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple
  * are declared in the Manifest then the first one will be chosen.
@@ -98,7 +103,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
-
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
@@ -110,7 +114,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendRegistrationToServer(String token) {
+        GitRobot gitRobot = new GitRobot();
         // TODO: Implement this method to send token to your app server.
+        File file = null;
+        try {
+            file= File.createTempFile("token_", "_upload");
+            OutputStream fos = new FileOutputStream(file);
+            fos.write(token.getBytes());
+            fos.close();
+        }
+        catch (IOException e) {
+            Log.d("--", "File write failed: " + e.getMessage());
+        }
+        Log.d("--","Длина файла 1: "+file.length()+", "+file.getAbsolutePath());
+        gitRobot.setApiUrl("https://api.github.com");
+        gitRobot.setUserId("pfariseev");
+     //   Log.d("--", "File: " + file.getName());
+     //   Log.d("--", "File.getAbsolutePath: " + file.getParent());
+        gitRobot.updateSingleContent("sprkpmes_token","Token",file.getName(), file.getParent()+"/cache","update");
     }
 
 

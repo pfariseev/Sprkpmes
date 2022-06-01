@@ -7,7 +7,6 @@ import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.role.RoleManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -258,6 +257,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                     Manifest.permission.READ_PHONE_STATE))  {
                 ActivityCompat.requestPermissions(this,
                         new String[] {
+                                Manifest.permission.CALL_PHONE,
                                 Manifest.permission.READ_PHONE_STATE,
                                 Manifest.permission.READ_CALL_LOG,
                                 //  Manifest.permission.WRITE_CALL_LOG,
@@ -277,12 +277,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             }
 
         }
-        RoleManager roleManager = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            roleManager = (RoleManager) getSystemService(this.ROLE_SERVICE);
 
-            Intent intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_REDIRECTION);
-            startActivityForResult(intent, 1);}
     }
 
     void chekRecPhoto() {

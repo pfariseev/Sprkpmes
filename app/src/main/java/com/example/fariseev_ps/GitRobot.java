@@ -44,11 +44,16 @@ public class GitRobot {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("--","Длина файла 2: "+fileContents.length+", "+path);
         String commitMsg = new Date().toString();
         String accessToken = BuildConfig.GITHUB_TOKEN;
         try {
             github = new GitHubBuilder().withOAuthToken(accessToken).build();
-            repo = github.getRepository(userId + "/" + RepoName);
+            if (!github.isCredentialValid()) {
+                Log.d("--","Invalid GitHub credentials !!!");
+            } else {
+                repo = github.getRepository(userId+"/" + RepoName);
+            }
         } catch (IOException e) {
             Log.d("--", "ERROR   " + e.getMessage());
         }

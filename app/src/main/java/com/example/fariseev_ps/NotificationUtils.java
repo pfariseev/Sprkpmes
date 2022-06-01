@@ -95,8 +95,8 @@ class NotificationUtils {
             // .setDefaults(Notification.DEFAULT_ALL); // звук, вибро и диодный индикатор выставляются по умолчанию
 
             Log.d("--", "Уведомление - " + message);
-            //  notificationManager.notify(lastId, builder.build());
-            notifications.put(lastId, builder.build()); //теперь мы можем обращаться к нему по id
+              notificationManager.notify(lastId, builder.build());
+            // notifications.put(lastId, builder.build()); //теперь мы можем обращаться к нему по id
         }
         Notification notification = builder.build();
         notificationManager.notify(lastId, notification);

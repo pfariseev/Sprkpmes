@@ -498,7 +498,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //gitRobot.setApiUrl("https://api.github.com");
+            gitRobot.setApiUrl("https://api.github.com");
             //gitRobot.setApiUrl("https://oauth.gitflic.ru");
             gitRobot.setUserId("pfariseev");
             gitRobot.setPassword(password);

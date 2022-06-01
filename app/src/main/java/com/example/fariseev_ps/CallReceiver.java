@@ -9,12 +9,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.telecom.CallRedirectionService;
-import android.telecom.PhoneAccountHandle;
 import android.telephony.TelephonyManager;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -27,7 +24,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 public class CallReceiver extends BroadcastReceiver {
@@ -45,12 +41,12 @@ public class CallReceiver extends BroadcastReceiver {
     @Override
 
     public void onReceive(Context context, Intent intent) {
-        Log.d("--",intent.getStringExtra(TelephonyManager.EXTRA_STATE));
+     //   Log.d("--","intent: "+intent.getAction());
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.callreceiver), false))
             {
                 phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
-
+        //        Log.d("--","телефон: "+phoneNumber);
             }
         } else {
             if (intent.getAction().equals("android.intent.action.PHONE_STATE"))
@@ -72,7 +68,7 @@ public class CallReceiver extends BroadcastReceiver {
                         }
                     }
                 } else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
-Log.d("--","d "+incomingCall);
+//Log.d("--","d "+incomingCall);
                     if (incomingCall) {
                         // deleteContact(context.getContentResolver(), phoneNumber);
                         //  closeWindow(context);
@@ -143,7 +139,7 @@ Log.d("--","d "+incomingCall);
                             ss = cursor.getString(xx).replaceAll("[^0-9]", "");
 
                             int lenth = phoneNumber.length();
-                             Log.d("--", String.valueOf(lenth)+" "+phoneNumber.substring(lenth - 10, lenth));
+                        //     Log.d("--", String.valueOf(lenth)+" "+phoneNumber.substring(lenth - 10, lenth));
                                //  {
                                 //    do { */
                             if (lenth > 10)

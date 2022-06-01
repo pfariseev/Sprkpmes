@@ -12,7 +12,7 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.example.fariseev_ps"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 30
         multiDexEnabled true
         versionCode 10
