@@ -3,6 +3,7 @@ package com.example.fariseev_ps;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -89,8 +91,16 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             cursor.close();
         }
         titles[1]="Карельское ПМЭС";
+        if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
+        //    getPhoneNumber();
+        }
     }
 
+    void getPhoneNumber(){
+        TelephonyManager tMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        @SuppressLint("MissingPermission") String mPhoneNumber = tMgr.getLine1Number();
+        Log.d("--","getLine1Number "+mPhoneNumber);
+    }
     @Override
     public void onResume() {
         super.onResume();

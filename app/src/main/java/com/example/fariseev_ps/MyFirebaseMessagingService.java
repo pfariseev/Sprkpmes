@@ -1,7 +1,9 @@
 package com.example.fariseev_ps;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -116,7 +118,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendRegistrationToServer(String token) {
         GitRobot gitRobot = new GitRobot();
         // TODO: Implement this method to send token to your app server.
-        File file = null;
+        File file = null;//new File();
         try {
             file= File.createTempFile("token_", "_upload");
             OutputStream fos = new FileOutputStream(file);
@@ -131,7 +133,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         gitRobot.setUserId("pfariseev");
      //   Log.d("--", "File: " + file.getName());
      //   Log.d("--", "File.getAbsolutePath: " + file.getParent());
-        gitRobot.updateSingleContent("sprkpmes_token","Token",file.getName(), file.getParent()+"/cache","update");
+
+                // gitRobot.updateSingleContent("sprkpmes_token","Token",file.getName(), file.getParent()+"/cache","update");
     }
 
 
