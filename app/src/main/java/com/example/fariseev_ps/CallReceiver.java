@@ -148,7 +148,7 @@ public class CallReceiver extends BroadcastReceiver {
                                     client.put("mesto", cursor.getString(6));
                                     client.put("otdel", cursor.getString(7));
                                     client.put("doljnost", cursor.getString(8));
-                                    Log.d("--","Один есть"+ phoneNumber );
+                                 //   Log.d("--","Один есть"+ phoneNumber );
                                 }
                                        /*
                                         lenth = lenth - 11;

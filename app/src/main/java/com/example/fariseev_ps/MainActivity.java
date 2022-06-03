@@ -1,12 +1,17 @@
 package com.example.fariseev_ps;
 
+import static android.Manifest.permission.READ_PHONE_NUMBERS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.READ_SMS;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.example.fariseev_ps.CallReceiver.phoneNumber;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -45,6 +50,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.HintRequest;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,10 +63,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-
-//import android.widget.SearchView;
-
-
 public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener {
 
     ActionBar actionBar;
@@ -68,7 +74,9 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     String[] titles = new String[10];
     ViewPager pager;
     PagerAdapter pagerAdapter;
-
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+    private static final int PHONE_NUMBER_HINT = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +86,8 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         if (bundle != null) {
             Log.d("--","Дата из MainActivity, ключ qwe - "+bundle.getString("qwe"));
         }
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = getDefaultSharedPreferences(this).edit();
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
         View viewpager = findViewById(R.id.pagerTabStrip);
@@ -91,16 +100,106 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             cursor.close();
         }
         titles[1]="Карельское ПМЭС";
-        if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
-        //    getPhoneNumber();
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.callreceiver), false)) {
+            onReq();
+        }
+
+
+        Log.d("--","PhoneNumber is "+prefs.getString("phoneNumber",""));
+        Log.d("--","DeviceID is "+prefs.getString("deviceId",""));
+        Log.d("--","TOKEN is "+prefs.getString("token",""));
+    }
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{READ_SMS, READ_PHONE_NUMBERS, READ_PHONE_STATE}, 7777);
         }
     }
 
-    void getPhoneNumber(){
-        TelephonyManager tMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-        @SuppressLint("MissingPermission") String mPhoneNumber = tMgr.getLine1Number();
-        Log.d("--","getLine1Number "+mPhoneNumber);
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (!prefs.getString("phoneNumber", "").equals("")) return;
+        if (requestCode == PHONE_NUMBER_HINT && resultCode == RESULT_OK) {
+                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+                final String phoneNumber = credential.getId();
+            Log.d("--","phoneNumber is two "+phoneNumber);
+            editor.putString("phoneNumber", phoneNumber);
+            editor.commit();
+            }
+
     }
+
+    void getPhoneOneMOre ()    {
+        final HintRequest hintRequest =
+                new HintRequest.Builder().setPhoneNumberIdentifierSupported(true).build();
+
+        try {
+            final GoogleApiClient googleApiClient =
+                    new GoogleApiClient.Builder(MainActivity.this).addApi(Auth.CREDENTIALS_API).build();
+
+            final PendingIntent pendingIntent =
+                    Auth.CredentialsApi.getHintPickerIntent(googleApiClient, hintRequest);
+
+            startIntentSenderForResult(
+                    pendingIntent.getIntentSender(),
+                    PHONE_NUMBER_HINT,
+                    null,
+                    0,
+                    0,
+                    0
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    void onReq() {
+        if (!prefs.getString("phoneNumber", "").equals("")) return;
+                if (ActivityCompat.checkSelfPermission(this, READ_SMS) !=
+                        PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this,
+                        READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                } else {
+                    TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
+                    String deviceId;
+                    try {
+                        phoneNumber = telephonyManager.getLine1Number();
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            deviceId = Settings.Secure.getString(
+                                    getContentResolver(),
+                                    Settings.Secure.ANDROID_ID);
+                        } else {
+                            if (telephonyManager.getDeviceId() != null) {
+                                deviceId = telephonyManager.getDeviceId();
+                            } else {
+                                deviceId = Settings.Secure.getString(
+                                        getContentResolver(),
+                                        Settings.Secure.ANDROID_ID);
+                            }
+                        }
+                        editor.putString(getString(R.string.deviceId), deviceId);
+                        //editor.commit();
+                        if (phoneNumber.equals("")) {
+                            getPhoneOneMOre();
+                        } else
+                        editor.putString(getString(R.string.phoneNumber), phoneNumber);
+                        editor.commit();
+
+                    } catch (Exception e){
+                            Log.d("--","e "+e.getMessage());
+                    }
+                }
+      //  if (prefs.getString("phoneNumber", "").equals("")){
+
+       // }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -112,8 +211,8 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkSearch (String check) {
         if (check.equals("!")) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
+        //    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+       //     SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
             if (!prefs.getBoolean(getString(R.string.admin), false)) {
                 editor.putBoolean("adm", true);
                 editor.commit();
@@ -130,7 +229,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             check="";
         }
         if (check.equals("?")) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+          //  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             boolean admin = prefs.getBoolean(getString(R.string.admin), false);
             String day = prefs.getString("dayup", "");
             NotificationUtils n = NotificationUtils.getInstance(this);
@@ -147,24 +246,24 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             ShowAlertDialog();
         }
         if (check.equals("**")) {
-            if (CallReceiver.phoneNumber==null) {
-                CallReceiver.phoneNumber = "89214515390";
+            if (phoneNumber==null) {
+                phoneNumber = "89214515390";
                 CallReceiver.getuser(this);
             } else
             {
                 CallReceiver.closeWindow(this);
-                CallReceiver.phoneNumber = null;
+                phoneNumber = null;
             }
             check="";
         }
         if (check.contains("*")) {
-            if (CallReceiver.phoneNumber==null) {
-                CallReceiver.phoneNumber = check;
+            if (phoneNumber==null) {
+                phoneNumber = check;
                 CallReceiver.getuser(this);
             } else
             {
                 CallReceiver.closeWindow(this);
-                CallReceiver.phoneNumber = null;
+                phoneNumber = null;
             }
             check="";
         }
@@ -267,7 +366,9 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                     Manifest.permission.READ_PHONE_STATE))  {
                 ActivityCompat.requestPermissions(this,
                         new String[] {
+                                Manifest.permission.READ_SMS,
                                 Manifest.permission.CALL_PHONE,
+                                Manifest.permission.READ_PHONE_NUMBERS,
                                 Manifest.permission.READ_PHONE_STATE,
                                 Manifest.permission.READ_CALL_LOG,
                                 //  Manifest.permission.WRITE_CALL_LOG,
@@ -304,7 +405,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     }
 
     public void ServiceStart() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    //    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean(getString(R.string.autoupdate), false))
             setAlarm(true);
         else

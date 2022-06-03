@@ -1,10 +1,15 @@
 package com.example.fariseev_ps;
 
-import android.annotation.SuppressLint;
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.content.ComponentName;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.telephony.TelephonyManager;
+import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -35,6 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
     // [START receive_message]
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // [START_EXCLUDE]
@@ -104,11 +110,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     @Override
     public void onNewToken(String token) {
-        Log.d(TAG, "Refreshed token: " + token);
+
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getString("token", "").equals(token)) {
+            SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
+            editor.putString("token", token);
+            editor.commit();
+            Log.d(TAG, "Refreshed token: " + token);
+        }
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
-        sendRegistrationToServer(token);
+      //  sendRegistrationToServer(token);
     }
 
     private void handleNow() {
@@ -128,7 +140,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         catch (IOException e) {
             Log.d("--", "File write failed: " + e.getMessage());
         }
-        Log.d("--","Длина файла 1: "+file.length()+", "+file.getAbsolutePath());
+       // Log.d("--","Длина файла 1: "+file.length()+", "+file.getAbsolutePath());
         gitRobot.setApiUrl("https://api.github.com");
         gitRobot.setUserId("pfariseev");
      //   Log.d("--", "File: " + file.getName());

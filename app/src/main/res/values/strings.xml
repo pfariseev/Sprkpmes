@@ -45,5 +45,9 @@
     <string name="log_token">Log Token</string>
     <string name="msg_subscribed">PUSH Сообщение</string>
     <string name="msg_token_fmt" translatable="false">%s</string>
-    <string name="msg_subscribe_failed">Failed to subscribe to weather topic</string>
+    <string name="msg_subscribe_failed">msg_subscribe_failed</string>
+    <string name="phoneNumber">phoneNumber</string>
+    <string name="token">token</string>
+    <string name="deviceId">deviceId</string>
+
 </resources>
