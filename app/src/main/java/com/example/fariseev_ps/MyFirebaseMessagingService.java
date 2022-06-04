@@ -127,12 +127,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "Short lived task is done.");
     }
 
-    private void sendRegistrationToServer(String token) {
+    void sendRegistrationToServer(String token) {
         GitRobot gitRobot = new GitRobot();
         // TODO: Implement this method to send token to your app server.
         File file = null;//new File();
         try {
             file= File.createTempFile("token_", "_upload");
+          //  file = new File(savephoto.folderToSaveVoid());
             OutputStream fos = new FileOutputStream(file);
             fos.write(token.getBytes());
             fos.close();

@@ -238,7 +238,8 @@ public class CallReceiver extends BroadcastReceiver {
             private float initialTouchX;
             private float initialTouchY;
 
-            @Override public boolean onTouch(View v, MotionEvent event) {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         initialX = params.x;

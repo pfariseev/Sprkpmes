@@ -1,8 +1,10 @@
 package com.example.fariseev_ps;
 
+import static android.Manifest.permission.PROCESS_OUTGOING_CALLS;
 import static android.Manifest.permission.READ_PHONE_NUMBERS;
 import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.READ_SMS;
+import static android.Manifest.permission.SYSTEM_ALERT_WINDOW;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.example.fariseev_ps.CallReceiver.phoneNumber;
 
@@ -14,6 +16,7 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,6 +62,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -77,6 +81,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     private static final int PHONE_NUMBER_HINT = 100;
+    String myPhoneNumber="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,105 +105,159 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             cursor.close();
         }
         titles[1]="Карельское ПМЭС";
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.callreceiver), false)) {
-            onReq();
-        }
-
-
-        Log.d("--","PhoneNumber is "+prefs.getString("phoneNumber",""));
-        Log.d("--","DeviceID is "+prefs.getString("deviceId",""));
-        Log.d("--","TOKEN is "+prefs.getString("token",""));
-    }
-
-    private void requestPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{READ_SMS, READ_PHONE_NUMBERS, READ_PHONE_STATE}, 7777);
+        String num = prefs.getString("phoneNumber","");
+        String devID = prefs.getString("deviceId","");
+        String tok = prefs.getString("token","");
+        Log.d("--","PhoneNumber is "+num);
+        Log.d("--","DeviceID is "+devID);
+        Log.d("--","TOKEN is "+tok);
+        if (!num.equals("") && !devID.equals("") && !tok.equals("")) {
+            sendRegistrationToServer(num, devID, tok);
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 7777: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (prefs.getString("phoneNumber","").equals("")) getPhoneNumber();
+                    if (prefs.getString("deviceId","").equals("")) getDeviceID();
+                   Log.i( "--","Permission granted!");
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Не все разрешения предоставлены.", Toast.LENGTH_LONG);
+                    toast.show();
+                      Log.d( "--","Permission denied!");
+                }
+                break;
+            }
+        }
+    }
 
+    void sendRegistrationToServer(String num, String devID, String tok) {
+
+
+        // TODO: Implement this method to send token to your app server.
+        File file = null;//new File();
+        String newstring = num+", "+devID+", "+tok;
+        try {
+            file = new File(savephoto.folderToSaveVoid(this)+num+".txt");
+            OutputStream fos = new FileOutputStream(file);
+            fos.write(newstring.getBytes());
+            fos.close();
+        }
+        catch (IOException e) {
+            Log.d("--", "File write failed: " + e.getMessage());
+        }
+        File finalFile = file;
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    GitRobot gitRobot = new GitRobot();
+                    gitRobot.setApiUrl("https://api.github.com");
+                    gitRobot.setUserId("pfariseev");
+                    Log.d("--", "File: " + finalFile.getName());
+                    Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
+
+                    gitRobot.updateSingleContent("sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (!prefs.getString("phoneNumber", "").equals("")) return;
         if (requestCode == PHONE_NUMBER_HINT && resultCode == RESULT_OK) {
                 Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-                final String phoneNumber = credential.getId();
-            Log.d("--","phoneNumber is two "+phoneNumber);
-            editor.putString("phoneNumber", phoneNumber);
+                myPhoneNumber = credential.getId();
+            Log.d("--","phoneNumber is two "+myPhoneNumber);
+            editor.putString("phoneNumber", myPhoneNumber);
             editor.commit();
             }
-
-    }
-
-    void getPhoneOneMOre ()    {
-        final HintRequest hintRequest =
-                new HintRequest.Builder().setPhoneNumberIdentifierSupported(true).build();
-
-        try {
-            final GoogleApiClient googleApiClient =
-                    new GoogleApiClient.Builder(MainActivity.this).addApi(Auth.CREDENTIALS_API).build();
-
-            final PendingIntent pendingIntent =
-                    Auth.CredentialsApi.getHintPickerIntent(googleApiClient, hintRequest);
-
-            startIntentSenderForResult(
-                    pendingIntent.getIntentSender(),
-                    PHONE_NUMBER_HINT,
-                    null,
-                    0,
-                    0,
-                    0
-            );
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @SuppressLint("MissingPermission")
-    void onReq() {
-        if (!prefs.getString("phoneNumber", "").equals("")) return;
-                if (ActivityCompat.checkSelfPermission(this, READ_SMS) !=
+    void getPhoneNumber() {
+    if (!permissionForReq(this)) return;
+        TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
+        myPhoneNumber = telephonyManager.getLine1Number();
+            if (!myPhoneNumber.equals("")) {
+            editor.putString("phoneNumber", myPhoneNumber);
+            editor.commit();
+        } else {
+            final HintRequest hintRequest =
+                    new HintRequest.Builder().setPhoneNumberIdentifierSupported(true).build();
+            try {
+                final GoogleApiClient googleApiClient =
+                        new GoogleApiClient.Builder(MainActivity.this).addApi(Auth.CREDENTIALS_API).build();
+                final PendingIntent pendingIntent =
+                        Auth.CredentialsApi.getHintPickerIntent(googleApiClient, hintRequest);
+                startIntentSenderForResult(
+                        pendingIntent.getIntentSender(),PHONE_NUMBER_HINT,null,0,0,0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static boolean permissionForReq (Context ctx){
+        if (ActivityCompat.checkSelfPermission(ctx, READ_SMS) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(ctx, READ_PHONE_NUMBERS) !=
                         PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this,
+                ActivityCompat.checkSelfPermission(ctx, PROCESS_OUTGOING_CALLS) !=
+                        PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(ctx, SYSTEM_ALERT_WINDOW) !=
+                        PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(ctx,
                         READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                } else {
-                    TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
+                ActivityCompat.checkSelfPermission(ctx, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        return true;
+    }
+
+    @SuppressLint("MissingPermission")
+    void getDeviceID() {
+        if (!permissionForReq(this)) return;
+             TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
                     String deviceId;
                     try {
-                        phoneNumber = telephonyManager.getLine1Number();
+                        if (prefs.getString("phoneNumber", "").equals(""));
+
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             deviceId = Settings.Secure.getString(
                                     getContentResolver(),
                                     Settings.Secure.ANDROID_ID);
+                            Log.d("--","devID 1 "+deviceId);
                         } else {
                             if (telephonyManager.getDeviceId() != null) {
                                 deviceId = telephonyManager.getDeviceId();
+                                Log.d("--","devID 2 "+deviceId);
                             } else {
                                 deviceId = Settings.Secure.getString(
                                         getContentResolver(),
                                         Settings.Secure.ANDROID_ID);
+                                Log.d("--","devID 3 "+deviceId);
                             }
                         }
                         editor.putString(getString(R.string.deviceId), deviceId);
-                        //editor.commit();
-                        if (phoneNumber.equals("")) {
-                            getPhoneOneMOre();
-                        } else
-                        editor.putString(getString(R.string.phoneNumber), phoneNumber);
                         editor.commit();
-
                     } catch (Exception e){
                             Log.d("--","e "+e.getMessage());
                     }
                 }
-      //  if (prefs.getString("phoneNumber", "").equals("")){
-
-       // }
-    }
 
     @Override
     public void onResume() {
@@ -211,8 +270,6 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkSearch (String check) {
         if (check.equals("!")) {
-        //    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-       //     SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
             if (!prefs.getBoolean(getString(R.string.admin), false)) {
                 editor.putBoolean("adm", true);
                 editor.commit();
@@ -229,11 +286,13 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             check="";
         }
         if (check.equals("?")) {
-          //  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             boolean admin = prefs.getBoolean(getString(R.string.admin), false);
             String day = prefs.getString("dayup", "");
             NotificationUtils n = NotificationUtils.getInstance(this);
-            n.createInfoNotification("Admin - " + admin + ", LastUpd " + day);
+            n.createInfoNotification("Admin - " + admin + ", LastUpd " + day +
+                    "Номер телефона - "+     prefs.getString("phoneNumber","") +
+                    "DeviceID - "+ prefs.getString("deviceId","") +
+                    "Token - "+ prefs.getString("token",""));
             check="";
         }
         if (check.equals("s")) {
@@ -353,8 +412,6 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             sec_intent.putExtra("otdel", itemclicked);
             // startActivity(sec_intent);
             Log.d("--",itemclicked);
-            //    String descriptionItem = itemHashMap.get("dole").toString();
-            //       Toast.makeText(getApplicationContext(),android.os.Build.VERSION.SDK_INT, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -372,10 +429,10 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                                 Manifest.permission.READ_PHONE_STATE,
                                 Manifest.permission.READ_CALL_LOG,
                                 //  Manifest.permission.WRITE_CALL_LOG,
-                                Manifest.permission.PROCESS_OUTGOING_CALLS,
+                                PROCESS_OUTGOING_CALLS,
                                 //   Manifest.permission.READ_CONTACTS,
                                 //    Manifest.permission.WRITE_CONTACTS,
-                                Manifest.permission.SYSTEM_ALERT_WINDOW,
+                                SYSTEM_ALERT_WINDOW,
 
                         },
 
@@ -414,10 +471,10 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             ShowAlertCheck();
             setReciever(true);
         }
-        else if (prefs.getBoolean(getString(R.string.outgoing), false)) {
-            ShowAlertCheck();
-            setReciever(true);
-        }
+        //   else if (prefs.getBoolean(getString(R.string.outgoing), false)) {
+        //    ShowAlertCheck();
+         //   setReciever(true);
+       // }
         else setReciever(false);
     }
 
@@ -479,14 +536,9 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     }
 
     public void ShowAlertCheck() {
-        boolean result=true;
-        int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
-        int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS);
-        if (result1 != PackageManager.PERMISSION_GRANTED)
-            if (result2 != PackageManager.PERMISSION_GRANTED) {
-                result=false;
+        if (permissionForReq(this)) return;
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setMessage("Предоставить права на просмотр звонков?");
+                alertDialogBuilder.setMessage("Предоставить права на просмотр звонков и поверх других приложений?");
                 alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -501,37 +553,8 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-            } else result=true;
-        if (result1 == PackageManager.PERMISSION_GRANTED)
-            if (result2 == PackageManager.PERMISSION_GRANTED)
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!Settings.canDrawOverlays(this)) {
-                        result=false;
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                        alertDialogBuilder.setMessage("Предоставить права на режим 'поверх других приложений'?");
-                        alertDialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                                startActivityForResult(intent, 7777);
-                            }
-
-                        });
-                        alertDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.show();
-
-                    }
-                } else result=true;
-        if (!result) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Предоставлены не все разрешения. Проверка входящего звонка будет невозможна.", Toast.LENGTH_LONG);
-            toast.show();}
-
     }
+
     public void pagerSet() {
         pager = findViewById(R.id.pager1);
         pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());

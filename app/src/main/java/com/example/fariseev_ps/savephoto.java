@@ -97,7 +97,7 @@ public class savephoto extends Activity {
 
     public static String folderToSaveVoid(Context context){
         String folderToSavenew=null;
-        if (context.getClass().getSimpleName().equals("MyFirebaseMessagingService"))
+        if (context.getClass().getSimpleName().equals("MainActivity"))
         folderToSavenew= context.getApplicationInfo().dataDir + "/cache/";
         else  folderToSavenew= context.getApplicationInfo().dataDir + "/Photo/";
         boolean exists = (new File(folderToSavenew)).exists();
