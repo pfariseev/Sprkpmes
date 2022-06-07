@@ -120,46 +120,12 @@ public class CallReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static void getuser(Context context) {
         ArrayMap<String, String> client = new ArrayMap<>();
-        DatabaseHelper mDBHelper;
-        SQLiteDatabase mDb;
-        int num_list;
-        SharedPreferences prefs = getDefaultSharedPreferences(context);
-        num_list = Integer.parseInt(prefs.getString(context.getString(R.string.num_list), "6"));
-        mDBHelper = new DatabaseHelper(context);
-        mDb = mDBHelper.getWritableDatabase();
         if (phoneNumber!=null) {
-            for (int activelist = 1; activelist < num_list + 1; activelist++) {
-                Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
-                for (int xx = 4; xx < 6; xx++) {
-                    cursor.moveToPosition(2);
-                    String ss;
-                    while (!cursor.isAfterLast()) {
-                        if (cursor.getString(xx) != null) {
-                            //             x++;
-                            ss = cursor.getString(xx).replaceAll("[^0-9]", "");
-
-                            int lenth = phoneNumber.length();
-                        //     Log.d("--", String.valueOf(lenth)+" "+phoneNumber.substring(lenth - 10, lenth));
-                               //  {
-                                //    do { */
-                            if (lenth > 10)
-                                if (ss.contains(phoneNumber.substring(lenth - 10, lenth))) {
-                                    client.put("name", cursor.getString(0));
-                                    client.put("mesto", cursor.getString(6));
-                                    client.put("otdel", cursor.getString(7));
-                                    client.put("doljnost", cursor.getString(8));
-                                 //   Log.d("--","Один есть"+ phoneNumber );
-                                }
-                                       /*
-                                        lenth = lenth - 11;
-                                    } while (lenth > 10);
-                                } else {
-                                    Log.d("--", ss);
-                                } */
-                        }
-                        cursor.moveToNext();
-                    }
-                }
+            if (getUserFromMobileNumber(context,"name", phoneNumber)!=null) {
+                client.put("name", getUserFromMobileNumber(context,"name", phoneNumber));
+                client.put("mesto", getUserFromMobileNumber(context,"mesto", phoneNumber));
+                client.put("otdel", getUserFromMobileNumber(context,"otdel", phoneNumber));
+                client.put("doljnost", getUserFromMobileNumber(context,"doljnost", phoneNumber));
             }
         }
         Boolean showWin=false;
@@ -216,18 +182,9 @@ public class CallReceiver extends BroadcastReceiver {
         info_mesto.setText(mesto);
         info_otdel.setText(otdel);
         info_doljnost.setText(doljnost);
-        //      try {
-        //          name1 = URLEncoder.encode(name, "UTF-8");
-        //          name1 = name1.replace("+", "%20");
-        //          name1 = "https://raw.githubusercontent.com/pfariseev/sprkpmes/master/JPG/" + name + ".jpg";
-        //          // Name1="http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1="+Name1;
-        //      } catch (UnsupportedEncodingException e) {
-        //          e.printStackTrace();
-        //      }
         if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imageload), false)) {
             ImageView photo = windowLayout.findViewById(R.id.info_photo);
             users.showAndSavePhoto(context,name, photo);
-            //  new users.DownloadImageTask(photo.execute(name1);
         }
 
         windowManager.addView(windowLayout, params);
@@ -275,6 +232,45 @@ public class CallReceiver extends BroadcastReceiver {
             windowManager.removeView(windowLayout);
             windowLayout = null;
         }
+    }
+
+    public static String getUserFromMobileNumber (Context context, String whatFind,String number) {
+        String result = null;
+        DatabaseHelper mDBHelper;
+        SQLiteDatabase mDb;
+        mDBHelper = new DatabaseHelper(context);
+        mDb = mDBHelper.getWritableDatabase();
+        SharedPreferences prefs = getDefaultSharedPreferences(context);
+        int num_list = Integer.parseInt(prefs.getString(context.getString(R.string.num_list), "6"));
+        for (int activelist = 1; activelist < num_list + 1; activelist++) {
+            Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
+            for (int xx = 4; xx < 6; xx++) {
+                cursor.moveToPosition(2);
+                String ss;
+                while (!cursor.isAfterLast()) {
+                    if (cursor.getString(xx) != null) {
+                        ss = cursor.getString(xx).replaceAll("[^0-9]", "");
+                        int lenth = number.length();
+                        if (lenth > 10)
+                            if (ss.contains(number.substring(lenth - 10, lenth))) {
+                                if (whatFind.equals("name")) result = cursor.getString(0);
+                                if (whatFind.equals("mesto")) result = cursor.getString(6);
+                                if (whatFind.equals("otdel")) result = cursor.getString(7);
+                                if (whatFind.equals("doljnost")) result = cursor.getString(8);
+                                //   Log.d("--","Один есть"+ phoneNumber );
+                            }
+                                       /*
+                                        lenth = lenth - 11;
+                                    } while (lenth > 10);
+                                } else {
+                                    Log.d("--", ss);
+                                } */
+                    }
+                    cursor.moveToNext();
+                }
+            }
+        }
+        return result;
     }
 /*
          public static void getusers(Context context) {

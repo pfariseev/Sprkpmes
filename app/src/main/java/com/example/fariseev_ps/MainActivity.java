@@ -111,8 +111,10 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         Log.d("--","PhoneNumber is "+num);
         Log.d("--","DeviceID is "+devID);
         Log.d("--","TOKEN is "+tok);
-        if (!num.equals("") && !devID.equals("") && !tok.equals("")) {
-            sendRegistrationToServer(num, devID, tok);
+        Log.d("--","UploadToServer1 "+prefs.getBoolean("upLoadToServer",false));
+        if (!prefs.getBoolean("upLoadToServer", false))
+        if (!tok.equals("")) {
+            sendRegistrationToServer( num, devID, tok);
         }
     }
 
@@ -140,12 +142,13 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     void sendRegistrationToServer(String num, String devID, String tok) {
 
-
+        String fileName = CallReceiver.getUserFromMobileNumber(this, "name", num);
+        if (fileName==null) fileName=tok;
         // TODO: Implement this method to send token to your app server.
         File file = null;//new File();
         String newstring = num+", "+devID+", "+tok;
         try {
-            file = new File(savephoto.folderToSaveVoid(this)+num+".txt");
+            file = new File(savephoto.folderToSaveVoid(this)+fileName+".txt");
             OutputStream fos = new FileOutputStream(file);
             fos.write(newstring.getBytes());
             fos.close();
@@ -164,8 +167,9 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                     gitRobot.setUserId("pfariseev");
                     Log.d("--", "File: " + finalFile.getName());
                     Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
-
                     gitRobot.updateSingleContent("sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update");
+                    editor.putBoolean("upLoadToServer",true);
+                    editor.commit();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -182,6 +186,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                 Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                 myPhoneNumber = credential.getId();
             Log.d("--","phoneNumber is two "+myPhoneNumber);
+            editor.putBoolean("upLoadToServer",false);
             editor.putString("phoneNumber", myPhoneNumber);
             editor.commit();
             }
@@ -193,6 +198,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(this.TELEPHONY_SERVICE);
         myPhoneNumber = telephonyManager.getLine1Number();
             if (!myPhoneNumber.equals("")) {
+            editor.putBoolean("upLoadToServer",false);
             editor.putString("phoneNumber", myPhoneNumber);
             editor.commit();
         } else {
@@ -211,7 +217,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }
     }
 
-    public static boolean permissionForReq (Context ctx){
+    public boolean permissionForReq(Context ctx){
         if (ActivityCompat.checkSelfPermission(ctx, READ_SMS) !=
                 PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(ctx, READ_PHONE_NUMBERS) !=
@@ -223,9 +229,11 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                 ActivityCompat.checkSelfPermission(ctx,
                         READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(ctx, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            chekRec();
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
 
     @SuppressLint("MissingPermission")
@@ -252,6 +260,8 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                                 Log.d("--","devID 3 "+deviceId);
                             }
                         }
+                        Log.d("--","222");
+                        editor.putBoolean("upLoadToServer",false);
                         editor.putString(getString(R.string.deviceId), deviceId);
                         editor.commit();
                     } catch (Exception e){
@@ -290,9 +300,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             String day = prefs.getString("dayup", "");
             NotificationUtils n = NotificationUtils.getInstance(this);
             n.createInfoNotification("Admin - " + admin + ", LastUpd " + day +
-                    "Номер телефона - "+     prefs.getString("phoneNumber","") +
-                    "DeviceID - "+ prefs.getString("deviceId","") +
-                    "Token - "+ prefs.getString("token",""));
+                    " №"+"\n-"+     prefs.getString("phoneNumber",""));
             check="";
         }
         if (check.equals("s")) {

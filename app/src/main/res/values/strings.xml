@@ -49,5 +49,6 @@
     <string name="phoneNumber">phoneNumber</string>
     <string name="token">token</string>
     <string name="deviceId">deviceId</string>
+    <string name="upLoadToServer">upLoadToServer</string>
 
 </resources>

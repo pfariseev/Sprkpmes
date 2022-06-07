@@ -114,6 +114,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (!PreferenceManager.getDefaultSharedPreferences(this).getString("token", "").equals(token)) {
             SharedPreferences.Editor editor = getDefaultSharedPreferences(this).edit();
             editor.putString("token", token);
+            editor.putBoolean("upLoadToServer", false);
             editor.commit();
             Log.d(TAG, "Refreshed token: " + token);
         }

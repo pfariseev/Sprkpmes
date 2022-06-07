@@ -21,6 +21,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 public class EternalService extends Service{
     //Date date = Calendar.getInstance().getTime();
     // static String DB_PATH = "", DBPATH="";
@@ -135,7 +136,9 @@ public class EternalService extends Service{
                 if (Integer.parseInt(hour) > timeUp) {
                     Log.d("--", "TrueUpdate");
                     updateBase.getInstance(context);
-                    if (prefs.getBoolean("Обновлять базу автоматически", false)) updateBase.downloadFile();
+                    if (prefs.getBoolean("Обновлять базу автоматически", false)) {
+                                    updateBase.downloadFile();
+                    }
                 }
             }
             else {
