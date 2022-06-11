@@ -115,10 +115,12 @@ class MySimpleAdapter extends SimpleAdapter {
         TextView textView =  view.findViewById(R.id.textViewmain);
         String name = (String) textView.getText();
         ImageView photo = view.findViewById(R.id.imageView4);
+
         if (photo!=null )
             if (name!=null) {
-                users.showAndSavePhoto(ctx, name, photo);
-                //  new users.DownloadImageTask(photo).execute(users.convertName(name));
+                GitRobot gitRobot = new GitRobot();
+                gitRobot.updateSingleContent(ctx, "Sprkpmes","JPG",name+".jpg",savephoto.folderToSaveVoid(ctx),"download", photo);
+            //    users.showAndSavePhoto(ctx, name, photo);
             }
         ImageView photoUser = view.findViewById(R.id.imageView2);
         if (photoUser!=null )

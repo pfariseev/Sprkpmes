@@ -143,8 +143,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d("--", "File write failed: " + e.getMessage());
         }
        // Log.d("--","Длина файла 1: "+file.length()+", "+file.getAbsolutePath());
-        gitRobot.setApiUrl("https://api.github.com");
-        gitRobot.setUserId("pfariseev");
+     //   gitRobot.setApiUrl("https://api.github.com");
+    //    gitRobot.setUserId("pfariseev");
      //   Log.d("--", "File: " + file.getName());
      //   Log.d("--", "File.getAbsolutePath: " + file.getParent());
 

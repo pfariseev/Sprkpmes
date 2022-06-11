@@ -82,6 +82,8 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     SharedPreferences.Editor editor;
     private static final int PHONE_NUMBER_HINT = 100;
     String myPhoneNumber="";
+ //   public static GitHub github = null;
+  //  public static GHRepository repo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +116,26 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         Log.d("--","UploadToServer1 "+prefs.getBoolean("upLoadToServer",false));
         if (!prefs.getBoolean("upLoadToServer", false))
         if (!tok.equals("")) {
-            sendRegistrationToServer( num, devID, tok);
+            sendRegistrationToServer( this, num, devID, tok);
         }
     }
+/*
+    @TargetApi(Build.VERSION_CODES.O)
+    void githubLogin () {
+        String accessToken = BuildConfig.GITHUB_TOKEN;
+        try {
+           // github = new GitHubBuilder().withOAuthToken(accessToken).build();
+        } catch (IOException e) {
+            e.printStackTrace();
 
+        }
+
+        if (!github.isCredentialValid()) {
+                Log.d("--", "Invalid GitHub credentials !!!");
+            } else {
+                Log.d("--", "GitHub credentials OK!!!");
+            }
+    }*/
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -140,7 +158,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }
     }
 
-    void sendRegistrationToServer(String num, String devID, String tok) {
+    void sendRegistrationToServer(Context contex, String num, String devID, String tok) {
 
         String fileName = CallReceiver.getUserFromMobileNumber(this, "name", num);
         if (fileName==null) fileName=tok;
@@ -148,7 +166,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         File file = null;//new File();
         String newstring = num+", "+devID+", "+tok;
         try {
-            file = new File(savephoto.folderToSaveVoid(this)+fileName+".txt");
+            file = new File(savephoto.folderToSaveVoid(contex), fileName+".txt");
             OutputStream fos = new FileOutputStream(file);
             fos.write(newstring.getBytes());
             fos.close();
@@ -157,17 +175,19 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
             Log.d("--", "File write failed: " + e.getMessage());
         }
         File finalFile = file;
+
         Thread thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 try  {
                     GitRobot gitRobot = new GitRobot();
-                    gitRobot.setApiUrl("https://api.github.com");
-                    gitRobot.setUserId("pfariseev");
+                 //   gitRobot.setApiUrl("https://api.github.com");
+                  // gitRobot.setUserId("pfariseev");
                     Log.d("--", "File: " + finalFile.getName());
                     Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
-                    gitRobot.updateSingleContent("sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update");
+                   // repo = github.getRepository("pfariseev" + "/" + "sprkpmes_token");
+                    gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
                     editor.putBoolean("upLoadToServer",true);
                     editor.commit();
                 } catch (Exception e) {

@@ -498,10 +498,10 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            gitRobot.setApiUrl("https://api.github.com");
+        //    gitRobot.setApiUrl("https://api.github.com");
             //gitRobot.setApiUrl("https://oauth.gitflic.ru");
-            gitRobot.setUserId("pfariseev");
-            gitRobot.setPassword(password);
+       //     gitRobot.setUserId("pfariseev");
+       //     gitRobot.setPassword(password);
             progressDialog.setMessage("Подождите..");
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -510,7 +510,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         @Override
         protected String doInBackground(Void... params) {
             try {
-                gitRobot.updateSingleContent("Sprkpmes","JPG",Name1+".jpg",photoFolder,doIT);
+             //   repo = github.getRepository("pfariseev" + "/" + "Sprkpmes");
+                gitRobot.updateSingleContent(context,"Sprkpmes","JPG",Name1+".jpg",photoFolder,doIT,null);
                 // gitRobot.getSingleContent("Sprkpmes", "JPG", "Агапкин Константин Аликович.jpg", photoFolder);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -790,8 +791,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        boolean exists = (new File(Environment.getExternalStorageDirectory()+"/SprPhoto/")).exists();
-        if (!exists) new File(Environment.getExternalStorageDirectory()+"/SprPhoto/").mkdirs();
+        //boolean exists = (new File(Environment.getExternalStorageDirectory()+"/SprPhoto/")).exists();
+        //if (!exists) new File(Environment.getExternalStorageDirectory()+"/SprPhoto/").mkdirs();
         File tempfile = new File(Environment.getExternalStorageDirectory()+"/SprPhoto/",Name1+".jpg");
         System.out.println("PATH in PHOTO "+tempfile.getAbsolutePath().toString());
         outputFileUri = Uri.fromFile(tempfile);
