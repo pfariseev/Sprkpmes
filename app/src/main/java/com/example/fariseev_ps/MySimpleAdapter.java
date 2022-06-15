@@ -119,8 +119,8 @@ class MySimpleAdapter extends SimpleAdapter {
         if (photo!=null )
             if (name!=null) {
                 GitRobot gitRobot = new GitRobot();
-                gitRobot.updateSingleContent(ctx, "Sprkpmes","JPG",name+".jpg",savephoto.folderToSaveVoid(ctx),"download", photo);
-            //    users.showAndSavePhoto(ctx, name, photo);
+             //   gitRobot.updateSingleContent(ctx, "Sprkpmes","JPG",name+".jpg",savephoto.folderToSaveVoid(ctx),"download", photo);
+                users.showAndSavePhoto(ctx, name, photo);
             }
         ImageView photoUser = view.findViewById(R.id.imageView2);
         if (photoUser!=null )
