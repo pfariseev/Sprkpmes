@@ -252,7 +252,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     }
 
     public static void showAndSavePhoto(Context context, String name, ImageView photo) {
-        photoFolder = savephoto.folderToSaveVoid(context);
+        photoFolder = savephoto.folderToSaveVoid(context, "Photo");
         file = new File(photoFolder, name + ".jpg");
         if ((PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imagesavetodisk), false))) {
             //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
@@ -913,7 +913,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
         }
         ctx.getContentResolver().insert(addContactsUri, contentValues);
-        File fileForAddContact = new File(savephoto.folderToSaveVoid(ctx), name + ".jpg");
+        File fileForAddContact = new File(savephoto.folderToSaveVoid(ctx, "Photo"), name + ".jpg");
         if (fileForAddContact!=null)
             if (fileForAddContact.exists()) {
                 byte[] photoData = getByteArrayfromBitmap(getBitmap(fileForAddContact.getAbsolutePath()));

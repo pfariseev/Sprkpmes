@@ -166,7 +166,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         File file = null;//new File();
         String newstring = num+", "+devID+", "+tok;
         try {
-            file = new File(savephoto.folderToSaveVoid(contex), fileName+".txt");
+            file = new File(savephoto.folderToSaveVoid(contex, "cache"), fileName+".txt");
             OutputStream fos = new FileOutputStream(file);
             fos.write(newstring.getBytes());
             fos.close();

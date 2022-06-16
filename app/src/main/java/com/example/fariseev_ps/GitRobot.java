@@ -108,7 +108,7 @@ public class GitRobot {
         byte[] cb = new byte[1024];
         int nSize = 0;
         try {
-            File file = new File(savephoto.folderToSaveVoid(context), path);
+            File file = new File(savephoto.folderToSaveVoid(context, "Photo"), path);
             //      File dir = file.getParentFile();
             //     if(!dir.exists())
             //         dir.mkdirs();

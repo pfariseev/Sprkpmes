@@ -62,7 +62,7 @@ public class savephoto extends Activity {
         //  TextView copyrovanie = findViewById(R.id.textok);
 
         //copyrovanie.setText("Начать копирование ?");
-        folderToSave=folderToSaveVoid(this);
+        folderToSave=folderToSaveVoid(this,"Photo");
         mDBHelper = new DatabaseHelper(this);
         try {
             mDb = mDBHelper.getWritableDatabase();
@@ -95,11 +95,11 @@ public class savephoto extends Activity {
         Run();
     }
 
-    public static String folderToSaveVoid(Context context){
+    public static String folderToSaveVoid(Context context, String pholder){
         String folderToSavenew=null;
-        if (context.getClass().getSimpleName().equals("MainActivity"))
-        folderToSavenew= context.getApplicationInfo().dataDir + "/cache/";
-        else  folderToSavenew= context.getApplicationInfo().dataDir + "/Photo/";
+      //  if (context.getClass().getSimpleName().equals("MainActivity"))
+        folderToSavenew= context.getApplicationInfo().dataDir + "/"+pholder+"/";
+      //  else  folderToSavenew= context.getApplicationInfo().dataDir + "/Photo/";
         boolean exists = (new File(folderToSavenew)).exists();
         if (!exists)new File(folderToSavenew).mkdirs();
         return folderToSavenew;
