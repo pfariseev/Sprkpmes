@@ -56,7 +56,7 @@ class updateBase {
             updateBase.context = context;
         }
         return instance;
-        
+
     }
 
 

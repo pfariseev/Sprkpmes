@@ -116,7 +116,9 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         Log.d("--","UploadToServer1 "+prefs.getBoolean("upLoadToServer",false));
         if (!prefs.getBoolean("upLoadToServer", false))
         if (!tok.equals("")) {
-            sendRegistrationToServer( this, num, devID, tok);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                sendRegistrationToServer(this, num, devID, tok);
+            }
         }
     }
 /*
