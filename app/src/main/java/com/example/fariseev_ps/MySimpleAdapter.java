@@ -85,7 +85,12 @@ class MySimpleAdapter extends SimpleAdapter {
         super.setViewText(v, text);
         if (v.getId()==R.id.textViewmain) {
             v.setTextSize(sOsn);
-            v.setTypeface(null, typeOsn);}
+            v.setTypeface(null, typeOsn);
+        } else {
+            v.setTextSize(sDop);
+            v.setTypeface(null, typeDop);
+        }
+        /*
         if (v.getId() == R.id.textView0) {
             v.setTextSize(sDop);
             v.setTypeface(null, typeDop);}
@@ -106,7 +111,7 @@ class MySimpleAdapter extends SimpleAdapter {
             v.setTypeface(null, typeDop);}
         if (v.getId() == R.id.textView8) {
             v.setTextSize(sDop);
-            v.setTypeface(null, typeDop);}
+            v.setTypeface(null, typeDop);} */
     }
 
 

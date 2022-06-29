@@ -56,7 +56,6 @@
                     android:entryValues="@array/text1_razmer2"
                     android:key="@string/text1_razmer"
                     android:title="@string/razmerosnshrift" />
-
                 <ListPreference
                     android:defaultValue="1"
                     android:dialogTitle="Выберите стиль для шрифта"
@@ -64,6 +63,13 @@
                     android:entryValues="@array/nazvanieosn"
                     android:key="@string/osn"
                     android:title="@string/stilosnshrift" />
+
+                <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+                    android:defaultValue="@color/colorPrimaryDark"
+                    android:key="default_color"
+                    android:title="@string/color_first"/>
+
+
         </PreferenceCategory>
 
         <PreferenceCategory android:title="@string/nastrdopshrift">
@@ -82,5 +88,9 @@
                     android:entryValues="@array/nazvanieosn"
                     android:key="@string/dop"
                     android:title="@string/stildopshrift" />
+
+
+
         </PreferenceCategory>
+
 </PreferenceScreen>

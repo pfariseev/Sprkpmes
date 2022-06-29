@@ -50,5 +50,10 @@
     <string name="token">token</string>
     <string name="deviceId">deviceId</string>
     <string name="upLoadToServer">upLoadToServer</string>
+    <string name="color_first">Цвет основного шрифта</string>
+    <string name="color_second">Цвет дополнительного шрифта</string>
+    <string name="color_background">Цвет фона</string>
+    <string name="color_background_summary">color_background_summary</string>
+
 
 </resources>

@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="background_material_light">#af9090</color>
     <color name="grey">#cccccc</color>
+    <color name="black">#000000</color>
     <color name="light_blue">#ff64c2f4</color>
     <color name="fbutton_color_turquoise">#1abc9c</color>
     <color name="fbutton_color_green_sea">#16a085</color>
