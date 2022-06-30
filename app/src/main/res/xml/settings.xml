@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-        <PreferenceCategory
+        <androidx.preference.PreferenceCategory
             android:title="Основные"/>
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/newstyle"
             android:title="@string/newstyle" />
 
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/autoupdate"
             android:title="@string/autoupdate" />
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/callreceiver"
             android:title="@string/callreceiver" />
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/outgoing"
             android:title="@string/outgoing"
@@ -32,31 +33,31 @@
             android:summary="Не отображается информация при звонке об абоненте, если такой есть в Контактах"/>
 
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/imageload"
             android:title="@string/imageload" />
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/imagesavetodisk"
             android:title="@string/imagesavetodisk"
             android:summary="Сохранять фотографии в память телефона"/>
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/uvedom"
             android:title="@string/uvedom" />
 
-        <PreferenceCategory android:title="@string/nastrosnshrift">
+        <androidx.preference.PreferenceCategory android:title="@string/nastrosnshrift">
 
-                <ListPreference
+                <androidx.preference.ListPreference
                     android:defaultValue="20"
                     android:entries="@array/text1_razmer"
                     android:entryValues="@array/text1_razmer2"
                     android:key="@string/text1_razmer"
                     android:title="@string/razmerosnshrift" />
-                <ListPreference
+                <androidx.preference.ListPreference
                     android:defaultValue="1"
                     android:dialogTitle="Выберите стиль для шрифта"
                     android:entries="@array/nazvanieosn"
@@ -66,22 +67,22 @@
 
                 <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
                     android:defaultValue="@color/colorPrimaryDark"
-                    android:key="default_color"
+                    android:key="default_color_first"
                     android:title="@string/color_first"/>
 
 
-        </PreferenceCategory>
+        </androidx.preference.PreferenceCategory>
 
-        <PreferenceCategory android:title="@string/nastrdopshrift">
+        <androidx.preference.PreferenceCategory android:title="@string/nastrdopshrift">
 
-                <ListPreference
+                <androidx.preference.ListPreference
                     android:defaultValue="16"
                     android:entries="@array/text1_razmer"
                     android:entryValues="@array/text1_razmer2"
                     android:key="@string/text2_razmer"
                     android:title="@string/razmerdopshrift" />
 
-                <ListPreference
+                <androidx.preference.ListPreference
                     android:defaultValue="1"
                     android:dialogTitle="Выберите стиль для шрифта"
                     android:entries="@array/nazvanieosn"
@@ -89,8 +90,11 @@
                     android:key="@string/dop"
                     android:title="@string/stildopshrift" />
 
+                <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+                    android:defaultValue="@color/black"
+                    android:key="default_color_second"
+                    android:title="@string/color_second"/>
 
+        </androidx.preference.PreferenceCategory>
 
-        </PreferenceCategory>
-
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

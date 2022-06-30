@@ -10,7 +10,6 @@ import static com.example.fariseev_ps.CallReceiver.phoneNumber;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -43,11 +42,12 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
@@ -67,9 +67,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    ActionBar actionBar;
+    ActionBar actionBar ;
     private DatabaseHelper mDBHelper;
     private SearchView mSearchView;
     private SQLiteDatabase mDb;
@@ -602,14 +602,17 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                 // ------------------------дата
                 Cursor cursor = mDb.rawQuery("SELECT * FROM Лист"+list, null);
                 cursor.moveToPosition(2);
-                actionBar = getActionBar();
-                actionBar.setTitle(cursor.getString(6));
-                if (list.equals("1")) {
-                    // actionBar.setTitle(cursor.getString(6));
-                    cursor.moveToFirst(); //дата
-                    actionBar.setSubtitle(cursor.getString(11));
-                } else actionBar.setSubtitle(" ");
-                actionBar.show();
+                actionBar = getSupportActionBar();
+
+                if (actionBar != null) {
+                    actionBar.setTitle(cursor.getString(6));
+                    if (list.equals("1")) {
+                        // actionBar.setTitle(cursor.getString(6));
+                        cursor.moveToFirst(); //дата
+                        actionBar.setSubtitle(cursor.getString(11));
+                    } else actionBar.setSubtitle(" ");
+                    actionBar.show();
+                }
                 cursor.close();
             }
 
@@ -652,11 +655,13 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         Log.d("--", "-" + ver + "- ! -"+cursor.getInt(11)+"-");
         if (list.equals("1")){
             cursor.moveToPosition(2);
-            actionBar = getActionBar();
-            actionBar.setTitle("Карельское ПМЭС");
-            cursor.moveToFirst();
-            actionBar.setSubtitle(cursor.getString(11));
-            actionBar.show();
+            actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("Карельское ПМЭС");
+                cursor.moveToFirst();
+                actionBar.setSubtitle(cursor.getString(11));
+                actionBar.show();
+            }
         }
         cursor.close();
     }
