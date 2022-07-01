@@ -2,7 +2,6 @@ package com.example.fariseev_ps;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,10 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class search extends Activity {
+public class search extends AppCompatActivity {
 
 
     //Переменная для работы с БД
@@ -31,7 +32,7 @@ public class search extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        getActionBar().hide();
+        getSupportActionBar().hide();
         String Search = getIntent().getExtras().getString("searc");
         Log.d("--",Search);
         SharedPreferences prefs = getDefaultSharedPreferences(this);

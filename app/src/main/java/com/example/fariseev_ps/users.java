@@ -8,8 +8,8 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.Activity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -74,7 +74,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class users extends Activity implements AdapterView.OnItemLongClickListener {
+public class users extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     private static final int IDM_SMS = 101, IDM_COPY = 102, EMail_COPY = 103;;
     Context context;
@@ -114,6 +114,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         Start();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onResume() {
         super.onResume();
@@ -161,7 +162,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
 //Отправляем запрос в БД
         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + list, null);
         cursor.moveToFirst(); //дата
-        actionBar = getActionBar();
+        actionBar = getSupportActionBar();
         for (int activelist = 1; activelist < num_list + 1; activelist++) {
             cursor = mDb.rawQuery("SELECT * FROM Лист" + activelist, null);
             cursor.moveToFirst(); //дата
@@ -371,6 +372,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //     super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
         System.out.println("requestCode " + requestCode);
 
@@ -399,7 +401,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
 
         } else if (requestCode == PIC_CROP) {
             realPath = outputFileUri.getPath();
-            System.out.println("Path out PHOTO "+realPath);
+            System.out.println("Path out PHOTO " + realPath);
             Bitmap rotatebitmap = getBitmap(realPath);
             try {
                 ExifInterface exif = new ExifInterface(realPath);
@@ -416,7 +418,8 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
             }
 
         }
-        if (bitmap != null) saveFiletoFolder(Name1, bitmap); else realPath = null;
+        if (bitmap != null) saveFiletoFolder(Name1, bitmap);
+        else realPath = null;
     }
 
     public static void saveFiletoFolder(String name, Bitmap bitmap) {
@@ -731,9 +734,9 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
         if (ContextCompat.checkSelfPermission(ctx,
                 Manifest.permission.WRITE_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale((Activity) ctx,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale((AppCompatActivity) ctx,
                     Manifest.permission.WRITE_CONTACTS)) {
-                ActivityCompat.requestPermissions((Activity) ctx,
+                ActivityCompat.requestPermissions((AppCompatActivity) ctx,
                         new String[]{
                                 Manifest.permission.WRITE_CONTACTS,
                                 Manifest.permission.READ_CONTACTS}, 7778);
@@ -754,6 +757,7 @@ public class users extends Activity implements AdapterView.OnItemLongClickListen
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setItems(mMenu, new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
                         if (item == 0) {

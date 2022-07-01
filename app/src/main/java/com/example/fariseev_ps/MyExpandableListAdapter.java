@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -22,9 +23,10 @@ import info.hoang8f.widget.FButton;
 class MyExpandableListAdapter extends SimpleExpandableListAdapter {
 
     Float sOsn,sDop;
-    int typeOsn, typeDop;
+    int typeOsn, typeDop, colorPrim, colorSec;
     Boolean loadPhoto;
     Context ctx;
+    String colorF, colorS;
     private static List<? extends Map<String, ?>> parent;
 
 
@@ -47,6 +49,10 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
         sDop = Float.parseFloat(sized);
         typeOsn = Typeface.NORMAL;
         typeDop = Typeface.NORMAL;
+        colorPrim = prefs.getInt(context.getString(R.string.colorPrimForText), -12627531);
+        colorSec = prefs.getInt(context.getString(R.string.colorSecForText), 0);
+        colorF = Integer.toHexString(colorPrim);
+        colorS = Integer.toHexString(colorSec);
         if (typeO.contains("Полужирный"))
             typeOsn += Typeface.BOLD;
         if (typeO.contains("Курсив"))
@@ -66,6 +72,7 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
         TextView v = (TextView) view.findViewById(R.id.listTitle);
         v.setTextSize(sOsn);
         v.setTypeface(null, typeOsn);
+        v.setTextColor(Color.parseColor("#"+colorF));
         if (isExpanded) {
             v.setBackgroundResource(R.drawable.info_round4);
         }
@@ -101,14 +108,19 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
         TextView g = (TextView) view.findViewById(R.id.item45);
         v.setTextSize(sOsn);
         v.setTypeface(null, typeOsn);
+        v.setTextColor(Color.parseColor("#"+colorF));
         d.setTextSize(sDop);
         d.setTypeface(null, typeDop);
+        d.setTextColor(Color.parseColor("#"+colorS));
         i.setTextSize(sDop);
         i.setTypeface(null, typeDop);
+        i.setTextColor(Color.parseColor("#"+colorS));
         s.setTextSize(sDop);
         s.setTypeface(null, typeDop);
+        s.setTextColor(Color.parseColor("#"+colorS));
         g.setTextSize(sDop);
         g.setTypeface(null, typeDop);
+        g.setTextColor(Color.parseColor("#"+colorS));
         if (loadPhoto) setPhoto(view, v);
         View photo = view.findViewById(R.id.photoToExpAdapter);
 /*        photo.setOnClickListener(new View.OnClickListener(){

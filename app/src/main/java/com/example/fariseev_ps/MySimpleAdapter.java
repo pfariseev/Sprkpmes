@@ -3,9 +3,9 @@ package com.example.fariseev_ps;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -27,11 +27,12 @@ import info.hoang8f.widget.FButton;
 class MySimpleAdapter extends SimpleAdapter {
 
     Float sOsn,sDop;
+    Integer colorPrim, colorSec;
     int typeOsn, typeDop;
     Boolean loadPhoto, savephotoToDidsk;
     Context ctx;
     SharedPreferences prefs;
-    String blacklst="";
+    String blacklst="", colorF, colorS;
 
     public MySimpleAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
         super(context, data, resource, from, to);
@@ -44,7 +45,10 @@ class MySimpleAdapter extends SimpleAdapter {
         sized = prefs.getString(context.getString(R.string.text2_razmer), "16");
         typeO = prefs.getString(context.getString(R.string.osn), "");
         typeD = prefs.getString(context.getString(R.string.dop), "");
-
+        colorPrim = prefs.getInt(context.getString(R.string.colorPrimForText), -12627531);
+        colorSec = prefs.getInt(context.getString(R.string.colorSecForText), 0);
+        colorF = Integer.toHexString(colorPrim);
+        colorS = Integer.toHexString(colorSec);
         sOsn = Float.parseFloat(sizeo);
         sDop = Float.parseFloat(sized);
         typeOsn = Typeface.NORMAL;
@@ -59,7 +63,6 @@ class MySimpleAdapter extends SimpleAdapter {
             typeDop += Typeface.ITALIC;
 
     }
-    @SuppressLint("ResourceType")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
@@ -86,9 +89,11 @@ class MySimpleAdapter extends SimpleAdapter {
         if (v.getId()==R.id.textViewmain) {
             v.setTextSize(sOsn);
             v.setTypeface(null, typeOsn);
+            v.setTextColor(Color.parseColor("#"+colorF));
         } else {
             v.setTextSize(sDop);
             v.setTypeface(null, typeDop);
+            v.setTextColor(Color.parseColor("#"+colorS));
         }
         /*
         if (v.getId() == R.id.textView0) {

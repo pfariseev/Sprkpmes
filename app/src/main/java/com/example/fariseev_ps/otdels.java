@@ -1,7 +1,7 @@
 package com.example.fariseev_ps;
 
-import android.app.ActionBar;
-import android.app.Activity;
+
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,12 +14,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class otdels extends Activity {
+public class otdels extends AppCompatActivity {
 
 
     //Переменная для работы с БД
@@ -63,7 +64,7 @@ public class otdels extends Activity {
 //--------------------------------------------------------------
 //Отправляем запрос в БД
         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + list, null);
-        actionBar = getActionBar();
+        actionBar = getSupportActionBar();
         cursor.moveToPosition(2);
         while (!cursor.isAfterLast()) {
             client = new HashMap<String, Object>();

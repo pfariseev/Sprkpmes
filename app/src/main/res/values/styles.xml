@@ -1,28 +1,20 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="actionBarStyle">@style/ActionBar</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu</item>
-        <item name="android:actionBarWidgetTheme">@style/Theme.stylingactionbar.widget</item>
+        <item name="actionBarTheme">@style/ActionBar</item>
+        <item name="android:itemBackground">@color/fbutton_color_clouds</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="ActionBar" parent="Widget.AppCompat.ActionBar">
-        <item name="colorPrimary">@android:color/holo_red_dark</item>
-        <item name="android:textColorPrimary">@color/fbutton_color_pumpkin</item>
-        <item name="android:textColorSecondary">@color/fbutton_color_pumpkin</item>
-        <item name="android:background">@color/fbutton_color_amethyst</item>
-        <item name="android:backgroundStacked">@color/colorPrimary</item>
+    <style name="ActionBar" parent="Widget.AppCompat.Light.ActionBar">
+        <item name="android:textColorPrimary">@color/fbutton_color_clouds</item>
+        <item name="android:textColorSecondary">@color/fbutton_color_silver</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+
     </style>
 
-    <style name="PopupMenu" parent="@android:style/Widget.Holo.ListPopupWindow">
-        <item name="android:popupBackground">@color/fbutton_color_amethyst</item>
-    </style>
-
-    <style name="Theme.stylingactionbar.widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu</item>
-    </style>
 
     <style name="MySwitch" parent="Theme.AppCompat.Light">
         <!-- активное состояние (30% прозрачности для фона) -->

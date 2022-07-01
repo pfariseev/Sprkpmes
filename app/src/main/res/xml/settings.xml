@@ -66,10 +66,9 @@
                     android:title="@string/stilosnshrift" />
 
                 <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-                    android:defaultValue="@color/colorPrimaryDark"
-                    android:key="default_color_first"
-                    android:title="@string/color_first"/>
-
+                    android:defaultValue="@color/colorPrimForText"
+                    android:key="@string/colorPrimForText"
+                    android:title="@string/colorPrimForText"/>
 
         </androidx.preference.PreferenceCategory>
 
@@ -91,9 +90,9 @@
                     android:title="@string/stildopshrift" />
 
                 <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-                    android:defaultValue="@color/black"
-                    android:key="default_color_second"
-                    android:title="@string/color_second"/>
+                    android:defaultValue="@color/colorSecForText"
+                    android:key="@string/colorSecForText"
+                    android:title="@string/colorSecForText"/>
 
         </androidx.preference.PreferenceCategory>
 
