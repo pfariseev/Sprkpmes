@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import info.hoang8f.widget.FButton;
+
 
 public class about extends Activity {
 
@@ -17,6 +19,9 @@ public class about extends Activity {
 
         TextView versionCode = findViewById(R.id.textViewV);
         versionCode.setText("v." + veri);
+
+        FButton b = findViewById(R.id.about);
+        b.setButtonColor(this.getResources().getColor(R.color.fbutton_color_asbestos));
 
     }
 

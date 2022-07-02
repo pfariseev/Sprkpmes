@@ -7,50 +7,50 @@
     >
 
         <androidx.preference.PreferenceCategory
-            android:title="Основные"/>
-
+            android:title="Основные настройки"/>
         <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/newstyle"
             android:title="@string/newstyle" />
-
-
         <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/autoupdate"
             android:title="@string/autoupdate" />
-
         <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/callreceiver"
             android:title="@string/callreceiver" />
-
         <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/outgoing"
             android:title="@string/outgoing"
             android:dependency="@string/callreceiver"
             android:summary="Не отображается информация при звонке об абоненте, если такой есть в Контактах"/>
-
-
         <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/imageload"
             android:title="@string/imageload" />
-
         <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/imagesavetodisk"
             android:title="@string/imagesavetodisk"
             android:summary="Сохранять фотографии в память телефона"/>
-
         <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="@string/uvedom"
             android:title="@string/uvedom" />
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="#E5E5E5"
+            android:key="@color/colorPrimBackgrnd"
+            android:title="@string/colorPrimBackgrnd"/>
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="@color/colorSecBackgrnd"
+            android:key="@color/colorSecBackgrnd"
+            android:title="@string/colorSecBackgrnd"/>
 
-        <androidx.preference.PreferenceCategory android:title="@string/nastrosnshrift">
 
+        <androidx.preference.PreferenceCategory
+            android:title="@string/nastrosnshrift">
                 <androidx.preference.ListPreference
                     android:defaultValue="20"
                     android:entries="@array/text1_razmer"

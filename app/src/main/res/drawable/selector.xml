@@ -12,7 +12,25 @@
 
 <!-- По умолчанию -->
 <item android:drawable="@android:color/transparent" />
+
 </selector>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+android:shape="rectangle" >
+
+<corners android:radius="7dp" />
+
+<stroke
+    android:width="2dp"
+
+    android:color="@android:color/white"
+    />
+
+<gradient
+    android:angle="0"
+    android:startColor="#ffffff"
+    android:endColor="#e5e5e5" />
+</shape>
 
 
 

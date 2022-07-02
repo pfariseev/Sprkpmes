@@ -16,6 +16,8 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         android:background="@drawable/selector"
+
+
         />
 
 </LinearLayout>

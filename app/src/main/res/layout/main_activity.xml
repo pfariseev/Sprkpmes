@@ -6,7 +6,9 @@
     android:id="@+id/constrantLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:adjustViewBounds="true"
+    android:background="@drawable/background_gradient_225"
+    android:divider="#ff0000"
     android:orientation="vertical"
     tools:context="com.example.fariseev_ps.MainActivity"
 
@@ -33,7 +35,8 @@
         android:divider="#A4C739"
         android:dividerHeight="1dp"
         android:visibility="invisible"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:groupIndicator="@null"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager1"

@@ -20,7 +20,7 @@
     <string name="uvedom">Уведомления</string>
     <string name="autoupdate">Обновлять базу автоматически</string>
     <string name="upd">upd</string>
-    <string name="imageload">Загружать фотографии</string>
+    <string name="imageload">Показывать фотографии</string>
     <string name="imagesavetodisk">Сохранять фотографии</string>
     <string name="text1_razmer">Средний</string>
     <string name="text2_razmer">Меленький</string>
@@ -54,6 +54,8 @@
     <string name="colorSecForText">Цвет дополнительного шрифта</string>
     <string name="color_background">Цвет фона</string>
     <string name="color_background_summary">color_background_summary</string>
+    <string name="colorPrimBackgrnd">#E5E5E5</string>
+    <string name="colorSecBackgrnd">Цвет дополнительного фона</string>
 
 
 </resources>

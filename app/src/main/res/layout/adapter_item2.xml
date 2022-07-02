@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:adjustViewBounds="true"
+    android:background="@drawable/background_gradient_225"
+    android:divider="#ff0000">
 
     <LinearLayout
         android:layout_width="280dp"

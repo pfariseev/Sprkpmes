@@ -73,10 +73,15 @@ class MySimpleAdapter extends SimpleAdapter {
             button.setTypeface(null,typeOsn);
             setButton(view);
         }
-        if ((position & 1) != 0) {
-            view.setBackgroundColor(0xFFE9E9E9);
+        if (!ctx.getClass().getSimpleName().equals("users")) {
+            if ((position & 1) != 0) {
+                view.setBackgroundResource(R.drawable.info_round3);
+
+            } else {
+                view.setBackgroundResource(R.drawable.info_round5);
+            }
         } else {
-            view.setBackgroundColor(0xFFFFFFFF);
+        //    view.setBackgroundResource(R.drawable.info_round6);
         }
         if (loadPhoto) setPhoto (view);
         return view;

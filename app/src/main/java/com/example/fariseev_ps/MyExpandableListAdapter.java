@@ -72,12 +72,20 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
         TextView v = (TextView) view.findViewById(R.id.listTitle);
         v.setTextSize(sOsn);
         v.setTypeface(null, typeOsn);
-        v.setTextColor(Color.parseColor("#"+colorF));
+        v.setTextColor(Color.parseColor("#" + colorF));
+
         if (isExpanded) {
             v.setBackgroundResource(R.drawable.info_round4);
-        }
-        else
+        } else {
+            if ((listPosition & 1) != 0) {
+            // view.setBackgroundColor(0xFFE9E9E9);
             v.setBackgroundResource(R.drawable.info_round3);
+
+        } else {
+            //view.setBackgroundColor(0xFFFFFFFF);
+            v.setBackgroundResource(R.drawable.info_round5);
+        }
+    }
         return view;
     }
 
@@ -147,6 +155,12 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
                 }
             });
             setButton(view);
+        }
+        if ((expandedListPosition & 1) != 0) {
+            view.setBackgroundResource(R.drawable.background_gradient_45);
+
+        } else {
+            view.setBackgroundResource(R.drawable.background_gradient_225);
         }
         toContactClick(photo, v, v.getText().toString(), listPosition);
         toContactClick(photo, d, v.getText().toString(), listPosition);
