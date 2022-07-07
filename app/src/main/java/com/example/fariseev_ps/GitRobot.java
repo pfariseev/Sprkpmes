@@ -119,7 +119,6 @@ public class GitRobot {
             fw.close();
             Log.d("--", "Downloaded!\t" + path);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             Log.d("--", "Error download !\t" + path);
         }
     }
@@ -199,7 +198,6 @@ public class GitRobot {
             System.out.println("Error:"+e1.getCause().getMessage());
             System.exit(0);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         }
     }

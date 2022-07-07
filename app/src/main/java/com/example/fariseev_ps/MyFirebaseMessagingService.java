@@ -59,7 +59,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
+
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
@@ -130,7 +130,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     void sendRegistrationToServer(String token) {
         GitRobot gitRobot = new GitRobot();
-        // TODO: Implement this method to send token to your app server.
+
         File file = null;//new File();
         try {
             file= File.createTempFile("token_", "_upload");

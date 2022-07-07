@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         String fileName = CallReceiver.getUserFromMobileNumber(this, "name", num);
         if (fileName==null) fileName=tok;
-        // TODO: Implement this method to send token to your app server.
+
         File file = null;//new File();
         String newstring = num+", "+devID+", "+tok;
         try {
