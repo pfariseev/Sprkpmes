@@ -39,14 +39,7 @@
             android:defaultValue="false"
             android:key="@string/uvedom"
             android:title="@string/uvedom" />
-        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:defaultValue="#E5E5E5"
-            android:key="@color/colorPrimBackgrnd"
-            android:title="@string/colorPrimBackgrnd"/>
-        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:defaultValue="@color/colorSecBackgrnd"
-            android:key="@color/colorSecBackgrnd"
-            android:title="@string/colorSecBackgrnd"/>
+
 
 
         <androidx.preference.PreferenceCategory

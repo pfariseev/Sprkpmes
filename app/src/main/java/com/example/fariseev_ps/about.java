@@ -21,7 +21,7 @@ public class about extends Activity {
         versionCode.setText("v." + veri);
 
         FButton b = findViewById(R.id.about);
-        b.setButtonColor(this.getResources().getColor(R.color.fbutton_color_asbestos));
+     //   b.setButtonColor(this.getResources().getColor(R.color.fbutton_color_asbestos));
 
     }
 

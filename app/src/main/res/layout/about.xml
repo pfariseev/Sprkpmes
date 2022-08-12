@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light">
+    android:adjustViewBounds="true"
+    android:background="@drawable/background_gradient_225"
+    android:divider="#ff0000"
+    android:orientation="vertical">
 
     <info.hoang8f.widget.FButton
         android:id="@+id/about"
@@ -20,7 +23,7 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:buttonColor="#B1B1B1"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7">

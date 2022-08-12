@@ -152,7 +152,7 @@ class updateBase {
                     m_error.printStackTrace();
                     if (prefs.getBoolean("adm",false)) {
                         NotificationUtils n = NotificationUtils.getInstance(context);
-                        n.createInfoNotification("Ошибка при скачивании базы.");
+                        n.createInfoNotification("Ошибка при скачивании базы: "+m_error);
                     }
                     // if (prefs.getBoolean("Обновлять базу справочника автоматически", false)) progressDialog.hide();
                     if (context.getClass().getSimpleName().equals("about")) {
@@ -211,7 +211,6 @@ class updateBase {
                 }
             } */
             Log.d("--",data2+" "+dataupdate);
-
 
             if (!data2.equals(dataupdate)) {
 
