@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -94,39 +95,23 @@ class updateBase {
                 URL url;
                 HttpURLConnection urlConnection;
                 InputStream inputStream;
-                int totalSize;
-                int downloadedSize;
                 byte[] buffer;
                 int bufferLength;
-
-                File file = null;
-                FileOutputStream fos = null;
-
                 Log.d("--", "TrueUpdate 4");
                 try {
-
-                    url = new URL(params[0]);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setConnectTimeout(30000); //время ожидания соединения
-                    urlConnection.connect();
-                    inputStream = urlConnection.getInputStream();
-                    totalSize = urlConnection.getContentLength();
-                    downloadedSize = 0;
                     buffer = new byte[1024];
-                    bufferLength = 0;
-                    // читаем со входа и пишем в выход,
-                    // с каждой итерацией публикуем прогресс
+                    url = new URL(params[0]);
+                    //  urlConnection = (HttpURLConnection) url.openConnection();
+                 //   urlConnection.setConnectTimeout(30000); //время ожидания соединения
+                 //   urlConnection.connect();
+                    inputStream = new BufferedInputStream(url.openStream());
                     OutputStream mOutput = new FileOutputStream(DB_PATH + "temp.xslx"); //выходящий в /data
                     while ((bufferLength = inputStream.read(buffer)) > 0) {
                         mOutput.write(buffer, 0, bufferLength);
-                        downloadedSize += bufferLength;
-                        //   if (prefs.getBoolean("Обновлять базу справочника автоматически", false))publishProgress(downloadedSize, totalSize);
                     }
-
+                    mOutput.flush();
                     mOutput.close();
                     inputStream.close();
-
-                    return file;
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     m_error = e;
@@ -134,7 +119,6 @@ class updateBase {
                     e.printStackTrace();
                     m_error = e;
                 }
-
                 return null;
             }
 
@@ -222,7 +206,7 @@ class updateBase {
                     row = sheet.getRow(0);
                     ii = sheet.getPhysicalNumberOfRows();
                     xx = row.getPhysicalNumberOfCells();
-                    Log.d("--",String.valueOf(xx));
+                   // Log.d("--",String.valueOf(xx));
 
                     SQL_CREATES_TABLE = "CREATE TABLE " + "Лист" + listsString +" (Column1 NULL );";
                     try {
