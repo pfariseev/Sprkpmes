@@ -3,6 +3,7 @@ package com.example.fariseev_ps;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -85,30 +86,25 @@ public class GitRobot {
 
         }
         if (doIt.equals("download")) {
-            Log.d("--", "ERROR333   ");
-           if (!new File(strLocalFilePath+LocalFileName).exists()) {
+       //     Log.d("--", "download base!");
                 try {
-                    if (repo.getFileContent(RemotePath + "/" + LocalFileName).getDownloadUrl() != null && repo.getSize() < 1024 * 1024) {
-         //               writeFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFileName);
-                        Log.d("--", "Downloaded 1!\t" + strLocalFilePath+LocalFileName);
-                    } else if (repo.getFileContent(RemotePath + "/" + LocalFileName).getGitUrl() != null) {
-                        users.showAndSavePhoto(context,LocalFileName , photo);
-                        //writeFileFromGitUrl(content.getGitUrl(), strFileName);
-                        Log.d("--", "Error download 22!\t" + strLocalFilePath+LocalFileName);
-                    }
+                        writeFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFilePath );
+                        Log.d("--", "Downloaded 1!\t" + LocalFilePath+LocalFileName);
                 } catch (IOException e) {
-                    Log.d("--", "ERROR3   " + e.getMessage());
+                    Log.d("--", "ERROR32121  " + e.getMessage());
                 }
-        }
+
         }
     }
+
+
 
     @TargetApi(Build.VERSION_CODES.O)
     private void writeFile(Context context, InputStream is, String path) {
         byte[] cb = new byte[1024];
         int nSize = 0;
         try {
-            File file = new File(savephoto.folderToSaveVoid(context, "Photo"), path);
+            File file = new File(path+"bd.xlsx");
             //      File dir = file.getParentFile();
             //     if(!dir.exists())
             //         dir.mkdirs();
@@ -119,6 +115,10 @@ public class GitRobot {
             fw.close();
             Log.d("--", "Downloaded!\t" + path);
         } catch (IOException e) {
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("adm", false)) {
+                //   NotificationUtils n = NotificationUtils.getInstance(context);
+                NotificationUtils.getInstance(context).createInfoNotification("Err: " + e);
+            }
             Log.d("--", "Error download !\t" + path);
         }
     }

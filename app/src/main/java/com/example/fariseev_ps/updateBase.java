@@ -23,14 +23,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,7 +63,7 @@ class updateBase {
         Log.d("--","updateBase. вызов обновления от "+context.getClass().getSimpleName());
         Log.d("--", "TrueUpdate 2.5");
         //String url = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1-QPwhkO1LyMj8epeBJUmpHB2q9zuY5F4");//временно
-        String url = ("https://github.com/pfariseev/Sprkpmes/raw/master/bd/bd.xlsx");
+        String url = ("http://github.com/pfariseev/Sprkpmes/raw/master/bd/bd.xlsx");
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //list=prefs.getString(getString(R.string.list), "1");
         final ProgressDialog progressDialog = new ProgressDialog(context);
@@ -98,27 +96,21 @@ class updateBase {
                 byte[] buffer;
                 int bufferLength;
                 Log.d("--", "TrueUpdate 4");
-                try {
-                    buffer = new byte[1024];
-                    url = new URL(params[0]);
-                    //  urlConnection = (HttpURLConnection) url.openConnection();
-                 //   urlConnection.setConnectTimeout(30000); //время ожидания соединения
-                 //   urlConnection.connect();
-                    inputStream = new BufferedInputStream(url.openStream());
-                    OutputStream mOutput = new FileOutputStream(DB_PATH + "temp.xslx"); //выходящий в /data
-                    while ((bufferLength = inputStream.read(buffer)) > 0) {
-                        mOutput.write(buffer, 0, bufferLength);
-                    }
-                    mOutput.flush();
-                    mOutput.close();
-                    inputStream.close();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    m_error = e;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    m_error = e;
-                }
+                /*                    buffer = new byte[1024];
+                                    url = new URL(params[0]);
+                                    inputStream = new BufferedInputStream(url.openStream());
+                                    OutputStream mOutput = new FileOutputStream(DB_PATH + "temp.xslx"); //выходящий в /data
+                                    while ((bufferLength = inputStream.read(buffer)) > 0) {
+                                        mOutput.write(buffer, 0, bufferLength);
+                                    }
+                                    mOutput.flush();
+                                    mOutput.close();
+                                    inputStream.close();
+
+                 */
+                GitRobot gitRobot = new GitRobot();
+                gitRobot.updateSingleContent(context, "Sprkpmes","bd", "bd.xlsx", context.getApplicationInfo().dataDir + "/databases/","download", null);
+
                 return null;
             }
 
@@ -136,7 +128,7 @@ class updateBase {
                     m_error.printStackTrace();
                     if (prefs.getBoolean("adm",false)) {
                         NotificationUtils n = NotificationUtils.getInstance(context);
-                        n.createInfoNotification("Ошибка при скачивании базы: "+m_error);
+                        n.createInfoNotification("Err: "+m_error);
                     }
                     // if (prefs.getBoolean("Обновлять базу справочника автоматически", false)) progressDialog.hide();
                     if (context.getClass().getSimpleName().equals("about")) {
@@ -169,7 +161,7 @@ class updateBase {
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
-        File file = new File(DB_PATH + "temp.xslx");
+        File file = new File(DB_PATH + "bd.xlsx");
         try {
             Workbook wb = WorkbookFactory.create(file);
             int lists = wb.getNumberOfSheets();

@@ -46,7 +46,7 @@ class MySimpleAdapter extends SimpleAdapter {
         typeO = prefs.getString(context.getString(R.string.osn), "");
         typeD = prefs.getString(context.getString(R.string.dop), "");
         colorPrim = prefs.getInt(context.getString(R.string.colorPrimForText), -12627531);
-        colorSec = prefs.getInt(context.getString(R.string.colorSecForText), 0);
+        colorSec = prefs.getInt(context.getString(R.string.colorSecForText), -16777216);
         colorF = Integer.toHexString(colorPrim);
         colorS = Integer.toHexString(colorSec);
         sOsn = Float.parseFloat(sizeo);
