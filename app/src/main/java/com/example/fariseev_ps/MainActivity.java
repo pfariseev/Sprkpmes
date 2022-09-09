@@ -114,13 +114,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         Log.d("--","DeviceID is "+devID);
         Log.d("--","TOKEN is "+tok);
         Log.d("--","UploadToServer1 "+prefs.getBoolean("upLoadToServer",false));
-        if (!prefs.getBoolean("upLoadToServer", false))
-        if (!tok.equals("")) {
+     //   if (!prefs.getBoolean("upLoadToServer", false))
+     //   if (!tok.equals("")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 sendRegistrationToServer(this, num, devID, tok);
             }
         }
-    }
+
+  //  }
+
 /*
     @TargetApi(Build.VERSION_CODES.O)
     void githubLogin () {
@@ -189,7 +191,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     Log.d("--", "File: " + finalFile.getName());
                     Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
                    // repo = github.getRepository("pfariseev" + "/" + "sprkpmes_token");
-                    gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
+                    //gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
+                    gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","list", null);
                     editor.putBoolean("upLoadToServer",true);
                     editor.commit();
                 } catch (Exception e) {

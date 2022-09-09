@@ -50,11 +50,14 @@ public class GitRobot {
                 Log.d("--", "Invalid GitHub credentials !!!");
             } else {
                 repo = github.getRepository(userId + "/" + RepoName);
-
-                Log.d("--", "Downloaded now !\t " + repo.getFileContent(RemotePath + "/" + LocalFileName).getDownloadUrl());
+                  Log.d("--", "Downloaded now !\t " + repo.getFileContent(RemotePath + "/" + LocalFileName).getDownloadUrl());
+                Log.d("--", "! "+repo);
             }
         } catch (IOException e) {
             Log.d("--", "ERROR   " + e.getMessage());
+        }
+        if (doIt.equals("list")) {
+            RestTemplate restTemplate = new RestTemplate();
         }
         if (doIt.equals("update")) {
             try {
@@ -96,8 +99,6 @@ public class GitRobot {
 
         }
     }
-
-
 
     @TargetApi(Build.VERSION_CODES.O)
     private void writeFile(Context context, InputStream is, String path) {
