@@ -190,9 +190,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                   // gitRobot.setUserId("pfariseev");
                     Log.d("--", "File: " + finalFile.getName());
                     Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
-                   // repo = github.getRepository("pfariseev" + "/" + "sprkpmes_token");
                     //gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
-                    gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","list", null);
+                    //gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","list", null);
+                    gitRobot.sendPush();
                     editor.putBoolean("upLoadToServer",true);
                     editor.commit();
                 } catch (Exception e) {

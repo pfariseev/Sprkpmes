@@ -4,8 +4,16 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpResponse;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.methods.HttpPost;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.entity.StringEntity;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.HttpClientBuilder;
 
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
@@ -16,6 +24,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,6 +54,7 @@ public class GitRobot {
         String strLocalFilePath = nLastBackSlashPos == -1 ? "" : LocalFilePath.substring(0, nLastBackSlashPos + 1);
         String commitMsg = new Date().toString();
         String accessToken = BuildConfig.GITHUB_TOKEN;
+
         byte[] fileContents = new byte[0];
        try {
             github = new GitHubBuilder().withOAuthToken(accessToken).build();
@@ -57,7 +69,15 @@ public class GitRobot {
             Log.d("--", "ERROR   " + e.getMessage());
         }
         if (doIt.equals("list")) {
-            RestTemplate restTemplate = new RestTemplate();
+            try {
+                for (int z = 1; z<repo.getDirectoryContent("Token").size(); z++) {
+            //        Log.d("--", "? " + repo.getDirectoryContent("Token").get(z).getName());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("--",":-( "+e);
+
+            }
         }
         if (doIt.equals("update")) {
             try {
@@ -97,6 +117,47 @@ public class GitRobot {
                     Log.d("--", "ERROR32121  " + e.getMessage());
                 }
 
+        }
+    }
+    public void sendPush (){
+        OutputStream outputStream = new ByteArrayOutputStream();
+        String accessTokenToPush = BuildConfig.PUSH_TOKEN;
+        try {
+            JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream, "windows-1251"));
+            writer.beginObject(); // создаем токен начала главного объекта
+            writer.name("to"); // записываем поле message
+            writer.value("dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy");
+            writer.name("notification"); // сохраняем объект Place в поле place
+            writer.beginObject(); // начинаем объект Place
+            writer.name("title");
+            String title = "Справочник";
+            String utf8String= new String(title.getBytes("windows-1251"), "UTF-8");
+
+            writer.value(utf8String);
+            writer.name("body"); // записываем поле message
+            String message = URLEncoder.encode("Привет!", "windows-1251");
+            writer.value("Привет!");
+            writer.endObject(); // закрываем объект Place
+            writer.endObject(); // закрываем главный объект
+            writer.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        try {
+            HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
+            StringEntity params = new StringEntity(outputStream.toString());
+            request.addHeader("content-type", "application/json");
+            request.addHeader("Authorization", accessTokenToPush);
+            request.setEntity(params);
+            HttpResponse response = httpClient.execute(request);
+            Log.d("--", "!! "+String.valueOf(response));
+        } catch (Exception ex) {
+        } finally {
+
+            httpClient.getConnectionManager().shutdown();
         }
     }
 
