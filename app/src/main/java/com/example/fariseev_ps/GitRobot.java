@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -123,22 +122,22 @@ public class GitRobot {
         OutputStream outputStream = new ByteArrayOutputStream();
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
         try {
-            JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream, "windows-1251"));
-            writer.beginObject(); // создаем токен начала главного объекта
-            writer.name("to"); // записываем поле message
+            JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream, "utf-8"));
+            writer.beginObject();
+            writer.name("to");
             writer.value("dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy");
-            writer.name("notification"); // сохраняем объект Place в поле place
-            writer.beginObject(); // начинаем объект Place
+            writer.name("notification");
+            writer.beginObject();
             writer.name("title");
             String title = "Справочник";
-            String utf8String= new String(title.getBytes("windows-1251"), "UTF-8");
-
-            writer.value(utf8String);
-            writer.name("body"); // записываем поле message
-            String message = URLEncoder.encode("Привет!", "windows-1251");
-            writer.value("Привет!");
-            writer.endObject(); // закрываем объект Place
-            writer.endObject(); // закрываем главный объект
+            writer.value(title);
+            writer.name("body");
+            String message = "Привет!";
+            byte[] charset = message.getBytes("UTF-8");
+            String result = new String(charset, "UTF-8");
+            writer.value(result);
+            writer.endObject();
+            writer.endObject();
             writer.close();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -147,19 +146,20 @@ public class GitRobot {
         }
         HttpClient httpClient = HttpClientBuilder.create().build();
         try {
+
             HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
             StringEntity params = new StringEntity(outputStream.toString());
             request.addHeader("content-type", "application/json");
             request.addHeader("Authorization", accessTokenToPush);
             request.setEntity(params);
             HttpResponse response = httpClient.execute(request);
-            Log.d("--", "!! "+String.valueOf(response));
         } catch (Exception ex) {
         } finally {
 
             httpClient.getConnectionManager().shutdown();
         }
     }
+
 
     @TargetApi(Build.VERSION_CODES.O)
     private void writeFile(Context context, InputStream is, String path) {
