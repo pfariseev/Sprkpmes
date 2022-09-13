@@ -133,9 +133,7 @@ public class GitRobot {
             writer.value(title);
             writer.name("body");
             String message = "Привет!";
-            byte[] charset = message.getBytes("UTF-8");
-            String result = new String(charset, "UTF-8");
-            writer.value(result);
+            writer.value(message);
             writer.endObject();
             writer.endObject();
             writer.close();
@@ -144,9 +142,9 @@ public class GitRobot {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         HttpClient httpClient = HttpClientBuilder.create().build();
         try {
-
             HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
             StringEntity params = new StringEntity(outputStream.toString());
             request.addHeader("content-type", "application/json");
@@ -155,7 +153,6 @@ public class GitRobot {
             HttpResponse response = httpClient.execute(request);
         } catch (Exception ex) {
         } finally {
-
             httpClient.getConnectionManager().shutdown();
         }
     }
