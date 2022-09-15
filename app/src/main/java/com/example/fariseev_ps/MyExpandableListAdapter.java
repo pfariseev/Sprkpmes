@@ -49,8 +49,8 @@ class MyExpandableListAdapter extends SimpleExpandableListAdapter {
         sDop = Float.parseFloat(sized);
         typeOsn = Typeface.NORMAL;
         typeDop = Typeface.NORMAL;
-        colorPrim = prefs.getInt(context.getString(R.string.colorPrimForText), -12627531);
-        colorSec = prefs.getInt(context.getString(R.string.colorSecForText), 0);
+        colorPrim = prefs.getInt(context.getString(R.string.colorPrimForText), -16777216);
+        colorSec = prefs.getInt(context.getString(R.string.colorSecForText), -16777216);
         colorF = Integer.toHexString(colorPrim);
         colorS = Integer.toHexString(colorSec);
         if (typeO.contains("Полужирный"))

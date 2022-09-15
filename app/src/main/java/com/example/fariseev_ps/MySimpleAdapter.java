@@ -45,7 +45,7 @@ class MySimpleAdapter extends SimpleAdapter {
         sized = prefs.getString(context.getString(R.string.text2_razmer), "16");
         typeO = prefs.getString(context.getString(R.string.osn), "");
         typeD = prefs.getString(context.getString(R.string.dop), "");
-        colorPrim = prefs.getInt(context.getString(R.string.colorPrimForText), -12627531);
+        colorPrim = prefs.getInt(context.getString(R.string.colorPrimForText), -16777216);
         colorSec = prefs.getInt(context.getString(R.string.colorSecForText), -16777216);
         colorF = Integer.toHexString(colorPrim);
         colorS = Integer.toHexString(colorSec);

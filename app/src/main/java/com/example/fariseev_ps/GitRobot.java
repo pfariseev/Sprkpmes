@@ -143,6 +143,8 @@ public class GitRobot {
             e.printStackTrace();
         }
 
+
+
         HttpClient httpClient = HttpClientBuilder.create().build();
         try {
             HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");

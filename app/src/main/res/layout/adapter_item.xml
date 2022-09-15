@@ -6,19 +6,25 @@
     android:orientation="vertical" >
 
 
-    <TextView
-        android:id="@+id/textViewmain"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|center"
-        android:minHeight="41sp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
-        android:background="@drawable/selector"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewmain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:gravity="center_vertical|center"
+            android:minHeight="41sp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
 
 
-        />
+            />
+    </LinearLayout>
 
 </LinearLayout>
 
