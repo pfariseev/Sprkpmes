@@ -137,7 +137,7 @@ public class EternalService extends Service{
                     Log.d("--", "TrueUpdate");
                     updateBase.getInstance(context);
                     if (prefs.getBoolean("Обновлять базу автоматически", false)) {
-                                    updateBase.downloadFile();
+                                    updateBase.downloadFile(context);
                     }
                 }
             }

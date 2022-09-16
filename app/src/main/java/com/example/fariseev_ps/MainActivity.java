@@ -90,16 +90,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         Bundle bundle = getIntent().getExtras(); // для получения сообщений из PUSH
-        if (bundle != null) {
-            Log.d("--","Дата из MainActivity, ключ qwe - "+bundle.getString("qwe"));
-        }
+      //  if (bundle != null) {
+           // Log.d("--","Дата из MainActivity, ключ qwe - "+bundle.getString("qwe"));
+       // }
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = getDefaultSharedPreferences(this).edit();
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
         View viewpager = findViewById(R.id.pagerTabStrip);
         viewpager.setVisibility(View.VISIBLE);
-        update();
+        verifyUpdate();
         for (int tit = 1; tit < num_list + 1; tit++) {
             Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + tit, null);
             cursor.moveToPosition(2);
@@ -114,14 +114,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         Log.d("--","DeviceID is "+devID);
         Log.d("--","TOKEN is "+tok);
         Log.d("--","UploadToServer1 "+prefs.getBoolean("upLoadToServer",false));
-     //   if (!prefs.getBoolean("upLoadToServer", false))
-     //   if (!tok.equals("")) {
+        if (!prefs.getBoolean("upLoadToServer", false))
+        if (!tok.equals("")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 sendRegistrationToServer(this, num, devID, tok);
             }
         }
 
-  //  }
+    }
 
 /*
     @TargetApi(Build.VERSION_CODES.O)
@@ -190,9 +190,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                   // gitRobot.setUserId("pfariseev");
                     Log.d("--", "File: " + finalFile.getName());
                     Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
-                    //gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
+                    gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
                     //gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","list", null);
-                    gitRobot.sendPush();
+                    //gitRobot.sendPush();
                     editor.putBoolean("upLoadToServer",true);
                     editor.commit();
                 } catch (Exception e) {
@@ -633,7 +633,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
 
-    private void update (){
+    private void verifyUpdate (){
+
         mDBHelper = new DatabaseHelper(this);
         try {
             mDBHelper.updateDataBase();

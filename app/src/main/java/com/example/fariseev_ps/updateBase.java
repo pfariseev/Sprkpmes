@@ -24,10 +24,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -39,10 +36,10 @@ class updateBase {
     private static String DB_PATH = "",list;
 
     private static updateBase instance;
-    //public static boolean newver=false;
+
 
     private static Context context;
-    //static final String NAME_TABLE = "Лист";
+
 
     private updateBase (Context context) {
         updateBase.context = context;
@@ -59,7 +56,7 @@ class updateBase {
     }
 
 
-    public static void downloadFile() {
+    public static void downloadFile(Context context) {
         Log.d("--","updateBase. вызов обновления от "+context.getClass().getSimpleName());
         Log.d("--", "TrueUpdate 2.5");
         //String url = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1-QPwhkO1LyMj8epeBJUmpHB2q9zuY5F4");//временно
@@ -68,27 +65,26 @@ class updateBase {
         //list=prefs.getString(getString(R.string.list), "1");
         final ProgressDialog progressDialog = new ProgressDialog(context);
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
-        Log.d("--", "TrueUpdate 3");
-        new AsyncTask<String, Integer, File>() {
+
+        new AsyncTask<String, Integer, Void>() {
             private Exception m_error = null;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
             @Override
             protected void onPreExecute() {
-                if (context.getClass().getSimpleName().equals("about"))
+                if (context.getClass().getSimpleName().equals("about") )
                 {
                     progressDialog.setMessage("Обновление базы. Подождите.");
                     progressDialog.setCancelable(false);
                     //progressDialog.setMax(100);
                     //progressDialog
                     //.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
                     progressDialog.show();
                 }
             }
 
             @Override
-            protected File doInBackground(String... params) {
+            protected Void doInBackground(String... params) {
 
                 URL url;
                 HttpURLConnection urlConnection;
@@ -116,13 +112,12 @@ class updateBase {
 
             // обновляем progressDialog, да
             protected void onProgressUpdate(Integer... values) {
-                progressDialog
-                        .setProgress((int) ((values[0] / (float) values[1]) * 100));
+                progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            protected void onPostExecute(File file) {
+            protected void onPostExecute(Void file) {
                 // отображаем сообщение, если возникла ошибка
                 if (m_error != null) {
                     m_error.printStackTrace();
@@ -140,13 +135,14 @@ class updateBase {
                 }
                 // если всё хорошо, закрываем прогресс и удаляем временный файл
                 progressDialog.hide();
-                copyDB();
+                Log.d("--", "TrueUpdate Exit");
+                copyDB(context);
             }
         }.execute(url);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    static void copyDB() {
+    static void copyDB(Context context) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -170,9 +166,9 @@ class updateBase {
             int ii,xx;
             Cursor cursor;
             String value, SQL_CREATES_TABLE;
-            cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
-            cursor.moveToFirst();
-            String data2 = cursor.getString(11);
+         //   cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
+        //    cursor.moveToFirst();
+            String data2 = "";// cursor.getString(11);
             sheet = wb.getSheetAt(0);
             row = sheet.getRow(0);
             String dataupdate = row.getCell(11).toString();
@@ -295,7 +291,7 @@ class updateBase {
         thread.start();
     }
 
-    private void copyDBFile() throws IOException { //копирует бызу к себе в /data
+  /*  private void copyDBFile() throws IOException { //копирует бызу к себе в /data
         //InputStream mInput = mContext.getAssets().open(DB_NAME);
         InputStream mInput = context.getResources().openRawResource(R.raw.sprkpmes); //входящий файл
         OutputStream mOutput = new FileOutputStream(DB_PATH + DB_NAME); //выходящий в /data
@@ -306,6 +302,6 @@ class updateBase {
         mOutput.flush();
         mOutput.close();
         mInput.close();
-    }
+    }*/
 }
 

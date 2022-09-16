@@ -1,28 +1,20 @@
 package com.example.fariseev_ps;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "sprkpmes.db";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 18;
+    private static final int DB_VERSION = 20;
 
     private SQLiteDatabase mDataBase;
     private final Context mContext;
@@ -79,6 +71,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         mOutput.flush();
         mOutput.close();
         mInput.close();
+
+
     }
 
     public boolean openDataBase() throws SQLException {

@@ -37,7 +37,7 @@ public class about extends Activity {
 
     public void onClick(View v) {
         updateBase.getInstance(this);
-        updateBase.downloadFile();
+        updateBase.downloadFile(this);
     }
 
 }

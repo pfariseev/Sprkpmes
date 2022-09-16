@@ -19,5 +19,9 @@
         <item>"12"</item>
     </string-array>
 
+    <string-array name="vidStyle">
+        <item>Простой список</item>
+        <item>Раскрывающийся список</item>
+    </string-array>
 
 </resources>

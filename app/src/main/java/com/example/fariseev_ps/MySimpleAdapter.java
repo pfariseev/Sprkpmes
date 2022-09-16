@@ -73,15 +73,23 @@ class MySimpleAdapter extends SimpleAdapter {
             button.setTypeface(null,typeOsn);
             setButton(view);
         }
-        if (!ctx.getClass().getSimpleName().equals("users")) {
+        if (ctx.getClass().getSimpleName().equals("MainActivity")) {
             if ((position & 1) != 0) {
                 view.setBackgroundResource(R.drawable.info_round3);
+                // view.getLayoutParams().height=7;
 
             } else {
                 view.setBackgroundResource(R.drawable.info_round5);
             }
-        } else {
-        //    view.setBackgroundResource(R.drawable.info_round6);
+        }
+        if (ctx.getClass().getSimpleName().equals("otdels")) {
+            if ((position & 1) != 0) {
+                view.setBackgroundResource(R.drawable.info_round3);
+                // view.getLayoutParams().height=7;
+
+            } else {
+                view.setBackgroundResource(R.drawable.info_round5);
+            }
         }
         if (loadPhoto) setPhoto (view);
         return view;

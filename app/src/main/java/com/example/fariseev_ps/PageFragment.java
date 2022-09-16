@@ -144,7 +144,7 @@ public class PageFragment extends Fragment {
         сhildDataList.add(сhildDataItemList);
 
         View view = inflater.inflate(R.layout.main_activity, container,false);
-        if (!prefs.getBoolean(getString(R.string.newstyle), false))
+        if (prefs.getString(getString(R.string.vidStyle), "Простой список").equals("Простой список"))
         {
             ListView listView;
             MySimpleAdapter adapter = new MySimpleAdapter(contex, clients, R.layout.adapter_item, new String[]{"otdels"}, new int[]{R.id.textViewmain});
