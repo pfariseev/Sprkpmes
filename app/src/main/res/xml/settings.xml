@@ -10,7 +10,7 @@
             android:title="Основные настройки"/>
 
                 <androidx.preference.ListPreference
-                    android:defaultValue="1"
+                    android:defaultValue="Простой список"
                     android:entries="@array/vidStyle"
                     android:entryValues="@array/vidStyle"
                     android:key="@string/vidStyle"
@@ -64,7 +64,7 @@
                     android:title="@string/stilosnshrift" />
 
                 <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-                    android:defaultValue="@color/colorPrimForText"
+                    android:defaultValue="@color/colorSecForText"
                     android:key="@string/colorPrimForText"
                     android:title="@string/colorPrimForText"/>
 

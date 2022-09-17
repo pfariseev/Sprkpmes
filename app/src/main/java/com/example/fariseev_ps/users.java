@@ -8,8 +8,6 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -58,6 +56,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -90,7 +90,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     private String NumtoSMS;
     private String NumtoCopy, EMAILtoCOPY;
     private static String photoFolder;
-    private static String password;
+    private static String password, message;
     MySimpleAdapter adapter;
     private ListView listView;
     int num_list;
@@ -577,21 +577,22 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         }
     }
 
-    void enterPassword () {
+    public String enterWord () {
+
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt, null);
         android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptsView);
-        final EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);
+        EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 password = userInput.getText().toString();
-                                SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
-                                editor.putString("psw",password);
-                                editor.commit();
+                          //      SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
+                          //      editor.putString("psw",password);
+                          //      editor.commit();
                             }
                         })
                 .setNegativeButton("Отмена",
@@ -603,7 +604,9 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+        return password;
     }
+
     @TargetApi(Build.VERSION_CODES.O)
     void photoDialog () {
         android.app.AlertDialog alertDialog= null;
@@ -686,8 +689,9 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-            if (password==null) enterPassword();}
-
+            if (password==null) password=enterWord();
+            Log.d("--","passw: " + password);
+        }
     }
 
     public static void showDialogSaveContact(Context ctx, final String nameContact, final String numberMobi, final String numberGorod ){//final ImageView photoContact){

@@ -160,7 +160,7 @@ class MySimpleAdapter extends SimpleAdapter {
         String name = (String) textView3.getText();
         newnumberMobi=users.convertNumber(newnumberMobi.replaceAll("[^0-9]", ""));
         newnumberGor=users.convertNumber(newnumberGor.replaceAll("[^0-9]", ""));
-        System.out.println(newnumberGor+ " "+newnumberMobi);
+        //System.out.println(newnumberGor+ " "+newnumberMobi);
         if (users.convertNumber(newnumberMobi)!="" || users.convertNumber(newnumberGor)!="")
             if (users.getContactID(ctx.getContentResolver(), newnumberMobi) >=0)
                 printButton(view,"мобильный");
@@ -168,6 +168,7 @@ class MySimpleAdapter extends SimpleAdapter {
                 printButton(view, "городской");
         SwitchCompat swtch = view.findViewById(R.id.switch_compat);
         if (swtch != null) {
+
             blacklst = prefs.getString(ctx.getString(R.string.blacklist), "");
             if (name!=null)
                 if (blacklst.contains(name))
@@ -194,6 +195,9 @@ class MySimpleAdapter extends SimpleAdapter {
                     editor.commit();
                 }
             });
+            if (!prefs.getBoolean(ctx.getString(R.string.callreceiver), false)) {
+                swtch.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
