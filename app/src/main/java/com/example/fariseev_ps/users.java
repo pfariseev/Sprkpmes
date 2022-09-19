@@ -690,7 +690,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         alertDialog.show();
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
             if (password==null) password=enterWord();
-            Log.d("--","passw: " + password);
+           // Log.d("--","passw: " + password);
         }
     }
 
