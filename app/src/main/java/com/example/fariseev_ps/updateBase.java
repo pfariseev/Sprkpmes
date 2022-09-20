@@ -239,7 +239,7 @@ class updateBase {
                 editor.commit();
 
                 if (context.getClass().getSimpleName().equals("about")) {
-                    n.createInfoNotification("Готово");
+                //    n.createInfoNotification("Готово");
               //      Toast toast = Toast.makeText(context, "Готово.", Toast.LENGTH_LONG);
               //      toast.setGravity(Gravity.CENTER, 0, 0);
                //     toast.show();
