@@ -105,6 +105,19 @@ public class savephoto extends Activity {
         return folderToSavenew;
     }
 
+
+    public static void deletePholderWithFiles (Context context, String folder){
+        String photoFolder = folderToSaveVoid(context, folder);
+        if (new File(photoFolder).exists()) {
+            File[] contents = new File(photoFolder).listFiles();
+            if (contents != null) {
+                for (File f : contents) {
+                    f.delete();
+                }
+            }
+        }
+    }
+
     void Run() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         new AsyncTask<String, Integer, File>() {

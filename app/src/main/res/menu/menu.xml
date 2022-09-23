@@ -9,9 +9,15 @@
         android:id="@+id/settings"
         app:showAsAction="never"
         android:title="@string/action_settings"
+/>
 
+    <item
+        android:id="@+id/send_message"
+        android:icon="@drawable/sprkpmesicon"
+        android:title="M"
+        app:showAsAction="always"
+        />
 
- />
     <item
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +29,8 @@
         android:id="@+id/action_search"
         android:title="Поиск"
         app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView" />
+        app:actionViewClass="android.widget.SearchView"
+        />
 
 
 

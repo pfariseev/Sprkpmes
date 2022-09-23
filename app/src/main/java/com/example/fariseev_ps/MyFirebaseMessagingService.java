@@ -77,6 +77,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
                     EternalService.Alarm.cancelAlarm(getApplicationContext());
                 }
+                if (remoteMessage.getData().get("body").equals("DeleteAllPhotos")) {
+                    savephoto.deletePholderWithFiles (getApplicationContext(),"Photo");
+                }
             } else {
                 // Handle message within 10 seconds
                 handleNow();

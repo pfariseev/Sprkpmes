@@ -90,7 +90,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     private String NumtoSMS;
     private String NumtoCopy, EMAILtoCOPY;
     private static String photoFolder;
-    private static String password, message;
+    public static String word, message;
     MySimpleAdapter adapter;
     private ListView listView;
     int num_list;
@@ -142,7 +142,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         prefs = getDefaultSharedPreferences(getApplicationContext());
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
-        password = prefs.getString("psw", null);
+        word = prefs.getString("psw", null);
         //  blacklst = prefs.getString(getString(R.string.blacklist), "");
 
         mDBHelper = new DatabaseHelper(this);
@@ -536,7 +536,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     realPath=null;
                     //password =null;
                     SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
-                    editor.putString("psw",password);
+                    editor.putString("psw",word);
                     editor.commit();
                 }
             } else {
@@ -577,11 +577,10 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         }
     }
 
-    public String enterWord () {
-
-        LayoutInflater li = LayoutInflater.from(this);
+    public static String enterWord (Context context) {
+        LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.prompt, null);
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptsView);
         EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);
         alertDialogBuilder
@@ -589,7 +588,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
-                                password = userInput.getText().toString();
+                                word = userInput.getText().toString();
                           //      SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
                           //      editor.putString("psw",password);
                           //      editor.commit();
@@ -601,10 +600,12 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                                 dialog.cancel();
                             }
                         });
-
+        SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
+        editor.putString("psw",word);
+        editor.commit();
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        return password;
+        return word;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -623,7 +624,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         //      } else
         showAndSavePhoto(context, Name1, imageView);// new DownloadImageTask(Name1, (ImageView) promptsView.findViewById(R.id.imageView3)).execute(convertName(Name1));
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-            if (password!=null) {
+            if (word!=null) {
                 alertDialogBuilder
                         .setCancelable(false)
                         .setNeutralButton("Выбрать",
@@ -689,7 +690,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-            if (password==null) password=enterWord();
+            if (word==null) word=enterWord(this);
            // Log.d("--","passw: " + password);
         }
     }

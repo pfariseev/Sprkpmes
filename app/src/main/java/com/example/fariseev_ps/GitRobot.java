@@ -118,43 +118,53 @@ public class GitRobot {
 
         }
     }
-    public void sendPush (){
+    public void sendPush(String message){
+        message ="Привет";
+        String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
+        String newoutputStream = "{\"to\":\""+tokenkomu+"\",\"notification\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
+        Log.d("--","newoutputStream: "+newoutputStream );
+//                "{"+"""+"to"+"""+":"+"""+
+//        +"dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy"+
+//        +"""+","+"""+"notification"+"""+":{"+"""+title"+"""+":"+"""+"Справочник"+"""+","+"""+"body"+"""+":"+"""+message+"""+"}}"+""");
         OutputStream outputStream = new ByteArrayOutputStream();
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
         try {
-            JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream, "utf-8"));
+            JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream));
             writer.beginObject();
             writer.name("to");
-            writer.value("dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy");
+            writer.value(tokenkomu);
             writer.name("notification");
             writer.beginObject();
             writer.name("title");
             String title = "Справочник";
             writer.value(title);
             writer.name("body");
-            String message = "Привет!";
+            message = "Привет!";
             writer.value(message);
             writer.endObject();
             writer.endObject();
             writer.close();
+        //    Log.d("--","outputStream: "+outputStream);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+
         }
-
-
 
         HttpClient httpClient = HttpClientBuilder.create().build();
         try {
             HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
-            StringEntity params = new StringEntity(outputStream.toString());
+            StringEntity params = new StringEntity(newoutputStream);
             request.addHeader("content-type", "application/json");
             request.addHeader("Authorization", accessTokenToPush);
             request.setEntity(params);
             HttpResponse response = httpClient.execute(request);
+            Log.d("--","response: "+response);
         } catch (Exception ex) {
+            Log.d("--","ex: "+ex);
         } finally {
+
             httpClient.getConnectionManager().shutdown();
         }
     }

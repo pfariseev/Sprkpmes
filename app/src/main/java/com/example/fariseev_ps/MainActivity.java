@@ -33,11 +33,13 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -82,14 +84,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SharedPreferences.Editor editor;
     private static final int PHONE_NUMBER_HINT = 100;
     String myPhoneNumber="";
- //   public static GitHub github = null;
+    //   public static GitHub github = null;
   //  public static GHRepository repo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        Bundle bundle = getIntent().getExtras(); // для получения сообщений из PUSH
+        //  Bundle bundle = getIntent().getExtras(); // для получения сообщений из PUSH
       //  if (bundle != null) {
            // Log.d("--","Дата из MainActivity, ключ qwe - "+bundle.getString("qwe"));
        // }
@@ -192,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
                     gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
                     //gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","list", null);
-                    //gitRobot.sendPush();
+                   // gitRobot.sendPush("hh!");
                     editor.putBoolean("upLoadToServer",true);
                     editor.commit();
                 } catch (Exception e) {
@@ -388,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    public int getVersionCode() {
+    int getVersionCode() {
         int ver = 0;
         try {
             ver = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
@@ -401,11 +403,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+        MenuItem m= menu.findItem(R.id.send_message);
+        if (!prefs.getBoolean(getString(R.string.admin),false)) m.setVisible(false); else m.setVisible(true);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setOnQueryTextListener(this);
         return true;
     }
+
+
+
+
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -430,9 +438,51 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 sec_intent = new Intent(MainActivity.this, settings.class);
                 startActivity(sec_intent);
                 return true;
+            case R.id.send_message:
+                enterMessage();
+
             default:
                 return false;
         }
+    }
+
+    void enterMessage () {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.prompt, null);
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptsView);
+        EditText userInput = (EditText) promptsView.findViewById(R.id.input_text);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            GitRobot gitRobot = new GitRobot();
+                                            gitRobot.sendPush(userInput.getText().toString());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                });
+                                thread.start();
+                            }
+
+                        })
+
+                .setNegativeButton("Отмена",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
