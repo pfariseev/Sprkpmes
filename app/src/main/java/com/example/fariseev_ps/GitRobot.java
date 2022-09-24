@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -118,16 +120,26 @@ public class GitRobot {
 
         }
     }
+
+
+
+
     public void sendPush(String message){
-        message ="Привет";
-        String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
-        String newoutputStream = "{\"to\":\""+tokenkomu+"\",\"notification\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
-        Log.d("--","newoutputStream: "+newoutputStream );
-//                "{"+"""+"to"+"""+":"+"""+
-//        +"dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy"+
-//        +"""+","+"""+"notification"+"""+":{"+"""+title"+"""+":"+"""+"Справочник"+"""+","+"""+"body"+"""+":"+"""+message+"""+"}}"+""");
-        OutputStream outputStream = new ByteArrayOutputStream();
+
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
+                message ="Привет";
+        Charset cset = Charset.forName("Cp1251");
+        ByteBuffer buf = cset.encode(message);
+        byte[] b = buf.array();
+        String str = new String(b);
+        //message = new String(b,StandardCharsets.UTF_8);
+        String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
+        String newoutputStream = "{\"to\":\""+tokenkomu+"\",\"notification\":{\"title\":\"Hi\",\"body\":\""+str+"\"}}\"";
+        Log.d("--","newoutputStream: "+newoutputStream );
+  //      String response = FirebaseMessaging.getInstance().send(message);
+
+        OutputStream outputStream = new ByteArrayOutputStream();
+
         try {
             JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream));
             writer.beginObject();

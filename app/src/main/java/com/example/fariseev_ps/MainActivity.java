@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     public void run() {
                                         try {
                                             GitRobot gitRobot = new GitRobot();
-                                            gitRobot.sendPush(userInput.getText().toString());
+                                                gitRobot.sendPush(userInput.getText().toString());
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
