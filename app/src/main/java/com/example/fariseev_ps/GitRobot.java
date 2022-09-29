@@ -48,27 +48,20 @@ public class GitRobot {
 
     @TargetApi(Build.VERSION_CODES.O)
     public void updateSingleContent(Context context, String RepoName, String RemotePath, String LocalFileName, String LocalFilePath, String doIt, ImageView photo) {
-       GitHub github = null;
+        GitHub github = null;
         GHRepository repo = null;
-        System.out.println("Upload started!\t" + LocalFilePath + LocalFileName + " => " + RepoName + "/" + RemotePath);
+    //    System.out.println("Upload started!\t" + LocalFilePath + LocalFileName + " => " + RepoName + "/" + RemotePath);
         int nLastBackSlashPos = LocalFilePath.lastIndexOf('/');
         String strLocalFilePath = nLastBackSlashPos == -1 ? "" : LocalFilePath.substring(0, nLastBackSlashPos + 1);
         String commitMsg = new Date().toString();
-        String accessToken = BuildConfig.GITHUB_TOKEN;
-
         byte[] fileContents = new byte[0];
-       try {
-            github = new GitHubBuilder().withOAuthToken(accessToken).build();
-            if (!github.isCredentialValid()) {
-                Log.d("--", "Invalid GitHub credentials !!!");
+            github = gitHubStr();
+            if (github.isCredentialValid()) {
+                repo = gitRepStr (RepoName);
             } else {
-                repo = github.getRepository(userId + "/" + RepoName);
-                  Log.d("--", "Downloaded now !\t " + repo.getFileContent(RemotePath + "/" + LocalFileName).getDownloadUrl());
-                Log.d("--", "! "+repo);
+                Log.d("--", "Invalid GitHub credentials !!!");
+                return;
             }
-        } catch (IOException e) {
-            Log.d("--", "ERROR   " + e.getMessage());
-        }
         if (doIt.equals("list")) {
             try {
                 for (int z = 1; z<repo.getDirectoryContent("Token").size(); z++) {
@@ -76,8 +69,6 @@ public class GitRobot {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.d("--",":-( "+e);
-
             }
         }
         if (doIt.equals("update")) {
@@ -112,7 +103,7 @@ public class GitRobot {
         if (doIt.equals("download")) {
        //     Log.d("--", "download base!");
                 try {
-                        writeFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFilePath );
+                        downloadFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFilePath, "bd.xlsx" );
                         Log.d("--", "Downloaded 1!\t" + LocalFilePath+LocalFileName);
                 } catch (IOException e) {
                     Log.d("--", "ERROR32121  " + e.getMessage());
@@ -121,7 +112,26 @@ public class GitRobot {
         }
     }
 
+    GitHub gitHubStr () {
+        String accessToken = BuildConfig.GITHUB_TOKEN;
+        GitHub github = null;
+        try {
+            github = new GitHubBuilder().withOAuthToken(accessToken).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return github;
+    }
 
+    GHRepository gitRepStr (String RepoName) {
+        GHRepository repositoriy = null;
+        try {
+            repositoriy = gitHubStr().getRepository(userId + "/" + RepoName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return repositoriy;
+    }
 
 
     public void sendPush(String message){
@@ -183,11 +193,11 @@ public class GitRobot {
 
 
     @TargetApi(Build.VERSION_CODES.O)
-    private void writeFile(Context context, InputStream is, String path) {
+    private void downloadFile(Context context, InputStream is, String path, String nameFile) {
         byte[] cb = new byte[1024];
         int nSize = 0;
         try {
-            File file = new File(path+"bd.xlsx");
+            File file = new File(path+nameFile);
             //      File dir = file.getParentFile();
             //     if(!dir.exists())
             //         dir.mkdirs();
@@ -207,81 +217,3 @@ public class GitRobot {
     }
 }
 
-  /* public void setApiUrl(String apiUrl) {
-        this.apiUrl = apiUrl;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-}
-/*
-    @TargetApi(Build.VERSION_CODES.O)
-    public void getSingleContent(String strRepoName, String strRemotePath , String strRemoteFileName, String strLocalFilePath){
-        GitHub github;
-        GHRepository repo;
-        boolean bDownloaded = false;
-        String strFileName;
-        //String strRemoteFileName="";
-        try {
-            if(strLocalFilePath.charAt(strLocalFilePath.length()-1) != '\\')
-                strLocalFilePath += "";
-            System.out.println("Download started!\t"+strRepoName+"/"+strRemotePath+"/"+strRemoteFileName+" => " + strLocalFilePath);
-                github = new GitHubBuilder().withOAuthToken(accessToken).build();
-                if (!github.isCredentialValid()) {
-                    Log.d("--", "Invalid GitHub credentials !!!");
-                } else {
-                    repo = github.getRepository(userId + "/" + RepoName);
-                }
-            repo.getFileContent(RemotePath + "/" + LocalFileName).d
-            Iterator it = contents.iterator();
-
-            while(it.hasNext()){
-
-                GHContent content = (GHContent)it.next();
-                contentOver=content;
-                System.out.println(content.getName() + " - " + strRemoteFileName);
-                if(content.getName().equalsIgnoreCase(strRemoteFileName)){
-                    if(content.isDirectory()){
-                        System.out.println("This is a directory.");
-                        return;
-                    }
-                    else{
-                        strFileName = strLocalFilePath + content.getName();
-                        if(content.getDownloadUrl() != null && content.getSize() < 1024 * 1024){
-                            writeFile(content.read(), strFileName);
-                            bDownloaded = true;
-                        }
-                        else if(content.getGitUrl() != null){
-                            //writeFileFromGitUrl(content.getGitUrl(), strFileName);
-                            bDownloaded = true;
-                        }
-                    }
-                }
-
-            }
-            if(!bDownloaded) {
-                try {
-                    strFileName = strLocalFilePath + strRemoteFileName;
-                   // writeFileFromGitUrl(contentOver.getGitUrl(), strFileName);
-                    bDownloaded = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if(bDownloaded)
-                System.out.println("Download finished!");
-            else
-                System.out.println("не скачано");
-        } catch(FileNotFoundException e1){
-
-            System.out.println("Error:"+e1.getCause().getMessage());
-            System.exit(0);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-} */
