@@ -41,27 +41,24 @@ public class GitRobot {
     private String apiUrl = "https://api.github.com";
     private String userId = "pfariseev";
     private String password = "";
+    private static GitHub github = null;
+    private static GHRepository repo = null;
+    private static String accessToken = BuildConfig.GITHUB_TOKEN;
 
 
     public GitRobot() {
     }
 
+
     @TargetApi(Build.VERSION_CODES.O)
-    public void updateSingleContent(Context context, String RepoName, String RemotePath, String LocalFileName, String LocalFilePath, String doIt, ImageView photo) {
-        GitHub github = null;
-        GHRepository repo = null;
+    public void updateSingleContent(Context context, String repoName, String RemotePath, String LocalFileName, String LocalFilePath, String doIt, ImageView photo) {
+
     //    System.out.println("Upload started!\t" + LocalFilePath + LocalFileName + " => " + RepoName + "/" + RemotePath);
         int nLastBackSlashPos = LocalFilePath.lastIndexOf('/');
         String strLocalFilePath = nLastBackSlashPos == -1 ? "" : LocalFilePath.substring(0, nLastBackSlashPos + 1);
         String commitMsg = new Date().toString();
         byte[] fileContents = new byte[0];
-            github = gitHubStr();
-            if (github.isCredentialValid()) {
-                repo = gitRepStr (RepoName);
-            } else {
-                Log.d("--", "Invalid GitHub credentials !!!");
-                return;
-            }
+        if (!getGit(repoName)) return;
         if (doIt.equals("list")) {
             try {
                 for (int z = 1; z<repo.getDirectoryContent("Token").size(); z++) {
@@ -111,26 +108,45 @@ public class GitRobot {
 
         }
     }
+    @TargetApi(Build.VERSION_CODES.O)
+    public boolean getlistintoken (String repoName, String dirName, String nameFile){
+        if (!getGit(repoName)) return false;
+        try {
+             if (repo.getFileContent(dirName + "/" + nameFile+".txt").isFile()) return true;
+            } catch (IOException e) {}
+        return false;
+    }
 
-    GitHub gitHubStr () {
-        String accessToken = BuildConfig.GITHUB_TOKEN;
-        GitHub github = null;
+    @TargetApi(Build.VERSION_CODES.O)
+    void gitHubStr () {
         try {
             github = new GitHubBuilder().withOAuthToken(accessToken).build();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return github;
     }
 
-    GHRepository gitRepStr (String RepoName) {
-        GHRepository repositoriy = null;
+    @TargetApi(Build.VERSION_CODES.O)
+    boolean getGit (String RepoName) {
+        if (github==null)
+            gitHubStr();
+        if (github.isCredentialValid()) {
+            if (repo==null) {
+                gitRepStr(RepoName);
+                return true;
+            } else return true;
+        } else {
+            Log.d("--", "Invalid GitHub credentials !!!");
+            return false;
+        }
+    }
+
+    void gitRepStr (String RepoName) {
         try {
-            repositoriy = gitHubStr().getRepository(userId + "/" + RepoName);
+            repo = github.getRepository(userId + "/" + RepoName);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return repositoriy;
     }
 
 

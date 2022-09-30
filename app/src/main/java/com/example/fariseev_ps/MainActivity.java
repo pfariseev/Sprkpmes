@@ -40,6 +40,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -84,8 +85,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SharedPreferences.Editor editor;
     private static final int PHONE_NUMBER_HINT = 100;
     String myPhoneNumber="";
-    //   public static GitHub github = null;
-  //  public static GHRepository repo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -439,11 +438,47 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivity(sec_intent);
                 return true;
             case R.id.send_message:
-                enterMessage();
+                prompt_sendMessage(this);
+               // enterMessage();
 
             default:
                 return false;
         }
+    }
+    public static void prompt_sendMessage(Context context) {
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.prompt_radiobutton, null);
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                RadioGroup rg = promptsView.findViewById(R.id.radioGroup_diffLevel);
+                                PackageManager pm = context.getPackageManager();
+                                ComponentName receiver = new ComponentName(context, EternalService.Alarm.class);
+                                switch (rg.getCheckedRadioButtonId()) {
+                                    case R.id.radioButton_one:
+                                        pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                                        EternalService.Alarm.setAlarm(context);
+                                    case R.id.radioButton_two:
+                                        pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                                        EternalService.Alarm.cancelAlarm(context);
+                                    case R.id.radioButton_three:
+                                        savephoto.deletePholderWithFiles (context,"Photo");
+                                    default:
+                                        return;
+                                }
+                             }
+                        })
+                .setNegativeButton("Отмена",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     void enterMessage () {

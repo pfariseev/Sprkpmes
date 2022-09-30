@@ -46,6 +46,7 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -132,6 +133,46 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         }
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        if (prefs.getBoolean(getString(R.string.admin),false)) {
+            GitRobot gitRobot = new GitRobot();
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+            if (gitRobot.getlistintoken("sprkpmes_token", "Token", Name1)) {
+                menu.findItem(R.id.send_message).setVisible(true);
+                menu.findItem(R.id.action_search).setVisible(false);
+                menu.findItem(R.id.settings).setVisible(false);
+                menu.findItem(R.id.about).setVisible(false);
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.menu, menu);
+                return;
+            }
+                    } catch (Exception e) {}
+                }
+            });
+            thread.start();
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.send_message:
+                MainActivity.prompt_sendMessage(context);
+                // enterMessage();
+
+            default:
+                return false;
+        }
+    }
+
 
     void Start() {
         String user = getIntent().getExtras().getString("usermake");
