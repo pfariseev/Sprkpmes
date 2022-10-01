@@ -80,6 +80,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if (remoteMessage.getData().get("body").equals("DeleteAllPhotos")) {
                     savephoto.deletePholderWithFiles (getApplicationContext(),"Photo");
                 }
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.admin),false)) {
+                    NotificationUtils n = NotificationUtils.getInstance(this);
+                    n.createInfoNotification(remoteMessage.getData().get("body")+" - команда принята");
+                }
             } else {
                 // Handle message within 10 seconds
                 handleNow();

@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
@@ -153,8 +152,6 @@ class MySimpleAdapter extends SimpleAdapter {
     }
 
     void setButton (View view) {
-        Button bt = view.findViewById(R.id.fishki);
-        bt.setVisibility(View.INVISIBLE);
         TextView textView =  view.findViewById(R.id.textView3);
         String newnumberMobi = textView.getText().toString();
         TextView textView2 =  view.findViewById(R.id.textView4);

@@ -50,7 +50,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -134,7 +133,10 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
 
     }
 
-    void setAdminButton () {
+/*    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
         if (prefs.getBoolean(getString(R.string.admin),false)) {
             GitRobot gitRobot = new GitRobot();
             Thread thread = new Thread(new Runnable() {
@@ -142,8 +144,10 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 public void run() {
                     try {
             if (gitRobot.getlistintoken("sprkpmes_token", "Token", Name1)) {
-                Button bt = findViewById(R.id.fishki);
-                bt.setVisibility(View.VISIBLE);
+                menu.findItem(R.id.send_message).setVisible(true);
+                menu.findItem(R.id.action_search).setVisible(false);
+                menu.findItem(R.id.settings).setVisible(false);
+                menu.findItem(R.id.about).setVisible(false);
             }
                     } catch (Exception e) {}
                 }
@@ -151,13 +155,10 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             thread.start();
 
         }
+        return false;
     }
 
-    public void onClickAdminFishki () {
-        MainActivity.prompt_sendMessage(context);
-    }
-
-   /* @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.send_message:
@@ -271,7 +272,8 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(this);
         listView.setOnTouchListener(itemTouchListerner);
-        setAdminButton ();
+
+
     }
 
 

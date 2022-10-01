@@ -4,11 +4,9 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.JsonWriter;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpResponse;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.methods.HttpPost;
@@ -19,15 +17,13 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,15 +55,6 @@ public class GitRobot {
         String commitMsg = new Date().toString();
         byte[] fileContents = new byte[0];
         if (!getGit(repoName)) return;
-        if (doIt.equals("list")) {
-            try {
-                for (int z = 1; z<repo.getDirectoryContent("Token").size(); z++) {
-            //        Log.d("--", "? " + repo.getDirectoryContent("Token").get(z).getName());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         if (doIt.equals("update")) {
             try {
                 Path path = Paths.get(strLocalFilePath, LocalFileName);
@@ -118,21 +105,21 @@ public class GitRobot {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    void gitHubStr () {
-        try {
-            github = new GitHubBuilder().withOAuthToken(accessToken).build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.O)
     boolean getGit (String RepoName) {
-        if (github==null)
-            gitHubStr();
+        if (github==null) {
+            try {
+                github = new GitHubBuilder().withOAuthToken(accessToken).build();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (github.isCredentialValid()) {
             if (repo==null) {
-                gitRepStr(RepoName);
+                try {
+                    repo = github.getRepository(userId + "/" + RepoName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return true;
             } else return true;
         } else {
@@ -141,70 +128,56 @@ public class GitRobot {
         }
     }
 
-    void gitRepStr (String RepoName) {
-        try {
-            repo = github.getRepository(userId + "/" + RepoName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-
-    public void sendPush(String message){
-
+    public void sendPushMessage(Context context, String message, String notify){
+        if (!getGit("sprkpmes_token")) return;
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
-                message ="Привет";
-        Charset cset = Charset.forName("Cp1251");
-        ByteBuffer buf = cset.encode(message);
-        byte[] b = buf.array();
-        String str = new String(b);
-        //message = new String(b,StandardCharsets.UTF_8);
-        String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
-        String newoutputStream = "{\"to\":\""+tokenkomu+"\",\"notification\":{\"title\":\"Hi\",\"body\":\""+str+"\"}}\"";
-        Log.d("--","newoutputStream: "+newoutputStream );
-  //      String response = FirebaseMessaging.getInstance().send(message);
+        HttpClient httpClient = HttpClientBuilder.create().build();
+            try {
+                for (int z = 0; z<repo.getDirectoryContent("Token").size(); z++) {
+                    String s = convertStreamToString(repo.getFileContent("Token" + "/" + repo.getDirectoryContent("Token").get(z).getName()).read());
+                    String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
+                    Log.d("--","send to - "+tokenKomu[2]);
 
-        OutputStream outputStream = new ByteArrayOutputStream();
-
-        try {
+      //  String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
+             //   String temp = "d2wg-D43SH6-y5CbJ3RN_u:APA91bGn6Xknh30EpaVZxwJEZK3-52KXQZfgAf3Qsjvt3dUntSsd73i9Fr6GMZvd14ecCVZTqbZ5mzuILZOCBp4XVvirMhqrIwP-jt9gJgFpXHixCeKZDwrxI5bmBBArjNbL_dTen7hJ";
+        String outputStream = "{\"to\":\""+tokenKomu[2]+"\",\"data\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
+                    /*  OutputStream outputStream = new ByteArrayOutputStream();
             JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream));
             writer.beginObject();
             writer.name("to");
-            writer.value(tokenkomu);
-            writer.name("notification");
+            writer.value(tokenKomu[2]);
+            writer.name(notify);
             writer.beginObject();
             writer.name("title");
-            String title = "Справочник";
+            String title = "Sprkpmes";
             writer.value(title);
             writer.name("body");
-            message = "Привет!";
             writer.value(message);
             writer.endObject();
             writer.endObject();
-            writer.close();
-        //    Log.d("--","outputStream: "+outputStream);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            writer.close(); */
 
-        }
-
-        HttpClient httpClient = HttpClientBuilder.create().build();
         try {
             HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
-            StringEntity params = new StringEntity(newoutputStream);
+            StringEntity params = new StringEntity(outputStream.toString());
             request.addHeader("content-type", "application/json");
             request.addHeader("Authorization", accessTokenToPush);
             request.setEntity(params);
             HttpResponse response = httpClient.execute(request);
             Log.d("--","response: "+response);
         } catch (Exception ex) {
-            Log.d("--","ex: "+ex);
+            Log.d("--","response error: "+ex);
         } finally {
-
-            httpClient.getConnectionManager().shutdown();
         }
+                    Thread.sleep(1000);
+                }
+                httpClient.getConnectionManager().shutdown();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 
 
@@ -230,6 +203,17 @@ public class GitRobot {
             }
             Log.d("--", "Error download !\t" + path);
         }
+    }
+
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        reader.close();
+        return sb.toString();
     }
 }
 

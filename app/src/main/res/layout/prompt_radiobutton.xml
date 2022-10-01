@@ -51,6 +51,12 @@
             android:layout_height="wrap_content"
             android:text="Обновление/удаление всех фото" />
 
+        <RadioButton
+            android:id="@+id/radioButton_four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Послать сообщение" />
+
     </RadioGroup>
 
 
