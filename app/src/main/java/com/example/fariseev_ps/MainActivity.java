@@ -64,11 +64,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -760,20 +756,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         final ProgressDialog progressDialog = new ProgressDialog(this);
         new AsyncTask<String, Integer, File>() {
             private Exception m_error = null;
-            File sprkpmes;
+            //File sprkpmes;
             @Override
             protected void onPreExecute() {
-                progressDialog.setMessage("Обновление...");
+                progressDialog.setMessage("Обновление. Пожалуйста подождите..");
                 progressDialog.setCancelable(false);
-                progressDialog.setMax(100);
-                progressDialog
-                        .setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+               // progressDialog.setMax(100);
+             //   progressDialog
+              //          .setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressDialog.show();
             }
             @Override
             protected File doInBackground(String... params) {
-
-                URL url;
+                GitRobot gitRobot = new GitRobot();
+                gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/databases/","download", null);
+             /*   URL url;
                 HttpURLConnection urlConnection;
                 InputStream inputStream;
                 int totalSize;
@@ -788,7 +785,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     urlConnection.setConnectTimeout(20000); //время ожидания соединения
                     urlConnection.connect();
                     inputStream = urlConnection.getInputStream();
-                    totalSize = 8400000;//urlConnection.getContentLength();
+                    totalSize = 21000000;//urlConnection.getContentLength();
                     Log.d("--",Integer.toString(totalSize));
                     downloadedSize = 0;
                     buffer = new byte[1024];
@@ -814,7 +811,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 } catch (IOException e) {
                     e.printStackTrace();
                     m_error = e;
-                }
+                } */
                 return null;
             }
             protected void onProgressUpdate(Integer... values) {
@@ -824,6 +821,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
             @Override
             protected void onPostExecute(File file) {
+                File sprkpmes = new File(getApplicationInfo().dataDir + "/databases/" + "sprkpmes");
                 // отображаем сообщение, если возникла ошибка
                 if (m_error != null) {
                     m_error.printStackTrace();

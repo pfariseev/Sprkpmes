@@ -114,18 +114,20 @@ public class GitRobot {
             }
         }
         if (github.isCredentialValid()) {
-            if (repo==null) {
+            if (repo!=null) {
+                return true;
+            } else {
                 try {
                     repo = github.getRepository(userId + "/" + RepoName);
+                    return true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return true;
-            } else return true;
+            }
         } else {
             Log.d("--", "Invalid GitHub credentials !!!");
-            return false;
         }
+        return false;
     }
 
 
