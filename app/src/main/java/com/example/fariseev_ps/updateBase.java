@@ -13,8 +13,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -127,9 +125,11 @@ class updateBase {
                     }
                     // if (prefs.getBoolean("Обновлять базу справочника автоматически", false)) progressDialog.hide();
                     if (context.getClass().getSimpleName().equals("about")) {
-                        Toast toast = Toast.makeText(context, "Что-то пошло не так :(, может включить интернет..?", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        NotificationUtils n = NotificationUtils.getInstance(context);
+                        n.createInfoNotification("Что-то пошло не так :(");
+               //        Toast toast = Toast.makeText(context, "Что-то пошло не так :(, может включить интернет..?", Toast.LENGTH_LONG);
+               //         toast.setGravity(Gravity.CENTER, 0, 0);
+               //         toast.show();
                     }
                     return;
                 }

@@ -64,7 +64,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -756,21 +760,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         final ProgressDialog progressDialog = new ProgressDialog(this);
         new AsyncTask<String, Integer, File>() {
             private Exception m_error = null;
-            //File sprkpmes;
+            File sprkpmes;
             @Override
             protected void onPreExecute() {
-                progressDialog.setMessage("Обновление. Пожалуйста подождите..");
+                progressDialog.setMessage("Обновление. Пожалуйста подождите.");
                 progressDialog.setCancelable(false);
-               // progressDialog.setMax(100);
-             //   progressDialog
-              //          .setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setMax(100);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressDialog.show();
             }
             @Override
             protected File doInBackground(String... params) {
                 GitRobot gitRobot = new GitRobot();
-                gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/databases/","download", null);
-             /*   URL url;
+                gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/cache/","download", null);
+                URL url;
                 HttpURLConnection urlConnection;
                 InputStream inputStream;
                 int totalSize;
@@ -811,17 +814,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 } catch (IOException e) {
                     e.printStackTrace();
                     m_error = e;
-                } */
+                }
                 return null;
             }
             protected void onProgressUpdate(Integer... values) {
-                progressDialog
-                        .setProgress((int) ((values[0] / (float) values[1]) * 100));
+                progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
             }
 
             @Override
             protected void onPostExecute(File file) {
-                File sprkpmes = new File(getApplicationInfo().dataDir + "/databases/" + "sprkpmes");
+             //   File sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
+             //   GitRobot gitRobot = new GitRobot();
+             //   Long lng = gitRobot.getsizecontent("Sprkpmes", "bd", "sprkpmes");
+             //   Log.d("--","sprkpmes.length "+sprkpmes.length()+", lng "+lng);
                 // отображаем сообщение, если возникла ошибка
                 if (m_error != null) {
                     m_error.printStackTrace();
@@ -832,16 +837,18 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     return;
                 }
                 progressDialog.hide();
-                Toast toast = Toast.makeText(getApplicationContext(), "Готово", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(), "Готово", Toast.LENGTH_LONG);
+                //toast.setGravity(Gravity.CENTER, 0, 0);
+                //toast.show();
                 sprkpmes.setReadable(true, false);
                 Log.d("--","Длина файла на входе  "+sprkpmes.length());
                 Log.d("--","Путь  "+sprkpmes.getParent());
-                Uri fileUri = Uri.fromFile(sprkpmes); //for Build.VERSION.SDK_INT <= 24
+                Uri fileUri ; //for Build.VERSION.SDK_INT <= 24
                 if (Build.VERSION.SDK_INT >= 24) {
                     Log.d("--",BuildConfig.APPLICATION_ID);
                     fileUri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID,sprkpmes);
+                } else {
+                    fileUri = Uri.fromFile(sprkpmes);
                 }
                 Log.d("--",fileUri.toString());
                 Intent intent = new Intent(Intent.ACTION_VIEW);

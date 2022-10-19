@@ -103,6 +103,16 @@ public class GitRobot {
             } catch (IOException e) {}
         return false;
     }
+    @TargetApi(Build.VERSION_CODES.O)
+
+    public long getsizecontent (String repoName, String dirName, String nameFile){
+        Long lng = null;
+        if (!getGit(repoName)) return lng;
+        try {
+            lng = repo.getFileContent(dirName + "/" + nameFile).getSize();
+        } catch (IOException e) {}
+        return lng;
+    }
 
     @TargetApi(Build.VERSION_CODES.O)
     boolean getGit (String RepoName) {
@@ -112,20 +122,21 @@ public class GitRobot {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        if (github.isCredentialValid()) {
-            if (repo!=null) {
-                return true;
-            } else {
-                try {
-                    repo = github.getRepository(userId + "/" + RepoName);
-                    return true;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         } else {
-            Log.d("--", "Invalid GitHub credentials !!!");
+            if (github.isCredentialValid()) {
+                if (repo != null) {
+                    return true;
+                } else {
+                    try {
+                        repo = github.getRepository(userId + "/" + RepoName);
+                        return true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                Log.d("--", "Invalid GitHub credentials !!!");
+            }
         }
         return false;
     }
