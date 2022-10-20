@@ -769,9 +769,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             protected File doInBackground(String... params) {
                 sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
                 GitRobot gitRobot = new GitRobot();
-                GitRobot.downloadFile=false;
+                GitRobot.downloadFile=0;
                 gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/cache/","download", null);
-                while (!GitRobot.downloadFile) {}
+                while (GitRobot.downloadFile==0) {}
                 /*    URL url;
                 HttpURLConnection urlConnection;
                 InputStream inputStream;
@@ -827,10 +827,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
              //   Long lng = gitRobot.getsizecontent("Sprkpmes", "bd", "sprkpmes");
              //   Log.d("--","sprkpmes.length "+sprkpmes.length()+", lng "+lng);
                 // отображаем сообщение, если возникла ошибка
-                if (m_error != null) {
-                    m_error.printStackTrace();
+                if (GitRobot.downloadFile== 3) {
+               //     m_error.printStackTrace();
                     progressDialog.hide();
-                    Toast toast = Toast.makeText(getApplicationContext(), "Что-то пошло не так :(, может включить интернет..?", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Что-то пошло не так :(", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                     return;
@@ -839,6 +839,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 //Toast toast = Toast.makeText(getApplicationContext(), "Готово", Toast.LENGTH_LONG);
                 //toast.setGravity(Gravity.CENTER, 0, 0);
                 //toast.show();
+                if (GitRobot.downloadFile!=2) {
+                    Log.d("--","Обновление не скачено");
+                    return;
+                }
                 sprkpmes.setReadable(true, false);
                 Log.d("--","Длина файла на входе  "+sprkpmes.length());
                 Log.d("--","Путь  "+sprkpmes.getParent());

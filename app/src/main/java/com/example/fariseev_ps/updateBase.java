@@ -102,10 +102,13 @@ class updateBase {
                                     inputStream.close();
 
                  */
-                GitRobot.downloadFile=false;
+                GitRobot.downloadFile=0;
                 GitRobot gitRobot = new GitRobot();
                 gitRobot.updateSingleContent(context, "Sprkpmes","bd", "bd.xlsx", context.getApplicationInfo().dataDir + "/databases/","download", null);
-                while (!GitRobot.downloadFile) {}
+                while (GitRobot.downloadFile==0) {
+
+                }
+
                 return null;
             }
 
@@ -118,11 +121,11 @@ class updateBase {
             @Override
             protected void onPostExecute(Void file) {
                 // отображаем сообщение, если возникла ошибка
-                if (m_error != null) {
-                    m_error.printStackTrace();
+                if (GitRobot.downloadFile== 3) {
+                  //  m_error.printStackTrace();
                     if (prefs.getBoolean("adm",false)) {
                         NotificationUtils n = NotificationUtils.getInstance(context);
-                        n.createInfoNotification("Err: "+m_error);
+                        n.createInfoNotification("Ошибка скачивании базы");
                     }
                     // if (prefs.getBoolean("Обновлять базу справочника автоматически", false)) progressDialog.hide();
                     if (context.getClass().getSimpleName().equals("about")) {
@@ -136,8 +139,8 @@ class updateBase {
                 }
                 // если всё хорошо, закрываем прогресс и удаляем временный файл
                 progressDialog.hide();
-                Log.d("--", "TrueUpdate Exit");
-                copyDB(context);
+                //Log.d("--", "TrueUpdate Exit");
+                if (GitRobot.downloadFile== 2) copyDB(context);
             }
         }.execute(url);
     }

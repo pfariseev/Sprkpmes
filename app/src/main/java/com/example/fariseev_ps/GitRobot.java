@@ -40,7 +40,7 @@ public class GitRobot {
     private static GitHub github = null;
     private static GHRepository repo = null;
     private static String accessToken = BuildConfig.GITHUB_TOKEN;
-    public static Boolean downloadFile=false;
+    public static int downloadFile=0;
 
 
     public GitRobot() {
@@ -107,6 +107,7 @@ public class GitRobot {
                         Log.d("--", "Downloaded 1!\t" + LocalFilePath+LocalFileName);
                 } catch (IOException e) {
                     Log.d("--", "ERROR32121  " + e.getMessage());
+                    downloadFile=3;
                 }
 
         }
@@ -225,7 +226,7 @@ public class GitRobot {
             }
             fw.close();
             Log.d("--", "Downloaded!\t" + path);
-            downloadFile=true;
+            downloadFile=2;
         } catch (IOException e) {
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("adm", false)) {
                 //   NotificationUtils n = NotificationUtils.getInstance(context);
