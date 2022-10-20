@@ -102,9 +102,10 @@ class updateBase {
                                     inputStream.close();
 
                  */
+                GitRobot.downloadFile=false;
                 GitRobot gitRobot = new GitRobot();
                 gitRobot.updateSingleContent(context, "Sprkpmes","bd", "bd.xlsx", context.getApplicationInfo().dataDir + "/databases/","download", null);
-
+                while (!GitRobot.downloadFile) {}
                 return null;
             }
 
@@ -158,6 +159,7 @@ class updateBase {
             throw mSQLException;
         }
         File file = new File(DB_PATH + "bd.xlsx");
+        if (!file.exists()) return;
         try {
             Workbook wb = WorkbookFactory.create(file);
             int lists = wb.getNumberOfSheets();

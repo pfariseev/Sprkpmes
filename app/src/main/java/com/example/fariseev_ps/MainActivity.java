@@ -64,11 +64,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -764,16 +760,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             protected void onPreExecute() {
                 progressDialog.setMessage("Обновление. Пожалуйста подождите.");
-                progressDialog.setCancelable(false);
-                progressDialog.setMax(100);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+               // progressDialog.setCancelable(false);
+              //  progressDialog.setMax(100);
+              //  progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressDialog.show();
             }
             @Override
             protected File doInBackground(String... params) {
+                sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
                 GitRobot gitRobot = new GitRobot();
+                GitRobot.downloadFile=false;
                 gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/cache/","download", null);
-                URL url;
+                while (!GitRobot.downloadFile) {}
+                /*    URL url;
                 HttpURLConnection urlConnection;
                 InputStream inputStream;
                 int totalSize;
@@ -814,7 +813,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 } catch (IOException e) {
                     e.printStackTrace();
                     m_error = e;
-                }
+                } */
                 return null;
             }
             protected void onProgressUpdate(Integer... values) {

@@ -40,6 +40,7 @@ public class GitRobot {
     private static GitHub github = null;
     private static GHRepository repo = null;
     private static String accessToken = BuildConfig.GITHUB_TOKEN;
+    public static Boolean downloadFile=false;
 
 
     public GitRobot() {
@@ -54,7 +55,22 @@ public class GitRobot {
         String strLocalFilePath = nLastBackSlashPos == -1 ? "" : LocalFilePath.substring(0, nLastBackSlashPos + 1);
         String commitMsg = new Date().toString();
         byte[] fileContents = new byte[0];
-        if (!getGit(repoName)) return;
+        //if (!getGit(repoName)) return;
+        try {
+            github = new GitHubBuilder().withOAuthToken(accessToken).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (github.isCredentialValid()) {
+                try {
+                    repo = github.getRepository(userId + "/" + repoName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        } else {
+            Log.d("--", "Invalid GitHub credentials !!!");
+        }
+
         if (doIt.equals("update")) {
             try {
                 Path path = Paths.get(strLocalFilePath, LocalFileName);
@@ -97,7 +113,7 @@ public class GitRobot {
     }
     @TargetApi(Build.VERSION_CODES.O)
     public boolean getlistintoken (String repoName, String dirName, String nameFile){
-        if (!getGit(repoName)) return false;
+      //  if (!getGit(repoName)) return false;
         try {
              if (repo.getFileContent(dirName + "/" + nameFile+".txt").isFile()) return true;
             } catch (IOException e) {}
@@ -107,7 +123,7 @@ public class GitRobot {
 
     public long getsizecontent (String repoName, String dirName, String nameFile){
         Long lng = null;
-        if (!getGit(repoName)) return lng;
+      //  if (!getGit(repoName)) return lng;
         try {
             lng = repo.getFileContent(dirName + "/" + nameFile).getSize();
         } catch (IOException e) {}
@@ -143,7 +159,7 @@ public class GitRobot {
 
 
     public void sendPushMessage(Context context, String message, String notify){
-        if (!getGit("sprkpmes_token")) return;
+    //    if (!getGit("sprkpmes_token")) return;
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
         HttpClient httpClient = HttpClientBuilder.create().build();
             try {
@@ -209,6 +225,7 @@ public class GitRobot {
             }
             fw.close();
             Log.d("--", "Downloaded!\t" + path);
+            downloadFile=true;
         } catch (IOException e) {
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("adm", false)) {
                 //   NotificationUtils n = NotificationUtils.getInstance(context);
