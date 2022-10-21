@@ -39,7 +39,8 @@ public class GitRobot {
 
     private String apiUrl = "https://api.github.com";
     private String userId = "pfariseev";
-    private String password = "";
+    private String secretkey_string = "s/7s0nxKWp6VxmZ5S0hVXA==";
+    private String password = "xwUPGxDW5mjEzcZzg0J7mP7YUHeuc+627fz7ojefU/LBt+b2F8pZziRgIpRpB9Re";
     private static GitHub github = null;
     private static GHRepository repo = null;
     private static String accessToken; //= BuildConfig.GITHUB_TOKEN;
@@ -59,16 +60,16 @@ public class GitRobot {
         String commitMsg = new Date().toString();
         byte[] fileContents = new byte[0];
         //if (!getGit(repoName)) return;
+        SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
         try {
-            String secretkey_string = "s/7s0nxKWp6VxmZ5S0hVXA==";
-            SecretKey newsecretkey = MainActivity.stringToKey(secretkey_string);
-            accessToken = MainActivity.decryptString(Base64.decode("xwUPGxDW5mjEzcZzg0J7mP7YUHeuc+627fz7ojefU/LBt+b2F8pZziRgIpRpB9Re", Base64.DEFAULT), newsecretkey);
+            accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
             github = new GitHubBuilder().withOAuthToken(accessToken).build();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.d("--","password: "+ accessToken);
         if (github.isCredentialValid()) {
                 try {
                     repo = github.getRepository(userId + "/" + repoName);

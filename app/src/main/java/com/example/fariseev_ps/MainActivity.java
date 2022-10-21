@@ -31,7 +31,6 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -67,10 +66,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -718,54 +713,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         });
     }
 
-  /*  void crypto () {
-        String password= BuildConfig.GITHUB_TOKEN;
-      //  String key = "Lovelymouse";
-    //    SecretKey secretkey = stringToKey(key);
-        String secretkey_string = "s/7s0nxKWp6VxmZ5S0hVXA==";
-        SecretKey newsecretkey = stringToKey(secretkey_string);
-//
-        try {
-        byte[] encrypted = encryptString(password, newsecretkey);
-        Log.d("--", "key: " + keyToString(newsecretkey));
-        String crypted_pass=Base64.encodeToString(encrypted, Base64.DEFAULT);
-        String decrypted_pass =decryptString(Base64.decode(crypted_pass, Base64.DEFAULT), newsecretkey);
-    //    Log.d("--", "encrypted password: " + crypted_pass);
-  //      Log.d("--", "dencrypted password: " +decrypted_pass);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("--","errorr "+e.getMessage());
-        }
-    }
-
-    public static String keyToString(SecretKey secretKey) {
-        return Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);
-    }
-
-
-
-    public static SecretKey generateKey() throws Exception {
-        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        keyGen.init(128);
-        return keyGen.generateKey();
-    }
-    public static byte[] encryptString(String message, SecretKey secret) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, secret);
-        return cipher.doFinal(message.getBytes("UTF-8"));
-    }
-
-   */
-  public static SecretKey stringToKey(String stringKey) {
-      byte[] encodedKey = Base64.decode(stringKey.trim(), Base64.DEFAULT);
-      return new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
-  }
-    public static String decryptString(byte[] cipherText, SecretKey secret) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, secret);
-        return new String(cipher.doFinal(cipherText), "UTF-8");
-    }
-
     private void verifyUpdate (){
 
         mDBHelper = new DatabaseHelper(this);
@@ -812,18 +759,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             protected void onPreExecute() {
                 progressDialog.setMessage("Обновление. Пожалуйста подождите.");
-               // progressDialog.setCancelable(false);
-              //  progressDialog.setMax(100);
-              //  progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setCancelable(false);
+                //progressDialog.setMax(100);
+                //progressDialog
+                //.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressDialog.show();
             }
             @Override
             protected File doInBackground(String... params) {
-                sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
-                GitRobot gitRobot = new GitRobot();
                 GitRobot.downloadFile=0;
-                gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/cache/","download", null);
-                while (GitRobot.downloadFile==0) {}
+                GitRobot gitRobot = new GitRobot();
+                gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/databases/","download", null);
+                while (GitRobot.downloadFile==0) {
+
+                }
                 /*    URL url;
                 HttpURLConnection urlConnection;
                 InputStream inputStream;
@@ -874,6 +823,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
             @Override
             protected void onPostExecute(File file) {
+                Log.d("--","Обновление не скачено "+GitRobot.downloadFile);
              //   File sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
              //   GitRobot gitRobot = new GitRobot();
              //   Long lng = gitRobot.getsizecontent("Sprkpmes", "bd", "sprkpmes");
@@ -895,6 +845,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     Log.d("--","Обновление не скачено");
                     return;
                 }
+                sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
                 sprkpmes.setReadable(true, false);
                 Log.d("--","Длина файла на входе  "+sprkpmes.length());
                 Log.d("--","Путь  "+sprkpmes.getParent());
