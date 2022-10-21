@@ -135,6 +135,7 @@ class updateBase {
                //         toast.setGravity(Gravity.CENTER, 0, 0);
                //         toast.show();
                     }
+                    progressDialog.hide();
                     return;
                 }
                 // если всё хорошо, закрываем прогресс и удаляем временный файл

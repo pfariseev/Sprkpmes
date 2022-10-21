@@ -102,6 +102,10 @@ public class GitRobot {
         }
         if (doIt.equals("download")) {
        //     Log.d("--", "download base!");
+            if (repo==null) {
+                downloadFile=3;
+                return;
+            }
                 try {
                         downloadFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFilePath, "bd.xlsx" );
                         Log.d("--", "Downloaded 1!\t" + LocalFilePath+LocalFileName);

@@ -31,6 +31,7 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -65,7 +66,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.HashMap;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     ActionBar actionBar ;
@@ -86,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        crypto();
         //  Bundle bundle = getIntent().getExtras(); // для получения сообщений из PUSH
       //  if (bundle != null) {
            // Log.d("--","Дата из MainActivity, ключ qwe - "+bundle.getString("qwe"));
@@ -712,7 +726,61 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         });
     }
 
+    void crypto () {
+        String password= BuildConfig.GITHUB_TOKEN;
+        String keys = "Lovelymouse";
+        SecretKey secretkey = stringToKey(keys);
+        SecretKey key = null;
+        try {
+            key = generateKey();
 
+        }
+catch (Exception e) {}
+        byte[] encrypted = new byte[0];
+        try {
+        encrypted = encryptString(password, secretkey);
+        Log.d("--", "key: " + keyToString(key));
+        Log.d("--", "encrypted password: " + Base64.encodeToString(encrypted, Base64.DEFAULT));
+        Log.d("--", "dencrypted password: " +decryptString(Base64.decode(encrypted, Base64.DEFAULT), secretkey));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String keyToString(SecretKey secretKey) {
+        return Base64.encodeToString(secretKey.getEncoded(), Base64.DEFAULT);
+    }
+    public static SecretKey stringToKey(String stringKey) {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        KeySpec spec = new PBEKeySpec("password".toCharArray(), salt, 65536, 256);
+        byte[] key = new byte[0];
+        try {
+            SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            key = f.generateSecret(spec).getEncoded();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        return new SecretKeySpec(key, "AES");
+    }
+    public static SecretKey generateKey() throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(128);
+        return keyGen.generateKey();
+    }
+    public static byte[] encryptString(String message, SecretKey secret) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secret);
+        return cipher.doFinal(message.getBytes("UTF-8"));
+    }
+    public static String decryptString(byte[] cipherText, SecretKey secret) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, secret);
+        return new String(cipher.doFinal(cipherText), "UTF-8");
+    }
 
     private void verifyUpdate (){
 
