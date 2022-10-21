@@ -756,6 +756,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         new AsyncTask<String, Integer, File>() {
             private Exception m_error = null;
             File sprkpmes;
+            String filenameAPK = "sprkpmes.apk";
             @Override
             protected void onPreExecute() {
                 progressDialog.setMessage("Обновление. Пожалуйста подождите.");
@@ -770,13 +771,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 try {
                     GitRobot.downloadFile = 0;
                     GitRobot gitRobot = new GitRobot();
-                    gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes", "bd", "sprkpmes.apk", getApplicationInfo().dataDir + "/cache/", "download", null);
+                    gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes", "bd", filenameAPK, getApplicationInfo().dataDir + "/cache/", "download", null);
                     while (GitRobot.downloadFile == 0) {
-                        Log.d("--", "!");
+                   //     Log.d("--", "!");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("--","!! "+GitRobot.downloadFile+" "+e.getMessage());
+                  //  Log.d("--","!! "+GitRobot.downloadFile+" "+e.getMessage());
                 }
                 /*    URL url;
                 HttpURLConnection urlConnection;
@@ -828,7 +829,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
             @Override
             protected void onPostExecute(File file) {
-                Log.d("--","Обновление не скачено "+GitRobot.downloadFile);
+                progressDialog.hide();
+               // Log.d("--","!!! "+GitRobot.downloadFile);
              //   File sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
              //   GitRobot gitRobot = new GitRobot();
              //   Long lng = gitRobot.getsizecontent("Sprkpmes", "bd", "sprkpmes");
@@ -836,13 +838,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 // отображаем сообщение, если возникла ошибка
                 if (GitRobot.downloadFile== 3) {
                //     m_error.printStackTrace();
-                    progressDialog.hide();
                     Toast toast = Toast.makeText(getApplicationContext(), "Что-то пошло не так :(", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                     return;
                 }
-                progressDialog.hide();
+
                 //Toast toast = Toast.makeText(getApplicationContext(), "Готово", Toast.LENGTH_LONG);
                 //toast.setGravity(Gravity.CENTER, 0, 0);
                 //toast.show();
@@ -850,10 +851,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     Log.d("--","Обновление не скачено");
                     return;
                 }
-                sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
+                sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + filenameAPK);
                 sprkpmes.setReadable(true, false);
                 Log.d("--","Длина файла на входе  "+sprkpmes.length());
-                Log.d("--","Путь  "+sprkpmes.getParent());
+                //Log.d("--","Путь  "+sprkpmes.getParent());
                 Uri fileUri ; //for Build.VERSION.SDK_INT <= 24
                 if (Build.VERSION.SDK_INT >= 24) {
                     Log.d("--",BuildConfig.APPLICATION_ID);
