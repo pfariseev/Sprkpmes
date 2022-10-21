@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -29,6 +30,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
+
 
 public class GitRobot {
     public static void main(String args[]) {
@@ -39,7 +42,7 @@ public class GitRobot {
     private String password = "";
     private static GitHub github = null;
     private static GHRepository repo = null;
-    private static String accessToken = BuildConfig.GITHUB_TOKEN;
+    private static String accessToken; //= BuildConfig.GITHUB_TOKEN;
     public static int downloadFile=0;
 
 
@@ -57,8 +60,13 @@ public class GitRobot {
         byte[] fileContents = new byte[0];
         //if (!getGit(repoName)) return;
         try {
+            String secretkey_string = "s/7s0nxKWp6VxmZ5S0hVXA==";
+            SecretKey newsecretkey = MainActivity.stringToKey(secretkey_string);
+            accessToken = MainActivity.decryptString(Base64.decode("xwUPGxDW5mjEzcZzg0J7mP7YUHeuc+627fz7ojefU/LBt+b2F8pZziRgIpRpB9Re", Base64.DEFAULT), newsecretkey);
             github = new GitHubBuilder().withOAuthToken(accessToken).build();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (github.isCredentialValid()) {
@@ -116,6 +124,8 @@ public class GitRobot {
 
         }
     }
+
+
     @TargetApi(Build.VERSION_CODES.O)
     public boolean getlistintoken (String repoName, String dirName, String nameFile){
       //  if (!getGit(repoName)) return false;
@@ -134,34 +144,6 @@ public class GitRobot {
         } catch (IOException e) {}
         return lng;
     }
-
-    @TargetApi(Build.VERSION_CODES.O)
-    boolean getGit (String RepoName) {
-        if (github==null) {
-            try {
-                github = new GitHubBuilder().withOAuthToken(accessToken).build();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (github.isCredentialValid()) {
-                if (repo != null) {
-                    return true;
-                } else {
-                    try {
-                        repo = github.getRepository(userId + "/" + RepoName);
-                        return true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                Log.d("--", "Invalid GitHub credentials !!!");
-            }
-        }
-        return false;
-    }
-
 
     public void sendPushMessage(Context context, String message, String notify){
     //    if (!getGit("sprkpmes_token")) return;
