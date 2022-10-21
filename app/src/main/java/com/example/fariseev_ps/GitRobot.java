@@ -113,7 +113,7 @@ public class GitRobot {
 
         }
         if (doIt.equals("download")) {
-            Log.d("--", "LocalFilePath+LocalFileName: "+LocalFilePath+LocalFileName+", RemotePath/LocalFileName: "+RemotePath+ "/" + LocalFileName);
+      //      Log.d("--", "LocalFilePath+LocalFileName: "+LocalFilePath+LocalFileName+", RemotePath/LocalFileName: "+RemotePath+ "/" + LocalFileName);
             if (repo==null) {
                 downloadFile=3;
                 return;
@@ -218,6 +218,7 @@ public class GitRobot {
             OutputStream fw = new FileOutputStream(file);
             while ((nSize = is.read(cb)) > 0) {
                 fw.write(cb, 0, nSize);
+
             }
             fw.close();
             Log.d("--", "Downloaded!\t" + path);

@@ -639,11 +639,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 //String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
                 if (urlnew==null) urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1UIa0Z7u0coVVn6k3lKJCT3VkCM-dBHWK");
                 downloadFile(urlnew);
+
             }
         });
         alertDialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -756,7 +758,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         new AsyncTask<String, Integer, File>() {
             private Exception m_error = null;
             File sprkpmes;
-            String filenameAPK = "sprkpmes.apk";
+            String filenameAPK = "sprkpmes";
             @Override
             protected void onPreExecute() {
                 progressDialog.setMessage("Обновление. Пожалуйста подождите.");
@@ -773,7 +775,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     GitRobot gitRobot = new GitRobot();
                     gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes", "bd", filenameAPK, getApplicationInfo().dataDir + "/cache/", "download", null);
                     while (GitRobot.downloadFile == 0) {
-                   //     Log.d("--", "!");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -830,32 +831,27 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             protected void onPostExecute(File file) {
                 progressDialog.hide();
-               // Log.d("--","!!! "+GitRobot.downloadFile);
-             //   File sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + "sprkpmes");
-             //   GitRobot gitRobot = new GitRobot();
-             //   Long lng = gitRobot.getsizecontent("Sprkpmes", "bd", "sprkpmes");
-             //   Log.d("--","sprkpmes.length "+sprkpmes.length()+", lng "+lng);
-                // отображаем сообщение, если возникла ошибка
                 if (GitRobot.downloadFile== 3) {
-               //     m_error.printStackTrace();
                     Toast toast = Toast.makeText(getApplicationContext(), "Что-то пошло не так :(", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                     return;
                 }
 
-                //Toast toast = Toast.makeText(getApplicationContext(), "Готово", Toast.LENGTH_LONG);
-                //toast.setGravity(Gravity.CENTER, 0, 0);
-                //toast.show();
+                Toast toast = Toast.makeText(getApplicationContext(), "Готово", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
                 if (GitRobot.downloadFile!=2) {
                     Log.d("--","Обновление не скачено");
                     return;
                 }
+
                 sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + filenameAPK);
                 sprkpmes.setReadable(true, false);
                 Log.d("--","Длина файла на входе  "+sprkpmes.length());
                 //Log.d("--","Путь  "+sprkpmes.getParent());
-                Uri fileUri ; //for Build.VERSION.SDK_INT <= 24
+                Uri fileUri ;
                 if (Build.VERSION.SDK_INT >= 24) {
                     Log.d("--",BuildConfig.APPLICATION_ID);
                     fileUri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID,sprkpmes);
@@ -867,7 +863,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
                 intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //dont forget add this line
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(intent);
             }
         }.execute(url);
