@@ -767,11 +767,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
             @Override
             protected File doInBackground(String... params) {
-                GitRobot.downloadFile=0;
-                GitRobot gitRobot = new GitRobot();
-                gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes","bd", "sprkpmes", getApplicationInfo().dataDir + "/databases/","download", null);
-                while (GitRobot.downloadFile==0) {
-
+                try {
+                    GitRobot.downloadFile = 0;
+                    GitRobot gitRobot = new GitRobot();
+                    gitRobot.updateSingleContent(getApplicationContext(), "Sprkpmes", "bd", "sprkpmes.apk", getApplicationInfo().dataDir + "/cache/", "download", null);
+                    while (GitRobot.downloadFile == 0) {
+                        Log.d("--", "!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("--","!! "+GitRobot.downloadFile);
                 }
                 /*    URL url;
                 HttpURLConnection urlConnection;

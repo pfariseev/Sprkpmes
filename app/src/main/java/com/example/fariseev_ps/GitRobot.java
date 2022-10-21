@@ -110,13 +110,13 @@ public class GitRobot {
 
         }
         if (doIt.equals("download")) {
-       //     Log.d("--", "download base!");
+            Log.d("--", "LocalFilePath+LocalFileName: "+LocalFilePath+LocalFileName+", RemotePath/LocalFileName: "+RemotePath+ "/" + LocalFileName);
             if (repo==null) {
                 downloadFile=3;
                 return;
             }
                 try {
-                        downloadFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFilePath, "bd.xlsx" );
+                        downloadFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFilePath, LocalFileName );
                         Log.d("--", "Downloaded 1!\t" + LocalFilePath+LocalFileName);
                 } catch (IOException e) {
                     Log.d("--", "ERROR32121  " + e.getMessage());
@@ -191,6 +191,7 @@ public class GitRobot {
                 }
                 httpClient.getConnectionManager().shutdown();
             } catch (IOException e) {
+
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -214,6 +215,7 @@ public class GitRobot {
             fw.close();
             Log.d("--", "Downloaded!\t" + path);
             downloadFile=2;
+            Log.d("--","! "+downloadFile);
         } catch (IOException e) {
             if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean("adm", false)) {
                 //   NotificationUtils n = NotificationUtils.getInstance(context);
