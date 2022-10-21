@@ -776,7 +776,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("--","!! "+GitRobot.downloadFile);
+                    Log.d("--","!! "+GitRobot.downloadFile+" "+e.getMessage());
                 }
                 /*    URL url;
                 HttpURLConnection urlConnection;

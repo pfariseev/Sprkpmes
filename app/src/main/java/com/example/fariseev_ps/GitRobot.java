@@ -14,6 +14,7 @@ import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.m
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.entity.StringEntity;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.HttpClientBuilder;
 
+import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -25,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -116,7 +119,7 @@ public class GitRobot {
                 return;
             }
                 try {
-                        downloadFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName).read(), LocalFilePath, LocalFileName );
+                        downloadFile(context, repo.getFileContent(RemotePath + "/" + LocalFileName), LocalFilePath, LocalFileName );
                         Log.d("--", "Downloaded 1!\t" + LocalFilePath+LocalFileName);
                 } catch (IOException e) {
                     Log.d("--", "ERROR32121  " + e.getMessage());
@@ -200,16 +203,20 @@ public class GitRobot {
 
 
     @TargetApi(Build.VERSION_CODES.O)
-    private void downloadFile(Context context, InputStream is, String path, String nameFile) {
+    private void downloadFile(Context context, GHContent ghc, String path, String nameFile) {
         byte[] cb = new byte[1024];
         int nSize = 0;
+
         try {
+            URL url = new URL(ghc.getDownloadUrl());
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(20000); //время ожидания соединения
+            urlConnection.connect();
+            InputStream is = urlConnection.getInputStream();
+            urlConnection.getContentLength();
             File file = new File(path+nameFile);
-            //      File dir = file.getParentFile();
-            //     if(!dir.exists())
-            //         dir.mkdirs();
             OutputStream fw = new FileOutputStream(file);
-            while ((nSize = is.read(cb, 0, 1024)) > 0) {
+            while ((nSize = is.read(cb)) > 0) {
                 fw.write(cb, 0, nSize);
             }
             fw.close();
