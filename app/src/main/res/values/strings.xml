@@ -4,7 +4,7 @@
     <string name="action_about">О программе</string>
     <string name="action_settings">Настройки</string>
     <string name="Версия">Версия</string>
-    <string name="about_text">Карельское ПМЭС - филиал ПАО ФСК ЕЭС\n Справочник абонентов\n 185003, Республика Карелия, \nг.Петрозаводск, проспект А.Невского,д.53А \n тел/ф. (8142) 716068, 716059 \n email: kpmes@kp.sz.fsk-ees.ru \n http://www.tcc.fsk-ees.ru\n \n \n Фарисеев П.С.</string>
+    <string name="about_text">Карельское ПМЭС - филиал ПАО Россети\n Справочник абонентов\n 185003, Республика Карелия, \nг.Петрозаводск, проспект А.Невского,д.53А \n тел/ф. (8142) 716068, 716059 \n email: kpmes@kp.sz.fsk-ees.ru \n http://www.tcc.fsk-ees.ru\n \n \n Фарисеев П.С.</string>
     <string name="admin">adm</string>
     <string name="password">psw</string>
     <string name="updatesprkpmes">Обновление доступно</string>

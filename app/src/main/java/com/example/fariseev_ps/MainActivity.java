@@ -825,7 +825,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 return null;
             }
             protected void onProgressUpdate(Integer... values) {
-                progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
+                //progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
             }
 
             @Override
@@ -866,7 +866,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(intent);
             }
-        }.execute(url);
+        }.execute();
     }
 
 }

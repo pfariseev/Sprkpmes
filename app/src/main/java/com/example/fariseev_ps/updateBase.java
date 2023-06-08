@@ -106,6 +106,7 @@ class updateBase {
                 GitRobot gitRobot = new GitRobot();
                 gitRobot.updateSingleContent(context, "Sprkpmes","bd", "bd.xlsx", context.getApplicationInfo().dataDir + "/databases/","download", null);
                 while (GitRobot.downloadFile==0) {
+
                 }
 
                 return null;
