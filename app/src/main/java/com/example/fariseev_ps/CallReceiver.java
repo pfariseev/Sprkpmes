@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -103,7 +104,6 @@ public class CallReceiver extends BroadcastReceiver {
                 }
         }
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
@@ -188,7 +188,13 @@ public class CallReceiver extends BroadcastReceiver {
         }
 
         windowManager.addView(windowLayout, params);
-
+        Button infoClose=windowLayout.findViewById(R.id.infoClose);
+        infoClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeWindow(context);
+            }
+        });
         windowLayout.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;
