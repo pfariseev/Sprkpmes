@@ -56,6 +56,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.datatransport.backend.cct.BuildConfig;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
@@ -853,7 +854,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 //Log.d("--","Путь  "+sprkpmes.getParent());
                 Uri fileUri ;
                 if (Build.VERSION.SDK_INT >= 24) {
-                    Log.d("--",BuildConfig.APPLICATION_ID);
+                    Log.d("--", BuildConfig.APPLICATION_ID);
                     fileUri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID,sprkpmes);
                 } else {
                     fileUri = Uri.fromFile(sprkpmes);

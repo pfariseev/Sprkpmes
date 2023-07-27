@@ -105,7 +105,6 @@ public class CallReceiver extends BroadcastReceiver {
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
         if (requestCode == 7777) {
@@ -196,7 +195,10 @@ public class CallReceiver extends BroadcastReceiver {
                 closeWindow(context);
             }
         });
+<<<<<<< HEAD
 
+=======
+>>>>>>> fedba3c3ed3a901fa6b84941ff7fe65e9c51c0b6
         windowLayout.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;

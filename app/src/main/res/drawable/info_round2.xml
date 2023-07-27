@@ -4,7 +4,8 @@
 
     <corners
         android:topLeftRadius="15dp"
-        android:topRightRadius="15dp"/>
+        android:topRightRadius="15dp"
+        />
 
     <gradient
         android:endColor="@android:color/holo_red_dark"

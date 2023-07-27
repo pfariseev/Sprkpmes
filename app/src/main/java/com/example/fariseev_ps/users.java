@@ -290,6 +290,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             showDialogSaveContact(context, Name1, phoneMobile, phoneGorod);
     }
 
+
     public static void showAndSavePhoto(Context context, String name, ImageView photo) {
         photoFolder = savephoto.folderToSaveVoid(context, "Photo");
         file = new File(photoFolder, name + ".jpg");
