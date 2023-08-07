@@ -90,7 +90,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     private String NumtoSMS;
     private String NumtoCopy, EMAILtoCOPY;
     private static String photoFolder;
-    public static String word, message;
+    public static String word="word", message;
     MySimpleAdapter adapter;
     private ListView listView;
     int num_list;
@@ -729,7 +729,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-            if (word==null) word=enterWord(this);
+          //  if (word==null) word=enterWord(this);
            // Log.d("--","passw: " + password);
         }
     }
