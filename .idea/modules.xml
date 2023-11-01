@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Sprkpmes.iml" filepath="$PROJECT_DIR$/.idea/modules/Sprkpmes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Sprkpmes.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/StudioProjects.Sprkpmes.iml" filepath="$PROJECT_DIR$/.idea/modules/StudioProjects.Sprkpmes.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/StudioProjects.Sprkpmes.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/StudioProjects.Sprkpmes.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/StudioProjects.Sprkpmes.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/StudioProjects.Sprkpmes.app.androidTest.iml" />
