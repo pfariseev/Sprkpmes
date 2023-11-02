@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -66,7 +67,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -853,15 +854,25 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 Log.d("--","Длина файла на входе  "+sprkpmes.length());
                 Log.d("--","Путь  "+sprkpmes.getParent());
                 Uri fileUri ;
-                    fileUri = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()),
-                            BuildConfig.APPLICATION_ID + ".provider", sprkpmes);
-                //    Log.d("--", fileUri.toString());
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                if (Build.VERSION.SDK_INT >= 24) {
+                    fileUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", sprkpmes);
+                    //    Log.d("--", fileUri.toString());
                     intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                    for (ResolveInfo resolveInfo : resInfoList) {
+                        grantUriPermission(getApplicationContext().getPackageName(), fileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    }
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(intent);
+                } else {
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                    intent.setDataAndType(Uri.fromFile(sprkpmes), "application/vnd.android.package-archive");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
             }
         }.execute();
     }
