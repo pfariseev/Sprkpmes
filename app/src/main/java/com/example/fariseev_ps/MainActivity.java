@@ -56,7 +56,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.datatransport.backend.cct.BuildConfig;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
@@ -67,6 +66,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -851,21 +851,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 sprkpmes = new File(getApplicationInfo().dataDir + "/cache/" + filenameAPK);
                 sprkpmes.setReadable(true, false);
                 Log.d("--","Длина файла на входе  "+sprkpmes.length());
-                //Log.d("--","Путь  "+sprkpmes.getParent());
+                Log.d("--","Путь  "+sprkpmes.getParent());
                 Uri fileUri ;
-                if (Build.VERSION.SDK_INT >= 24) {
-                    Log.d("--", BuildConfig.APPLICATION_ID);
-                    fileUri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID,sprkpmes);
-                } else {
-                    fileUri = Uri.fromFile(sprkpmes);
-                }
-                Log.d("--",fileUri.toString());
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(intent);
+                    fileUri = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()),
+                            BuildConfig.APPLICATION_ID + ".provider", sprkpmes);
+                //    Log.d("--", fileUri.toString());
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                    intent.setDataAndType(fileUri, "application/vnd.android.package-archive");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);
             }
         }.execute();
     }
