@@ -194,9 +194,9 @@ class updateBase {
             int ii,xx;
             Cursor cursor;
             String value, SQL_CREATES_TABLE;
-         //   cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
-        //    cursor.moveToFirst();
-            String data2 = "";// cursor.getString(11);
+            cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
+            cursor.moveToFirst();
+            String data2 = cursor.getString(11);
             sheet = wb.getSheetAt(0);
             row = sheet.getRow(0);
             String dataupdate = row.getCell(11).toString();
@@ -210,7 +210,7 @@ class updateBase {
                     newver=true;
                 }
             } */
-            Log.d("--","День обновлений "+data2+" "+dataupdate);
+            Log.d("--",data2+" "+dataupdate);
 
             if (!data2.equals(dataupdate)) {
 
