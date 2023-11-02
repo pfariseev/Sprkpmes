@@ -189,16 +189,14 @@ public class CallReceiver extends BroadcastReceiver {
 
         windowManager.addView(windowLayout, params);
         Button infoClose=windowLayout.findViewById(R.id.infoClose);
+
         infoClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 closeWindow(context);
             }
         });
-<<<<<<< HEAD
 
-=======
->>>>>>> fedba3c3ed3a901fa6b84941ff7fe65e9c51c0b6
         windowLayout.setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
             private int initialY;

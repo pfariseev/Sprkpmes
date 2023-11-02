@@ -2,6 +2,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
 ext {
     play_services_version = "15.0.1"
     support_version = "27.1.1"
@@ -9,11 +10,11 @@ ext {
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.fariseev_ps"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 29
         multiDexEnabled true
         versionCode 10
         versionName "10.0"
@@ -31,6 +32,7 @@ android {
     productFlavors {
     }
     buildToolsVersion '32.0.0'
+    namespace 'com.example.fariseev_ps'
 }
 
 dependencies {
@@ -73,4 +75,4 @@ dependencies {
     implementation 'com.jaredrummler:colorpicker:1.1.0'
 
 }
-apply plugin: 'com.google.gms.google-services'
+

@@ -13,6 +13,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -37,7 +39,7 @@ class updateBase {
 
 
     private static Context context;
-
+    private static Integer alldone=0;
 
     private updateBase (Context context) {
         updateBase.context = context;
@@ -81,6 +83,7 @@ class updateBase {
                 }
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected Void doInBackground(String... params) {
 
@@ -108,7 +111,10 @@ class updateBase {
                 while (GitRobot.downloadFile==0) {
 
                 }
+                if (GitRobot.downloadFile== 2) copyDB(context);
+                while (alldone==0) {
 
+                }
                 return null;
             }
 
@@ -141,7 +147,7 @@ class updateBase {
                 // если всё хорошо, закрываем прогресс и удаляем временный файл
                 progressDialog.hide();
                 //Log.d("--", "TrueUpdate Exit");
-                if (GitRobot.downloadFile== 2) copyDB(context);
+
             }
         }.execute(url);
     }
@@ -243,12 +249,12 @@ class updateBase {
                 SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
                 editor.putString("num_lst", String.valueOf(lists));
                 editor.commit();
-
+                alldone=2;
                 if (context.getClass().getSimpleName().equals("about")) {
-                //    n.createInfoNotification("Готово");
-              //      Toast toast = Toast.makeText(context, "Готово.", Toast.LENGTH_LONG);
-              //      toast.setGravity(Gravity.CENTER, 0, 0);
-               //     toast.show();
+                  //  n.createInfoNotification("Готово");
+                    Toast toast = Toast.makeText(context, "Готово.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
                 if (prefs.getBoolean("adm", false)) {
               //      NotificationUtils n = NotificationUtils.getInstance(context);
@@ -261,10 +267,10 @@ class updateBase {
 
             }else {
                 if (context.getClass().getSimpleName().equals("about")) {
-                    n.createInfoNotification("Обновление не требуется.");
-                //    Toast toast = Toast.makeText(context, "Обновление не требуется.", Toast.LENGTH_LONG);
-                 //   toast.setGravity(Gravity.CENTER, 0, 0);
-                 //   toast.show();
+              //      n.createInfoNotification("Обновление не требуется.");
+                    Toast toast = Toast.makeText(context, "Обновление не требуется.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
                 if (prefs.getBoolean("adm", false)) {
                  //   NotificationUtils n = NotificationUtils.getInstance(context);
@@ -281,10 +287,10 @@ class updateBase {
 
         } catch (Exception ex) {
             if (context.getClass().getSimpleName().equals("about")) {
-                n.createInfoNotification("Ошибка копирования базы");
-            //    Toast toast = Toast.makeText(context, "Ошибка копирования базы", Toast.LENGTH_LONG);
-           //     toast.setGravity(Gravity.CENTER, 0, 0);
-            //    toast.show();
+              //  n.createInfoNotification("Ошибка копирования базы");
+                Toast toast = Toast.makeText(context, "Ошибка копирования базы", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
                     }
         }
                 } catch (Exception e) {
