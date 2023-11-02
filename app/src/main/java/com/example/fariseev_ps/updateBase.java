@@ -33,13 +33,13 @@ import java.util.Date;
 class updateBase {
 
     private static String DB_NAME = "sprkpmes.db";
-    private static String DB_PATH = "",list;
+    private static String DB_PATH = "";
 
     private static updateBase instance;
 
 
     private static Context context;
-    private static Integer copyBaseDone=0;
+    private static Integer copyBaseDone=0, lists=6, activelist=0;
 
     private updateBase (Context context) {
         updateBase.context = context;
@@ -74,14 +74,15 @@ class updateBase {
             protected void onPreExecute() {
                 if (context.getClass().getSimpleName().equals("about") )
                 {
+
                     progressDialog.setMessage("Обновление базы. Подождите.");
                     progressDialog.setCancelable(false);
-                    //progressDialog.setMax(100);
-                    //progressDialog
-                    //.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    progressDialog.setMax(lists);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                     progressDialog.show();
                 }
             }
+
 
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -109,18 +110,19 @@ class updateBase {
                 GitRobot gitRobot = new GitRobot();
                 gitRobot.updateSingleContent(context, "Sprkpmes","bd", "bd.xlsx", context.getApplicationInfo().dataDir + "/databases/","download", null);
                 while (GitRobot.downloadFile==0) {
-
                 }
                 if (GitRobot.downloadFile== 2) copyDB(context);
                 while (copyBaseDone==0) {
+                    publishProgress();
+                    progressDialog.setMessage("Загрузка ОК. Импорт листов.");
                 }
 
                 return null;
             }
 
-            // обновляем progressDialog, да
             protected void onProgressUpdate(Integer... values) {
-       //         progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
+                progressDialog.setProgress(activelist);
+
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -170,6 +172,7 @@ class updateBase {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     static void copyDB(Context context) {
+        copyBaseDone=0;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -188,7 +191,7 @@ class updateBase {
         if (!file.exists()) return;
         try {
             Workbook wb = WorkbookFactory.create(file);
-            int lists = wb.getNumberOfSheets();
+            lists = wb.getNumberOfSheets();
             Sheet sheet;
             Row row;
             int ii,xx;
@@ -214,7 +217,7 @@ class updateBase {
 
             if (!data2.equals(dataupdate)) {
 
-                for (int activelist = 0; activelist < lists; activelist++) {
+                for (activelist = 0; activelist < lists; activelist++) {
                     ContentValues newValues = new ContentValues();
                     String listsString = String.valueOf(activelist + 1);
                     Log.d("--", "Лист" + listsString + " начат");
@@ -227,6 +230,7 @@ class updateBase {
                     SQL_CREATES_TABLE = "CREATE TABLE " + "Лист" + listsString +" (Column1 NULL );";
                     try {
                         mDb.execSQL(SQL_CREATES_TABLE);
+
                         Log.d("--", "Лист" + listsString + " создан");
                     } catch (Exception e) {
                         // Log.d("--", "Лист"+listsString+" существует");
