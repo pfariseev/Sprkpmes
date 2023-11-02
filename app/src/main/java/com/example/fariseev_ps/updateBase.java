@@ -39,7 +39,7 @@ class updateBase {
 
 
     private static Context context;
-    private static Integer alldone=0;
+    private static Integer copyBaseDone=0;
 
     private updateBase (Context context) {
         updateBase.context = context;
@@ -68,7 +68,7 @@ class updateBase {
 
         new AsyncTask<String, Integer, Void>() {
             private Exception m_error = null;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences prefs = getDefaultSharedPreferences(context);
 
             @Override
             protected void onPreExecute() {
@@ -112,15 +112,15 @@ class updateBase {
 
                 }
                 if (GitRobot.downloadFile== 2) copyDB(context);
-                while (alldone==0) {
-
+                while (copyBaseDone==0) {
                 }
+
                 return null;
             }
 
             // обновляем progressDialog, да
             protected void onProgressUpdate(Integer... values) {
-                progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
+       //         progressDialog.setProgress((int) ((values[0] / (float) values[1]) * 100));
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -147,6 +147,22 @@ class updateBase {
                 // если всё хорошо, закрываем прогресс и удаляем временный файл
                 progressDialog.hide();
                 //Log.d("--", "TrueUpdate Exit");
+                String msg = "";
+                if (copyBaseDone==1) {
+                    msg="Ошибка копирования базы";
+                }
+                if (copyBaseDone==2) {
+                     msg="Готово.";
+                }
+                if (copyBaseDone==3) {
+                     msg="Обновление не требуется.";
+                }
+                if (context.getClass().getSimpleName().equals("about")) {
+                    //  n.createInfoNotification("Готово");
+                    Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
 
             }
         }.execute(url);
@@ -194,7 +210,7 @@ class updateBase {
                     newver=true;
                 }
             } */
-            Log.d("--",data2+" "+dataupdate);
+            Log.d("--","День обновлений "+data2+" "+dataupdate);
 
             if (!data2.equals(dataupdate)) {
 
@@ -249,13 +265,8 @@ class updateBase {
                 SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
                 editor.putString("num_lst", String.valueOf(lists));
                 editor.commit();
-                alldone=2;
-                if (context.getClass().getSimpleName().equals("about")) {
-                  //  n.createInfoNotification("Готово");
-                    Toast toast = Toast.makeText(context, "Готово.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
+                copyBaseDone=2;
+
                 if (prefs.getBoolean("adm", false)) {
               //      NotificationUtils n = NotificationUtils.getInstance(context);
                     n.createInfoNotification("Обновлён " + dataupdate);
@@ -265,13 +276,9 @@ class updateBase {
                     n.createInfoNotification("Обновлён " + dataupdate);
                 }
 
-            }else {
-                if (context.getClass().getSimpleName().equals("about")) {
-              //      n.createInfoNotification("Обновление не требуется.");
-                    Toast toast = Toast.makeText(context, "Обновление не требуется.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }
+            } else {
+                copyBaseDone=3;
+
                 if (prefs.getBoolean("adm", false)) {
                  //   NotificationUtils n = NotificationUtils.getInstance(context);
                     n.createInfoNotification("Обновление не требуется " + dataupdate);
@@ -286,12 +293,8 @@ class updateBase {
             editor.commit();
 
         } catch (Exception ex) {
-            if (context.getClass().getSimpleName().equals("about")) {
-              //  n.createInfoNotification("Ошибка копирования базы");
-                Toast toast = Toast.makeText(context, "Ошибка копирования базы", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                    }
+            copyBaseDone=1;
+
         }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -301,6 +304,7 @@ class updateBase {
         });
 
         thread.start();
+
     }
 
   /*  private void copyDBFile() throws IOException { //копирует бызу к себе в /data
@@ -315,5 +319,8 @@ class updateBase {
         mOutput.close();
         mInput.close();
     }*/
+
+
+
 }
 
