@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Base64;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -20,12 +21,14 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -150,7 +153,25 @@ public class GitRobot {
     }
 
     public void sendPushMessage(Context context, String message, String notify){
-    //    if (!getGit("sprkpmes_token")) return;
+        SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
+        try {
+            accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
+            github = new GitHubBuilder().withOAuthToken(accessToken).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d("--","password: "+ accessToken);
+        if (github.isCredentialValid()) {
+            try {
+                repo = github.getRepository(userId + "/sprkpmes_token");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d("--", "Invalid GitHub credentials !!!");
+        }
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
         HttpClient httpClient = HttpClientBuilder.create().build();
             try {
@@ -161,8 +182,8 @@ public class GitRobot {
 
       //  String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
              //   String temp = "d2wg-D43SH6-y5CbJ3RN_u:APA91bGn6Xknh30EpaVZxwJEZK3-52KXQZfgAf3Qsjvt3dUntSsd73i9Fr6GMZvd14ecCVZTqbZ5mzuILZOCBp4XVvirMhqrIwP-jt9gJgFpXHixCeKZDwrxI5bmBBArjNbL_dTen7hJ";
-        String outputStream = "{\"to\":\""+tokenKomu[2]+"\",\"data\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
-                    /*  OutputStream outputStream = new ByteArrayOutputStream();
+        //String outputStream = "{\"to\":\""+tokenKomu[2]+"\",\"data\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
+                      OutputStream outputStream = new ByteArrayOutputStream();
             JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream));
             writer.beginObject();
             writer.name("to");
@@ -176,7 +197,7 @@ public class GitRobot {
             writer.value(message);
             writer.endObject();
             writer.endObject();
-            writer.close(); */
+            writer.close();
 
         try {
             HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
@@ -190,14 +211,15 @@ public class GitRobot {
             Log.d("--","response error: "+ex);
         } finally {
         }
-                    Thread.sleep(1000);
+                    Thread.sleep(400);
                 }
                 httpClient.getConnectionManager().shutdown();
             } catch (IOException e) {
-
+                Log.d("--","response error 1: "+e);
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d("--","response error 2: "+e);
             }
     }
 

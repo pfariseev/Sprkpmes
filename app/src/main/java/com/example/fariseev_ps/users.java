@@ -50,7 +50,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -90,7 +89,6 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     private String NumtoSMS;
     private String NumtoCopy, EMAILtoCOPY;
     private static String photoFolder;
-    public static String word="word", message;
     MySimpleAdapter adapter;
     private ListView listView;
     int num_list;
@@ -180,7 +178,6 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         prefs = getDefaultSharedPreferences(getApplicationContext());
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
-        word = prefs.getString("psw", null);
         //  blacklst = prefs.getString(getString(R.string.blacklist), "");
 
         mDBHelper = new DatabaseHelper(this);
@@ -573,10 +570,6 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     Toast toast = Toast.makeText(getApplicationContext(), "Сброс пароля. Что-то не так :(", Toast.LENGTH_LONG);
                     toast.show();
                     realPath=null;
-                    //password =null;
-                    SharedPreferences.Editor editor = getDefaultSharedPreferences(getApplicationContext()).edit();
-                    editor.putString("psw",word);
-                    editor.commit();
                 }
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), "Что-то не так :(", Toast.LENGTH_LONG);
@@ -615,7 +608,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             }
         }
     }
-
+/*
     public static String enterWord (Context context) {
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.prompt, null);
@@ -645,7 +638,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         return word;
-    }
+    } */
 
     @TargetApi(Build.VERSION_CODES.O)
     void photoDialog () {
@@ -663,7 +656,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         //      } else
         showAndSavePhoto(context, Name1, imageView);// new DownloadImageTask(Name1, (ImageView) promptsView.findViewById(R.id.imageView3)).execute(convertName(Name1));
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-            if (word!=null) {
+          //  if (word!=null) {
                 alertDialogBuilder
                         .setCancelable(false)
                         .setNeutralButton("Выбрать",
@@ -692,7 +685,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                                         dialog.cancel();
                                     }
                                 });
-            } else {
+        /*    } else {
                 alertDialogBuilder
                         .setCancelable(false)
                         .setNegativeButton("Обновить",
@@ -705,7 +698,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                                         dialog.cancel();
                                     }
                                 });
-            }
+            }*/
         } else {
             alertDialogBuilder
                     .setCancelable(false)
