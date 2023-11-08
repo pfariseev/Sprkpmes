@@ -175,19 +175,21 @@ public class GitRobot {
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
         HttpClient httpClient = HttpClientBuilder.create().build();
             try {
-                for (int z = 0; z<repo.getDirectoryContent("Token").size(); z++) {
-                    String s = convertStreamToString(repo.getFileContent("Token" + "/" + repo.getDirectoryContent("Token").get(z).getName()).read());
-                    String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
-                    Log.d("--","send to - "+tokenKomu[2]);
+              //  for (int z = 0; z<repo.getDirectoryContent("Token").size(); z++) {
+
+              //      String s = convertStreamToString(repo.getFileContent("Token" + "/" + repo.getDirectoryContent("Token").get(z).getName()).read());
+              //      String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
+              //      Log.d("--","send to - "+tokenKomu[z]);
 
       //  String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
-             //   String temp = "d2wg-D43SH6-y5CbJ3RN_u:APA91bGn6Xknh30EpaVZxwJEZK3-52KXQZfgAf3Qsjvt3dUntSsd73i9Fr6GMZvd14ecCVZTqbZ5mzuILZOCBp4XVvirMhqrIwP-jt9gJgFpXHixCeKZDwrxI5bmBBArjNbL_dTen7hJ";
+                String tokenkomuTo = "dJrabobeQFaOhhhZ0BmmnH:APA91bHe6z83PV9C8lZLIFWEebeTlx9FHWzwjWLi7hkWdaq5285nutuqpG2ZRTbPfDMyvsXHsBEZGsZqpjzub8txneZe0F3UlAHdzj6SXjODk-9yjDFSBUrbNpg7ZvpDMTKY1Yie1VwZ";
+                //   String temp = "d2wg-D43SH6-y5CbJ3RN_u:APA91bGn6Xknh30EpaVZxwJEZK3-52KXQZfgAf3Qsjvt3dUntSsd73i9Fr6GMZvd14ecCVZTqbZ5mzuILZOCBp4XVvirMhqrIwP-jt9gJgFpXHixCeKZDwrxI5bmBBArjNbL_dTen7hJ";
         //String outputStream = "{\"to\":\""+tokenKomu[2]+"\",\"data\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
-                      OutputStream outputStream = new ByteArrayOutputStream();
+            OutputStream outputStream = new ByteArrayOutputStream();
             JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream));
             writer.beginObject();
             writer.name("to");
-            writer.value(tokenKomu[2]);
+            writer.value(tokenkomuTo);
             writer.name(notify);
             writer.beginObject();
             writer.name("title");
@@ -201,18 +203,23 @@ public class GitRobot {
 
         try {
             HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
+           // HttpPost request = new HttpPost("POST https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
             StringEntity params = new StringEntity(outputStream.toString());
-            request.addHeader("content-type", "application/json");
+            request.addHeader("Content-type", "application/json");
             request.addHeader("Authorization", accessTokenToPush);
             request.setEntity(params);
+        for (int z = 0; z<5; z++) {
+            Log.d("--","z: "+z);
             HttpResponse response = httpClient.execute(request);
             Log.d("--","response: "+response);
+            Thread.sleep(5000);
+        }
         } catch (Exception ex) {
             Log.d("--","response error: "+ex);
         } finally {
         }
-                    Thread.sleep(400);
-                }
+
+
                 httpClient.getConnectionManager().shutdown();
             } catch (IOException e) {
                 Log.d("--","response error 1: "+e);
