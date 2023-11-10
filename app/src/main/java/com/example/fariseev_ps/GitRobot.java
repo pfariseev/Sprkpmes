@@ -3,40 +3,43 @@ package com.example.fariseev_ps;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Base64;
-import android.util.JsonWriter;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpResponse;
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient;
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.methods.HttpPost;
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.entity.StringEntity;
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.HttpClientBuilder;
+import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.apache.commons.lang3.builder.Builder;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.SecretKey;
+
+;
 
 
 public class GitRobot {
@@ -153,7 +156,8 @@ public class GitRobot {
     }
 
     public void sendPushMessage(Context context, String message, String notify){
-        SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
+/*
+      SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
         try {
             accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
             github = new GitHubBuilder().withOAuthToken(accessToken).build();
@@ -182,45 +186,40 @@ public class GitRobot {
               //      Log.d("--","send to - "+tokenKomu[z]);
 
       //  String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
-                String tokenkomuTo = "dJrabobeQFaOhhhZ0BmmnH:APA91bHe6z83PV9C8lZLIFWEebeTlx9FHWzwjWLi7hkWdaq5285nutuqpG2ZRTbPfDMyvsXHsBEZGsZqpjzub8txneZe0F3UlAHdzj6SXjODk-9yjDFSBUrbNpg7ZvpDMTKY1Yie1VwZ";
+                String tokenkomuTo = "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ";
                 //   String temp = "d2wg-D43SH6-y5CbJ3RN_u:APA91bGn6Xknh30EpaVZxwJEZK3-52KXQZfgAf3Qsjvt3dUntSsd73i9Fr6GMZvd14ecCVZTqbZ5mzuILZOCBp4XVvirMhqrIwP-jt9gJgFpXHixCeKZDwrxI5bmBBArjNbL_dTen7hJ";
         //String outputStream = "{\"to\":\""+tokenKomu[2]+"\",\"data\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
             OutputStream outputStream = new ByteArrayOutputStream();
             JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream));
             writer.beginObject();
-            writer.name("to");
+            writer.name("message");
             writer.value(tokenkomuTo);
             writer.name(notify);
             writer.beginObject();
             writer.name("title");
-            String title = "Sprkpmes";
-            writer.value(title);
+            //String title = "Sprkpmes";
+            writer.value("Sprkpmes");
             writer.name("body");
             writer.value(message);
             writer.endObject();
             writer.endObject();
             writer.close();
 
-        try {
-            HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
-           // HttpPost request = new HttpPost("POST https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
+       try {
+            //HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
+            HttpPost request = new HttpPost("https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
             StringEntity params = new StringEntity(outputStream.toString());
             request.addHeader("Content-type", "application/json");
-            request.addHeader("Authorization", accessTokenToPush);
+            //request.addHeader("Authorization", accessTokenToPush);
+           // request.addHeader("Authorization", "Bearer AIzaSyDqRxOd-T7HiTsP251Qvf3vVNlEC-2dM5o");
             request.setEntity(params);
-        for (int z = 0; z<5; z++) {
-            Log.d("--","z: "+z);
             HttpResponse response = httpClient.execute(request);
             Log.d("--","response: "+response);
             Thread.sleep(5000);
-        }
         } catch (Exception ex) {
             Log.d("--","response error: "+ex);
-        } finally {
         }
-
-
-                httpClient.getConnectionManager().shutdown();
+            httpClient.getConnectionManager().shutdown();
             } catch (IOException e) {
                 Log.d("--","response error 1: "+e);
                 e.printStackTrace();
@@ -228,8 +227,41 @@ public class GitRobot {
                 e.printStackTrace();
                 Log.d("--","response error 2: "+e);
             }
+
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("--", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        Log.d("--", "new token: "+task.getResult());
+                    }
+                });*/
+
+
+// Send a message to the devices subscribed to the provided topic.
+FirebaseMessaging.getInstance().
+        String response = FirebaseMessaging.getInstance().send(newMessage);
     }
 
+    private void subscribeTopics() {
+        // [START subscribe_topics]
+        FirebaseMessaging.getInstance().subscribeToTopic("new_message")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Subscribed";
+                        if (!task.isSuccessful()) {
+                            msg = "Subscribe failed";
+                        }
+                        Log.d("--", msg);
+                      }
+                });
+
+    }
 
     @TargetApi(Build.VERSION_CODES.O)
     private void downloadFile(Context context, GHContent ghc, String path, String nameFile) {
@@ -272,5 +304,7 @@ public class GitRobot {
         reader.close();
         return sb.toString();
     }
+
+
 }
 
