@@ -44,14 +44,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
-
-
-
+        // messages. For more see:
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-
-        // Check if message contains a data payload.
+        Log.d(TAG, "From: " + remoteMessage.getData().get("body"));
         if (remoteMessage.getData().size() > 0) {
             Log.d("--", "Дата из Сервиса PUSH " + remoteMessage.getData().toString()+", "+" Firebase. вызов обновления от "+this.getClass().getSimpleName());
             if (/* Check if data needs to be processed by long running job */ true) {
@@ -73,22 +68,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     n.createInfoNotification(remoteMessage.getData().get("body")+" - команда принята");
                 }
             } else {
-                // Handle message within 10 seconds
                 handleNow();
             }
-
         }
-
-        // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d("--", "Message Notification Body: " + remoteMessage.getNotification());
             NotificationUtils n = NotificationUtils.getInstance(this);
             n.createInfoNotification(remoteMessage.getNotification().getBody());
         }
-
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
 
     @Override
@@ -101,9 +88,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             editor.commit();
             Log.d(TAG, "Refreshed token: " + token);
         }
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // FCM registration token to your app server.
       //  sendRegistrationToServer(token);
     }
 

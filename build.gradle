@@ -18,7 +18,6 @@ buildscript {
         maven {
             url = uri("https://maven.pkg.github.com/google/secrets-gradle-plugin")
             credentials {
-               // username = project.findProperty("GITHUB_USER") ?: System.getenv("GITHUB_USER")
                 password = project.findProperty("GITHUB_TOKEN") ?: System.getenv("GITHUB_TOKEN")
             }
         }

@@ -3,7 +3,6 @@ package com.example.fariseev_ps;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
@@ -15,7 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.apache.commons.lang3.builder.Builder;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
@@ -33,9 +33,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -155,7 +153,71 @@ public class GitRobot {
         return lng;
     }
 
-    public void sendPushMessage(Context context, String message, String notify){
+    public void sendPushMessage(Context context, String message, String notify) throws IOException {
+        SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
+        try {
+            accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
+            github = new GitHubBuilder().withOAuthToken(accessToken).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Log.d("--","password: "+ accessToken);
+        if (github.isCredentialValid()) {
+            try {
+                repo = github.getRepository(userId + "/sprkpmes_token");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d("--", "Invalid GitHub credentials !!!");
+        }
+        String s;
+   //     for (int z = 0; z<repo.getDirectoryContent("Token").size(); z++) {
+      //  for (int z = 0; z<4; z++) {
+      //      try {
+       //          s = convertStreamToString(repo.getFileContent("Token" + "/" + repo.getDirectoryContent("Token").get(z).getName()).read());
+     //       } catch (Exception e) {
+      //          throw new RuntimeException(e);
+      //      }
+      //      String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
+        //    Log.d("--", "send to - " + tokenKomu[z]);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject jPayload = new JSONObject();
+                    JSONObject jNotification = new JSONObject();
+                    JSONObject jData = new JSONObject();
+                    try {
+                        // notification can not put when app is in background
+                        jNotification.put("title", context.getString(R.string.app_name));
+                        jData.put("body", message);
+                        jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
+                        jPayload.put("notification", jNotification);
+                        jPayload.put("data", jData);
+
+                        URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                        //URL url = new URL("https://fcm.googleapis.com/v1/projects/myproject-sprkpmes/messages:send");
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        conn.setDoOutput(true);
+                        Log.d("--", "jPayload: " + jPayload.toString());
+                        OutputStream outputStream = conn.getOutputStream();
+                        outputStream.write(jPayload.toString().getBytes());
+                        InputStream inputStream = conn.getInputStream();
+                        Log.d("--", "response push: " + convertStreamToString(inputStream));
+
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+            }).start();
 /*
       SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
         try {
@@ -176,6 +238,8 @@ public class GitRobot {
         } else {
             Log.d("--", "Invalid GitHub credentials !!!");
         }
+
+
         String accessTokenToPush = BuildConfig.PUSH_TOKEN;
         HttpClient httpClient = HttpClientBuilder.create().build();
             try {
@@ -205,13 +269,14 @@ public class GitRobot {
             writer.endObject();
             writer.close();
 
+
        try {
             //HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
-            HttpPost request = new HttpPost("https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
+            HttpPost request = new HttpPost("https://fcm.googleapis.com/v1/projects/myproject-sprkpmes/messages:send");
             StringEntity params = new StringEntity(outputStream.toString());
             request.addHeader("Content-type", "application/json");
-            //request.addHeader("Authorization", accessTokenToPush);
-           // request.addHeader("Authorization", "Bearer AIzaSyDqRxOd-T7HiTsP251Qvf3vVNlEC-2dM5o");
+            request.addHeader("Authorization", accessTokenToPush);
+            request.addHeader("Authorization", "Bearer AIzaSyBF-KvKiP_wsec9B7L9dFOdIiQ2r8HS7k0");
             request.setEntity(params);
             HttpResponse response = httpClient.execute(request);
             Log.d("--","response: "+response);
@@ -227,39 +292,23 @@ public class GitRobot {
                 e.printStackTrace();
                 Log.d("--","response error 2: "+e);
             }
-
-
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("--", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-                        Log.d("--", "new token: "+task.getResult());
-                    }
-                });*/
-
-
-// Send a message to the devices subscribed to the provided topic.
-FirebaseMessaging.getInstance().
-        String response = FirebaseMessaging.getInstance().send(newMessage);
+ */
+ //      }
     }
 
     private void subscribeTopics() {
-        // [START subscribe_topics]
-        FirebaseMessaging.getInstance().subscribeToTopic("new_message")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Subscribed";
-                        if (!task.isSuccessful()) {
-                            msg = "Subscribe failed";
+            // [START subscribe_topics]
+            FirebaseMessaging.getInstance().subscribeToTopic("new_message")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "Subscribed";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe failed";
+                            }
+                            Log.d("--", msg);
                         }
-                        Log.d("--", msg);
-                      }
-                });
+                    });
 
     }
 
