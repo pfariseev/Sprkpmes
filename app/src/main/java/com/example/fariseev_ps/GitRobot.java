@@ -154,7 +154,7 @@ public class GitRobot {
     }
 
     public void sendPushMessage(Context context, String message, String notify) throws IOException {
-        SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
+        /*   SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
         try {
             accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
             github = new GitHubBuilder().withOAuthToken(accessToken).build();
@@ -172,129 +172,59 @@ public class GitRobot {
             }
         } else {
             Log.d("--", "Invalid GitHub credentials !!!");
-        }
+        }*/
         String s;
-   //     for (int z = 0; z<repo.getDirectoryContent("Token").size(); z++) {
-      //  for (int z = 0; z<4; z++) {
-      //      try {
-       //          s = convertStreamToString(repo.getFileContent("Token" + "/" + repo.getDirectoryContent("Token").get(z).getName()).read());
-     //       } catch (Exception e) {
-      //          throw new RuntimeException(e);
-      //      }
-      //      String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
+        //     for (int z = 0; z<repo.getDirectoryContent("Token").size(); z++) {
+        //  for (int z = 0; z<4; z++) {
+        //      try {
+        //          s = convertStreamToString(repo.getFileContent("Token" + "/" + repo.getDirectoryContent("Token").get(z).getName()).read());
+        //       } catch (Exception e) {
+        //          throw new RuntimeException(e);
+        //      }
+        //      String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
         //    Log.d("--", "send to - " + tokenKomu[z]);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject jPayload = new JSONObject();
-                    JSONObject jNotification = new JSONObject();
-                    JSONObject jData = new JSONObject();
-                    try {
-                        // notification can not put when app is in background
-                        jNotification.put("title", context.getString(R.string.app_name));
-                        jData.put("body", message);
-                        jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
-                        jPayload.put("notification", jNotification);
-                        jPayload.put("data", jData);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jPayload = new JSONObject();
+                JSONObject jNotification = new JSONObject();
+                JSONObject jData = new JSONObject();
+                try {
+                    // notification can not put when app is in background
+                    jNotification.put("title", context.getString(R.string.app_name));
+                    jNotification.put("body", message);
+                    jData.put("data", message);
+                    jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
+                    jPayload.put("notification", jNotification);
+                    jPayload.put("data", jData);
 
-                        URL url = new URL("https://fcm.googleapis.com/fcm/send");
-                        //URL url = new URL("https://fcm.googleapis.com/v1/projects/myproject-sprkpmes/messages:send");
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setRequestMethod("POST");
-                        conn.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
-                        conn.setRequestProperty("Content-Type", "application/json");
-                        conn.setDoOutput(true);
-                        Log.d("--", "jPayload: " + jPayload.toString());
+                    URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                    //URL url = new URL("https://fcm.googleapis.com/v1/projects/myproject-sprkpmes/messages:send");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+                    Log.d("--", "jPayload: " + jPayload);
+                    for (int z = 0; z==4; z++) {
                         OutputStream outputStream = conn.getOutputStream();
                         outputStream.write(jPayload.toString().getBytes());
                         InputStream inputStream = conn.getInputStream();
                         Log.d("--", "response push: " + convertStreamToString(inputStream));
-
-                    } catch (JSONException | IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
                     }
 
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
-            }).start();
-/*
-      SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
-        try {
-            accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
-            github = new GitHubBuilder().withOAuthToken(accessToken).build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Log.d("--","password: "+ accessToken);
-        if (github.isCredentialValid()) {
-            try {
-                repo = github.getRepository(userId + "/sprkpmes_token");
-            } catch (IOException e) {
-                e.printStackTrace();
+
             }
-        } else {
-            Log.d("--", "Invalid GitHub credentials !!!");
-        }
-
-
-        String accessTokenToPush = BuildConfig.PUSH_TOKEN;
-        HttpClient httpClient = HttpClientBuilder.create().build();
-            try {
-              //  for (int z = 0; z<repo.getDirectoryContent("Token").size(); z++) {
-
-              //      String s = convertStreamToString(repo.getFileContent("Token" + "/" + repo.getDirectoryContent("Token").get(z).getName()).read());
-              //      String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
-              //      Log.d("--","send to - "+tokenKomu[z]);
-
-      //  String tokenkomu = "dAIfUETQTjO9p7k8Jat8R3:APA91bFw4V5YbYGdN06yUD7s9-EJS944tu9hTMMhCMAQHhMq2pIa1Wjs5EBIIyNaaNkFU80uWVxZqJujJ7SZYgv8HeXG0Y2pUdZfuy5avf84Ikc2i396GYNf3e0Pwn-lhtR_zAywq2wy";
-                String tokenkomuTo = "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ";
-                //   String temp = "d2wg-D43SH6-y5CbJ3RN_u:APA91bGn6Xknh30EpaVZxwJEZK3-52KXQZfgAf3Qsjvt3dUntSsd73i9Fr6GMZvd14ecCVZTqbZ5mzuILZOCBp4XVvirMhqrIwP-jt9gJgFpXHixCeKZDwrxI5bmBBArjNbL_dTen7hJ";
-        //String outputStream = "{\"to\":\""+tokenKomu[2]+"\",\"data\":{\"title\":\"Справочник\",\"body\":\""+message+"\"}}\"";
-            OutputStream outputStream = new ByteArrayOutputStream();
-            JsonWriter writer = new JsonWriter(new OutputStreamWriter(outputStream));
-            writer.beginObject();
-            writer.name("message");
-            writer.value(tokenkomuTo);
-            writer.name(notify);
-            writer.beginObject();
-            writer.name("title");
-            //String title = "Sprkpmes";
-            writer.value("Sprkpmes");
-            writer.name("body");
-            writer.value(message);
-            writer.endObject();
-            writer.endObject();
-            writer.close();
-
-
-       try {
-            //HttpPost request = new HttpPost("https://fcm.googleapis.com/fcm/send");
-            HttpPost request = new HttpPost("https://fcm.googleapis.com/v1/projects/myproject-sprkpmes/messages:send");
-            StringEntity params = new StringEntity(outputStream.toString());
-            request.addHeader("Content-type", "application/json");
-            request.addHeader("Authorization", accessTokenToPush);
-            request.addHeader("Authorization", "Bearer AIzaSyBF-KvKiP_wsec9B7L9dFOdIiQ2r8HS7k0");
-            request.setEntity(params);
-            HttpResponse response = httpClient.execute(request);
-            Log.d("--","response: "+response);
-            Thread.sleep(5000);
-        } catch (Exception ex) {
-            Log.d("--","response error: "+ex);
-        }
-            httpClient.getConnectionManager().shutdown();
-            } catch (IOException e) {
-                Log.d("--","response error 1: "+e);
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("--","response error 2: "+e);
-            }
- */
- //      }
+        }).start();
     }
+
+
+
 
     private void subscribeTopics() {
             // [START subscribe_topics]
