@@ -190,14 +190,16 @@ public class GitRobot {
                 JSONObject jNotification = new JSONObject();
                 JSONObject jData = new JSONObject();
                 try {
-                    // notification can not put when app is in background
-                    jNotification.put("title", context.getString(R.string.app_name));
-                    jNotification.put("body", message);
-                    jData.put("data", message);
-                    jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
-                    jPayload.put("notification", jNotification);
-                    jPayload.put("data", jData);
-
+                    if (notify.equals("data")) {
+                        jData.put("data", message);
+                        jPayload.put("data", jData);
+                    } else {
+                        jNotification.put("title", context.getString(R.string.app_name));
+                        jNotification.put("body", message);
+                        jPayload.put("notification", jNotification);
+                    }
+                    //jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
+                    jPayload.put("to", "cD60iIDaT56VcNHfFC1fzE:APA91bEwObLQRS_mLMpG9zRXy-wOVhyu9qFRfYB2oJYGfQopZMaMp7veXwCSxWmmfHenh9gFhPm7ceJOaEaHOdMZf6h3J-NyiKLjHvJr2sBnjS0sBGQk4nk_SlFrfXqZ32Lgt9LlbKwv");
                     URL url = new URL("https://fcm.googleapis.com/fcm/send");
                     //URL url = new URL("https://fcm.googleapis.com/v1/projects/myproject-sprkpmes/messages:send");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -206,12 +208,11 @@ public class GitRobot {
                     conn.setRequestProperty("Content-Type", "application/json");
                     conn.setDoOutput(true);
                     Log.d("--", "jPayload: " + jPayload);
-                    for (int z = 0; z==4; z++) {
-                        OutputStream outputStream = conn.getOutputStream();
-                        outputStream.write(jPayload.toString().getBytes());
-                        InputStream inputStream = conn.getInputStream();
-                        Log.d("--", "response push: " + convertStreamToString(inputStream));
-                    }
+                    OutputStream outputStream = conn.getOutputStream();
+                    outputStream.write(jPayload.toString().getBytes());
+                    InputStream inputStream = conn.getInputStream();
+                    Log.d("--", "response push: " + convertStreamToString(inputStream));
+
 
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();

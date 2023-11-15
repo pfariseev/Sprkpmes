@@ -43,10 +43,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
+        super.onMessageReceived(remoteMessage);
         // messages. For more see:
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: " + remoteMessage.getData());
+        //Log.d(TAG, "From Notification: " + remoteMessage.getNotification().getBody());
+        //Log.d(TAG, "From Data: " + remoteMessage.getData().get("data"));
         if (remoteMessage.getData().size() > 0) {
             Log.d("--", "Дата из Сервиса PUSH " + remoteMessage.getData().toString()+", "+" Firebase. вызов обновления от "+this.getClass().getSimpleName());
             if (/* Check if data needs to be processed by long running job */ true) {
@@ -59,6 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if (remoteMessage.getData().get("data").equals("AlarmForceCancel")) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
                     EternalService.Alarm.cancelAlarm(getApplicationContext());
+
                 }
                 if (remoteMessage.getData().get("data").equals("DeleteAllPhotos")) {
                     savephoto.deletePholderWithFiles (getApplicationContext(),"Photo");

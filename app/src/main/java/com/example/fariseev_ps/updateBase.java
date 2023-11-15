@@ -75,7 +75,7 @@ class updateBase {
                 if (context.getClass().getSimpleName().equals("about") )
                 {
 
-                    progressDialog.setMessage("Обновление базы. Подождите.");
+                    progressDialog.setMessage("Загрузка. Подождите.");
                     progressDialog.setCancelable(false);
                     progressDialog.setMax(lists);
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -114,7 +114,7 @@ class updateBase {
                 if (GitRobot.downloadFile== 2) copyDB(context);
                 while (copyBaseDone==0) {
                     publishProgress();
-                    progressDialog.setMessage("Загрузка ОК. Импорт листов.");
+                    progressDialog.setMessage("Загрузка завершена. Обновление.");
                 }
 
                 return null;
