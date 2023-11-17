@@ -109,6 +109,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         titles[1]="Карельское ПМЭС";
         String num = prefs.getString("phoneNumber","");
         String devID = prefs.getString("deviceId","");
+     /*   if (prefs.getString("token","").equals("")) {
+            FirebaseApp.initializeApp(this);
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                return;
+                            }
+                            String newtok = task.getResult();
+                            editor.putString("token", newtok);
+                            editor.commit();
+                        }
+                    });
+        }*/
         String tok = prefs.getString("token","");
         Log.d("--","PhoneNumber is "+num);
         Log.d("--","DeviceID is "+devID);
@@ -119,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 sendRegistrationToServer(this, num, devID, tok);
             }
+        } else {
+
         }
 
     }

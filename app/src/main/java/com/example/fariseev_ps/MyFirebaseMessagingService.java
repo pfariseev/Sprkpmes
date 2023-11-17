@@ -54,8 +54,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
                 PackageManager pm = getPackageManager();
                 if (remoteMessage.getData().get("data").equals("AlarmForceSet")) {
-                    pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                    EternalService.Alarm.setAlarm(getApplicationContext());
+                    //pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                    //EternalService.Alarm.setAlarm(getApplicationContext());
+                    updateBase n = updateBase.getInstance(this);
+                    updateBase.downloadFile(this);
+
                 }
                 if (remoteMessage.getData().get("data").equals("AlarmForceCancel")) {
                     pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
@@ -78,6 +81,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             NotificationUtils n = NotificationUtils.getInstance(this);
             n.createInfoNotification(remoteMessage.getNotification().getBody());
         }
+
+
     }
 
     @Override
@@ -119,6 +124,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      //   Log.d("--", "File.getAbsolutePath: " + file.getParent());
 
                 // gitRobot.updateSingleContent("sprkpmes_token","Token",file.getName(), file.getParent()+"/cache","update");
+    }
+
+    public String getToken (){
+       String  newtoken="";
+
+        return newtoken;
     }
 
 }
