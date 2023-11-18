@@ -45,6 +45,7 @@ import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,6 +62,9 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -109,8 +113,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         titles[1]="Карельское ПМЭС";
         String num = prefs.getString("phoneNumber","");
         String devID = prefs.getString("deviceId","");
-     /*   if (prefs.getString("token","").equals("")) {
-            FirebaseApp.initializeApp(this);
+        if (prefs.getString("token","").equals("")) {
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             editor.commit();
                         }
                     });
-        }*/
+        }
         String tok = prefs.getString("token","");
         Log.d("--","PhoneNumber is "+num);
         Log.d("--","DeviceID is "+devID);
