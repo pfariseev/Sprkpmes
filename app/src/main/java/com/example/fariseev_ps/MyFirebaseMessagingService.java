@@ -56,8 +56,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if (remoteMessage.getData().get("data").equals("AlarmForceSet")) {
                     //pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                     //EternalService.Alarm.setAlarm(getApplicationContext());
-                    updateBase n = updateBase.getInstance(this);
-                    updateBase.downloadFile(this);
+                    updateBase n = updateBase.getInstance(getApplicationContext());
+                    n.downloadFile();
 
                 }
                 if (remoteMessage.getData().get("data").equals("AlarmForceCancel")) {

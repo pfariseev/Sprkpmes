@@ -56,25 +56,24 @@ class updateBase {
     }
 
 
-    public static void downloadFile(Context context) {
+    public static void downloadFile() {
         Log.d("--","updateBase. вызов обновления от "+context.getClass().getSimpleName());
         Log.d("--", "TrueUpdate 2.5");
         //String url = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1-QPwhkO1LyMj8epeBJUmpHB2q9zuY5F4");//временно
         String url = ("http://github.com/pfariseev/Sprkpmes/raw/master/bd/bd.xlsx");
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //list=prefs.getString(getString(R.string.list), "1");
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-            DB_PATH = context.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
-
+        DB_PATH = context.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
         new AsyncTask<String, Integer, Void>() {
             private Exception m_error = null;
             SharedPreferences prefs = getDefaultSharedPreferences(context);
 
+            ProgressDialog progressDialog;
             @Override
             protected void onPreExecute() {
-                if (context.getClass().getSimpleName().equals("about") )
+                if (context.getClass().getSimpleName().equals("about"))
                 {
-
+                    progressDialog = new ProgressDialog(context);
                     progressDialog.setMessage("Загрузка. Подождите.");
                     progressDialog.setCancelable(false);
                     progressDialog.setMax(lists);
@@ -111,10 +110,12 @@ class updateBase {
                 gitRobot.updateSingleContent(context, "Sprkpmes","bd", "bd.xlsx", context.getApplicationInfo().dataDir + "/databases/","download", null);
                 while (GitRobot.downloadFile==0) {
                 }
-                if (GitRobot.downloadFile== 2) copyDB(context);
+                if (GitRobot.downloadFile== 2) copyDB();
                 while (copyBaseDone==0) {
-                    publishProgress();
-                    progressDialog.setMessage("Загрузка завершена. Обновление.");
+                    if (context.getClass().getSimpleName().equals("about")) {
+                        publishProgress();
+                        progressDialog.setMessage("Загрузка завершена. Обновление.");
+                    }
                 }
 
                 return null;
@@ -171,7 +172,7 @@ class updateBase {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    static void copyDB(Context context) {
+    static void copyDB() {
         copyBaseDone=0;
         Thread thread = new Thread(new Runnable() {
             @Override

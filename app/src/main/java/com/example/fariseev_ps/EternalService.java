@@ -139,8 +139,13 @@ public class EternalService extends Service{
                     Log.d("--","updateBase. вызов обновления от "+context.getClass().getSimpleName());
 
                     if (prefs.getBoolean("Обновлять базу автоматически", false)) {
-                                    updateBase.downloadFile(context);
-                    } else if (context.getClass().getSimpleName().equals("MyFirebaseMessagingService")) updateBase.downloadFile(context);
+                        updateBase n = updateBase.getInstance(context);
+                        n.downloadFile();
+
+                    } else if (context.getClass().getSimpleName().equals("MyFirebaseMessagingService")) {
+                        updateBase n = updateBase.getInstance(context);
+                        n.downloadFile();
+                    }
                 }
             }
             else {
