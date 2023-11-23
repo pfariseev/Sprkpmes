@@ -61,6 +61,8 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.common.api.GoogleApiClient;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SharedPreferences.Editor editor;
     private static final int PHONE_NUMBER_HINT = 100;
     String myPhoneNumber="";
+//    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,25 +112,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         titles[1]="Карельское ПМЭС";
         String num = prefs.getString("phoneNumber","");
         String devID = prefs.getString("deviceId","");
-  /*      if (prefs.getString("token","").equals("")) {
-            FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                        @Override
-                        public void onComplete(@NonNull Task<String> task) {
-                            if (!task.isSuccessful()) {
-                                return;
-                            }
-                            String newtok = task.getResult();
-                            editor.putString("token", newtok);
-                            editor.commit();
-                        }
-                    });
-        }*/
         String tok = prefs.getString("token","");
         Log.d("--","PhoneNumber is "+num);
         Log.d("--","DeviceID is "+devID);
         Log.d("--","TOKEN is "+tok);
         Log.d("--","UploadToServer1 "+prefs.getBoolean("upLoadToServer",false));
+
         if (!prefs.getBoolean("upLoadToServer", false))
         if (!tok.equals("")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -136,7 +126,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } else {
 
         }
-
+  //      mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+  //      Log.d("--","currentUser: "+currentUser);
     }
 
 /*
