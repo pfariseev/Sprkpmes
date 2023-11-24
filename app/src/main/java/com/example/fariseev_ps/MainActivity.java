@@ -45,6 +45,7 @@ import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,8 +62,13 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.common.api.GoogleApiClient;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SharedPreferences.Editor editor;
     private static final int PHONE_NUMBER_HINT = 100;
     String myPhoneNumber="";
-//    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,9 +132,32 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } else {
 
         }
-  //      mAuth = FirebaseAuth.getInstance();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-  //      Log.d("--","currentUser: "+currentUser);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.getApplicationDefault())
+                .setServiceAccountId("my-client-id@my-project-id.iam.gserviceaccount.com")
+                .build();
+        FirebaseApp.initializeApp(options);
+        Log.d("--","FirebaseAuth is "+auth.getCurrentUser());
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithCustomToken("522ecc47fc9b77666f981c114acc5716758f6134")
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("--", "signInWithCustomToken:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.d("--", "signInWithCustomToken:failure", task.getException());
+                        }
+                    }
+                });
+        Log.d("--","currentUser: "+mAuth.getCurrentUser());
+
     }
 
 /*

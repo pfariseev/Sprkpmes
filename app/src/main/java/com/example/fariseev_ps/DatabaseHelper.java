@@ -60,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void copyDBFile() throws IOException { //копирует бызу к себе в /data
+    private void copyDBFile() throws IOException { //копирует базу к себе в /data
         //InputStream mInput = mContext.getAssets().open(DB_NAME);
         InputStream mInput = mContext.getResources().openRawResource(R.raw.sprkpmes); //входящий файл
         OutputStream mOutput = new FileOutputStream(DB_PATH + DB_NAME); //выходящий в /data
@@ -71,8 +71,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         mOutput.flush();
         mOutput.close();
         mInput.close();
-
-
     }
 
     public boolean openDataBase() throws SQLException {
