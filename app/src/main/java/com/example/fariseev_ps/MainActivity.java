@@ -61,14 +61,19 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,6 +84,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
+    private static final int RC_SIGN_IN = 200;
     ActionBar actionBar ;
     private DatabaseHelper mDBHelper;
     private SearchView mSearchView;
@@ -132,32 +138,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } else {
 
         }
+        //-------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------------
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.getApplicationDefault())
-                .setServiceAccountId("my-client-id@my-project-id.iam.gserviceaccount.com")
-                .build();
-        FirebaseApp.initializeApp(options);
-        Log.d("--","FirebaseAuth is "+auth.getCurrentUser());
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithCustomToken("522ecc47fc9b77666f981c114acc5716758f6134")
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("--", "signInWithCustomToken:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.d("--", "signInWithCustomToken:failure", task.getException());
-                        }
-                    }
-                });
-        Log.d("--","currentUser: "+mAuth.getCurrentUser());
-
+        //-------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------------
     }
 
 /*
@@ -177,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 Log.d("--", "GitHub credentials OK!!!");
             }
     }*/
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -248,6 +237,51 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             editor.putString("phoneNumber", myPhoneNumber);
             editor.commit();
             }
+
+        //----------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------
+        if (requestCode == RC_SIGN_IN) {
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                String idToken = account.getIdToken();
+                Log.d("--","idToken "+idToken+"; getDisplayName "+account.getDisplayName());
+
+             //   SignInCredential credential = task.getSignInCredentialFromIntent(data);
+              //  String idToken = credential.getGoogleIdToken();
+
+            if (idToken !=  null) {
+                AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+                mAuth.signInWithCredential(firebaseCredential)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d("--", "signInWithCredential:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.d("--", "signInWithCredential:failure", task.getException());
+                                }
+                            }
+                        });
+                Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            } else {
+                Log.d("--","Token is NULL! /n");
+            }
+            } catch (ApiException e) {
+                Log.d("--","ApiException e  "+e.getMessage());
+            }
+        }
+        //----------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------
+
     }
 
     @SuppressLint("MissingPermission")
@@ -341,9 +375,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             if (!prefs.getBoolean(getString(R.string.admin), false)) {
                 editor.putBoolean("adm", true);
                 editor.commit();
-                Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+
+                if ((GoogleSignIn.getLastSignedInAccount(this) ==null)) {
+                    GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+
+                } else {
+                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+                    Log.d("--", "mGoogleSignInClient: " + GoogleSignIn.getClient(this, gso).silentSignIn().isSuccessful() + "; AKK " + account.getDisplayName());
+                }
+
             } else {
                 editor.putBoolean("adm", false);
                 editor.commit();
