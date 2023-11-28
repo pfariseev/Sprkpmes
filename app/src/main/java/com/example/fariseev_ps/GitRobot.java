@@ -6,7 +6,9 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -153,7 +156,7 @@ public class GitRobot {
         return lng;
     }
 
-    public void sendPushMessage(Context context, String message, String notify) throws IOException {
+    public void sendPushMessage(Context context, String message, String notify, String accessTokenToPushMessage) throws IOException {
         /*   SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
         try {
             accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
@@ -183,6 +186,13 @@ public class GitRobot {
         //      }
         //      String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
         //    Log.d("--", "send to - " + tokenKomu[z]);
+
+        if (accessTokenToPushMessage.equals("")) {
+            Toast toast = Toast.makeText(context, "Ошибка регистрации", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -192,8 +202,7 @@ public class GitRobot {
                 JSONObject jMessage = new JSONObject();
 
                 try {
-                    jPayload.put("token", "e5GujeNIT5KviGM4SnVopV:APA91bGc5A0r_5lCQsBsdtWEUF-Yv1xfI_3kPvvYyiq7XEwPoVnSshOEpmQSwV29VztjPstT_ykYDBpZofLlMUwZVds8xUinVoXDNWxCcIyLJFSVOYWXgJGFnSFtpiDRfZEboT0Gy3Vf");
-
+                    jPayload.put("token", "eGTvOjQ-S0mJAkOUsVPSAf:APA91bF5eCfQozift7hXDEuhdHCZSqs4rOZhoYLbRbav-s2YGuj2Ar060FuhVg5NVKgG-qB1NEJaSdjARxaCRwhZO00rbX1CVFzFPIJ3ue8X8j5P0_dihRmLsVz6yQ_f_HT8PxeQk6CG");
                     if (notify.equals("data")) {
                         jData.put("data", message);
                         jPayload.put("data", jData);
@@ -203,20 +212,20 @@ public class GitRobot {
                         jPayload.put("notification", jNotification);
                     }
                     //jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
+
                     jMessage.put("message",jPayload);
                     //.URL url = new URL("https://fcm.googleapis.com/fcm/send");
                     URL url = new URL("https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
-                    conn.setRequestProperty("Content-Type", "application/json");
-                    conn.setDoOutput(true);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestProperty("Authorization", "Bearer "+accessTokenToPushMessage);
+                    //httpURLConnection.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
+                    httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8");
                     Log.d("--", "jMessage: " + jMessage);
-                    OutputStream outputStream = conn.getOutputStream();
-                    outputStream.write(jMessage.toString().getBytes());
-                    InputStream inputStream = conn.getInputStream();
+                    //Log.d("--", "with accessTokenToPushMessage: " + accessTokenToPushMessage);
+                    OutputStreamWriter outputStream = new OutputStreamWriter (httpURLConnection.getOutputStream());
+                    outputStream.write(jMessage.toString());
+                    InputStream inputStream = httpURLConnection.getInputStream();
                     Log.d("--", "response push: " + convertStreamToString(inputStream));
-
 
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();

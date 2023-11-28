@@ -18,6 +18,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -61,13 +62,16 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.BeginSignInResult;
+import com.google.android.gms.auth.api.identity.Identity;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -85,12 +89,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private static final int RC_SIGN_IN = 200;
+    private SignInClient oneTapClient;
+    private BeginSignInRequest signInRequest;
     ActionBar actionBar ;
     private DatabaseHelper mDBHelper;
     private SearchView mSearchView;
     private SQLiteDatabase mDb;
     int ver, num_list;
-    String list, urlnew;
+    String list, urlnew, accessTokenToPushMessage="";
     String[] titles = new String[10];
     ViewPager pager;
     PagerAdapter pagerAdapter;
@@ -112,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         editor = getDefaultSharedPreferences(this).edit();
         list = prefs.getString(getString(R.string.list), "1");
         num_list = Integer.parseInt(prefs.getString(getString(R.string.num_list), "6"));
+        accessTokenToPushMessage = prefs.getString("accessTokenToPushMessage", "");
         View viewpager = findViewById(R.id.pagerTabStrip);
         viewpager.setVisibility(View.VISIBLE);
         verifyUpdate();
@@ -141,7 +148,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //-------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        if (currentUser!=null) Log.d("--","Пользователь - "+currentUser.getDisplayName()+" "+mAuth.getApp());
         //-------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------
@@ -242,16 +252,31 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //----------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------
         if (requestCode == RC_SIGN_IN) {
-
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            SignInCredential credential = null;
             try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                String idToken = account.getIdToken();
-                Log.d("--","idToken "+idToken+"; getDisplayName "+account.getDisplayName());
-
-             //   SignInCredential credential = task.getSignInCredentialFromIntent(data);
-              //  String idToken = credential.getGoogleIdToken();
-
+                credential = oneTapClient.getSignInCredentialFromIntent(data);
+            } catch (ApiException e) {
+                throw new RuntimeException(e);
+            }
+            String idToken = credential.getGoogleIdToken();
+            String username = credential.getId();
+            String password = credential.getPassword();
+            if (idToken !=  null) {
+                // Got an ID token from Google. Use it to authenticate
+                // with your backend.
+                Log.d("--", "Got ID token. "+idToken);
+                editor.putString("accessTokenToPushMessage",idToken);
+                editor.commit();
+            } else if (password != null) {
+                // Got a saved username and password. Use them to authenticate
+                // with your backend.
+                Log.d("--", "Got password. "+password);
+            } else if (username != null) {
+                // Got a saved username and password. Use them to authenticate
+                // with your backend.
+                Log.d("--", "Got username. "+username);
+            }
+            mAuth = FirebaseAuth.getInstance();
             if (idToken !=  null) {
                 AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
                 mAuth.signInWithCredential(firebaseCredential)
@@ -271,18 +296,18 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
+                editor.putBoolean("adm", true);
+                editor.commit();
             } else {
                 Log.d("--","Token is NULL! /n");
             }
-            } catch (ApiException e) {
-                Log.d("--","ApiException e  "+e.getMessage());
             }
         }
         //----------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------
 
-    }
+
 
     @SuppressLint("MissingPermission")
     void getPhoneNumber() {
@@ -373,25 +398,42 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private void checkSearch (String check) {
         if (check.equals("!")) {
             if (!prefs.getBoolean(getString(R.string.admin), false)) {
-                editor.putBoolean("adm", true);
-                editor.commit();
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
+                oneTapClient = Identity.getSignInClient(this);
+                signInRequest = BeginSignInRequest.builder()
+                        .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
+                                .setSupported(true)
+                                .build())
+                        .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                                .setSupported(true)
+                                .setServerClientId("792807325359-1t33eao7srd00u6sp2o990b5tqan2fpm.apps.googleusercontent.com")
+                                .setFilterByAuthorizedAccounts(true)
+                                .build())
+                        .setAutoSelectEnabled(true)
                         .build();
-
-                if ((GoogleSignIn.getLastSignedInAccount(this) ==null)) {
-                    GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                    startActivityForResult(signInIntent, RC_SIGN_IN);
-
-                } else {
-                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-                    Log.d("--", "mGoogleSignInClient: " + GoogleSignIn.getClient(this, gso).silentSignIn().isSuccessful() + "; AKK " + account.getDisplayName());
-                }
+                oneTapClient.beginSignIn(signInRequest)
+                        .addOnSuccessListener(this, new OnSuccessListener<BeginSignInResult>() {
+                            @Override
+                            public void onSuccess(BeginSignInResult result) {
+                                try {
+                                    startIntentSenderForResult(
+                                            result.getPendingIntent().getIntentSender(), RC_SIGN_IN,
+                                            null, 0, 0, 0);
+                                } catch (IntentSender.SendIntentException e) {
+                                    Log.e("--", "Couldn't start One Tap UI: " + e.getLocalizedMessage());
+                                }
+                            }
+                        })
+                        .addOnFailureListener(this, new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("--", e.getLocalizedMessage());
+                            }
+                        });
 
             } else {
                 editor.putBoolean("adm", false);
                 editor.commit();
+                FirebaseAuth.getInstance().signOut();
                 Toast toast = Toast.makeText(this, "Пока! :(", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
@@ -568,7 +610,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             public void run() {
                 try {
                     GitRobot gitRobot = new GitRobot();
-                    gitRobot.sendPushMessage(getApplicationContext(), message, data);
+                    gitRobot.sendPushMessage(getApplicationContext(), message, data, accessTokenToPushMessage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
