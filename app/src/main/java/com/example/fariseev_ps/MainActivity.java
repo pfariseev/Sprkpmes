@@ -251,12 +251,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //----------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------
+
         if (requestCode == RC_SIGN_IN) {
             SignInCredential credential = null;
             try {
                 credential = oneTapClient.getSignInCredentialFromIntent(data);
             } catch (ApiException e) {
-                throw new RuntimeException(e);
+                Log.d("--", e.getMessage());
             }
             String idToken = credential.getGoogleIdToken();
             String username = credential.getId();
@@ -302,12 +303,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 Log.d("--","Token is NULL! /n");
             }
             }
-        }
+
         //----------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------
 
-
+    }
 
     @SuppressLint("MissingPermission")
     void getPhoneNumber() {
@@ -398,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private void checkSearch (String check) {
         if (check.equals("!")) {
             if (!prefs.getBoolean(getString(R.string.admin), false)) {
+
                 oneTapClient = Identity.getSignInClient(this);
                 signInRequest = BeginSignInRequest.builder()
                         .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
@@ -429,7 +431,33 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 Log.d("--", e.getLocalizedMessage());
                             }
                         });
+          /*
+                String json;
 
+                try {
+
+                    InputStream is = getAssets().open("Firebase.json");
+                    int sizeIs = is.available();
+                    byte[] buffer = new byte[sizeIs];
+                    is.read();
+                    is.close();
+                    json = new String(buffer, "UTF-8");
+                    Log.d("--","json " +json);
+                    URL url = new URL("https://www.googleapis.com/auth/firebase.messaging");
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    OutputStreamWriter outputStream = new OutputStreamWriter (httpURLConnection.getOutputStream());
+                    outputStream.write(json);
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    Log.d("--", "response Firebase token: " + GitRobot.convertStreamToString(inputStream));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d("--","1 "+e.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("--","2 "+e.getMessage());
+                }
+*/
             } else {
                 editor.putBoolean("adm", false);
                 editor.commit();

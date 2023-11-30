@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
@@ -202,7 +201,7 @@ public class GitRobot {
                 JSONObject jMessage = new JSONObject();
 
                 try {
-                    jPayload.put("token", "eGTvOjQ-S0mJAkOUsVPSAf:APA91bF5eCfQozift7hXDEuhdHCZSqs4rOZhoYLbRbav-s2YGuj2Ar060FuhVg5NVKgG-qB1NEJaSdjARxaCRwhZO00rbX1CVFzFPIJ3ue8X8j5P0_dihRmLsVz6yQ_f_HT8PxeQk6CG");
+                    jPayload.put("token", "dJQxx624RVmwD4WItNmU0j:APA91bFyl3Nu34e-nbu14mxTi-tyssEU60A9wmk217gyKNI7rwy8Ri3TV2EBCeUUHKj9-X-XoWb4ghyLcl2jG-cCI71aPXPk8rptVfO6WQvIoRkyB4Wtkq6vLVzNt6Sco6eNegv3ak6I");
                     if (notify.equals("data")) {
                         jData.put("data", message);
                         jPayload.put("data", jData);
@@ -211,26 +210,29 @@ public class GitRobot {
                         jNotification.put("title", context.getString(R.string.app_name));
                         jPayload.put("notification", jNotification);
                     }
+
                     //jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
 
                     jMessage.put("message",jPayload);
                     //.URL url = new URL("https://fcm.googleapis.com/fcm/send");
                     URL url = new URL("https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setRequestProperty("Authorization", "Bearer "+accessTokenToPushMessage);
                     //httpURLConnection.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
                     httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8");
                     Log.d("--", "jMessage: " + jMessage);
+
                     //Log.d("--", "with accessTokenToPushMessage: " + accessTokenToPushMessage);
                     OutputStreamWriter outputStream = new OutputStreamWriter (httpURLConnection.getOutputStream());
                     outputStream.write(jMessage.toString());
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    Log.d("--", "response push: " + convertStreamToString(inputStream));
+                    //InputStream inputStream = httpURLConnection.getInputStream();
 
-                } catch (JSONException | IOException e) {
-                    e.printStackTrace();
+                    //Log.d("--", "response push: " + convertStreamToString(inputStream));
+
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
+                    Log.d("--","1 "+e.getMessage());
                 }
 
             }
