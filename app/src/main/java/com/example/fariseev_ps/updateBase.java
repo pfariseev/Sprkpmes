@@ -148,7 +148,7 @@ class updateBase {
                     return;
                 }
                 // если всё хорошо, закрываем прогресс и удаляем временный файл
-                progressDialog.hide();
+                //progressDialog.hide();
                 //Log.d("--", "TrueUpdate Exit");
                 String msg = "";
                 if (copyBaseDone==1) {

@@ -201,7 +201,7 @@ public class GitRobot {
                 JSONObject jMessage = new JSONObject();
 
                 try {
-                    jPayload.put("token", "dJQxx624RVmwD4WItNmU0j:APA91bFyl3Nu34e-nbu14mxTi-tyssEU60A9wmk217gyKNI7rwy8Ri3TV2EBCeUUHKj9-X-XoWb4ghyLcl2jG-cCI71aPXPk8rptVfO6WQvIoRkyB4Wtkq6vLVzNt6Sco6eNegv3ak6I");
+                    jPayload.put("token", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
                     if (notify.equals("data")) {
                         jData.put("data", message);
                         jPayload.put("data", jData);
@@ -214,21 +214,19 @@ public class GitRobot {
                     //jPayload.put("to", "cFiySajBQ_WCxc6y4yrPlW:APA91bFLqjeowhvjC62CTcITshrBNSzO0zo8Ls6C0RKVcL7w7Dw55d2o_hGdbzp5QD8z7V-05mJFWkvWVVWShVZ5Gfjj5MA5RXKvNREzqbzXV1cnrT5_M6zd8XGcYtOOAYLDuJR5HTNJ");
 
                     jMessage.put("message",jPayload);
-                    //.URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                    //URL url = new URL("https://fcm.googleapis.com/fcm/send");
                     URL url = new URL("https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setRequestProperty("Authorization", "Bearer "+accessTokenToPushMessage);
                     //httpURLConnection.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
                     httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8");
-                    Log.d("--", "jMessage: " + jMessage);
-
-                    //Log.d("--", "with accessTokenToPushMessage: " + accessTokenToPushMessage);
+                    Log.d("--", "jMessage: "+jMessage);
                     OutputStreamWriter outputStream = new OutputStreamWriter (httpURLConnection.getOutputStream());
                     outputStream.write(jMessage.toString());
-                    //InputStream inputStream = httpURLConnection.getInputStream();
-
-                    //Log.d("--", "response push: " + convertStreamToString(inputStream));
+                    outputStream.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    Log.d("--", "response push: " + convertStreamToString(inputStream));
 
                 } catch (Exception e) {
                     e.printStackTrace();

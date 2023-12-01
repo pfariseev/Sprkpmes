@@ -263,18 +263,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             String username = credential.getId();
             String password = credential.getPassword();
             if (idToken !=  null) {
-                // Got an ID token from Google. Use it to authenticate
-                // with your backend.
                 Log.d("--", "Got ID token. "+idToken);
                 editor.putString("accessTokenToPushMessage",idToken);
                 editor.commit();
             } else if (password != null) {
-                // Got a saved username and password. Use them to authenticate
-                // with your backend.
                 Log.d("--", "Got password. "+password);
             } else if (username != null) {
-                // Got a saved username and password. Use them to authenticate
-                // with your backend.
                 Log.d("--", "Got username. "+username);
             }
             mAuth = FirebaseAuth.getInstance();
@@ -285,20 +279,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
                                     Log.d("--", "signInWithCredential:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    String user = mAuth.getCurrentUser().getEmail();
+                                    Log.d("--", "Got ID token firebase: "+user);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Привет! :)", Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.CENTER, 0, 0);
+                                    toast.show();
+                                    editor.putBoolean("adm", true);
+                                    editor.commit();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.d("--", "signInWithCredential:failure", task.getException());
                                 }
                             }
                         });
-                Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                editor.putBoolean("adm", true);
-                editor.commit();
+
             } else {
                 Log.d("--","Token is NULL! /n");
             }
@@ -407,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 .build())
                         .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                                 .setSupported(true)
-                                .setServerClientId("792807325359-1t33eao7srd00u6sp2o990b5tqan2fpm.apps.googleusercontent.com")
+                                .setServerClientId("792807325359-96kajuek9s6ovnct9cbt77e13nqbqm5g.apps.googleusercontent.com")
                                 .setFilterByAuthorizedAccounts(true)
                                 .build())
                         .setAutoSelectEnabled(true)
@@ -431,12 +426,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 Log.d("--", e.getLocalizedMessage());
                             }
                         });
-          /*
-                String json;
+
+        /*        String json;
 
                 try {
 
-                    InputStream is = getAssets().open("Firebase.json");
+                    InputStream is = getAssets().open("firebase.json 2");
                     int sizeIs = is.available();
                     byte[] buffer = new byte[sizeIs];
                     is.read();
