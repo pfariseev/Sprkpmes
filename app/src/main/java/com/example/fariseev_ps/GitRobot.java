@@ -201,7 +201,8 @@ public class GitRobot {
                 JSONObject jMessage = new JSONObject();
 
                 try {
-                    jPayload.put("token", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
+                    //jPayload.put("token", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
+                    jPayload.put("to", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
                     if (notify.equals("data")) {
                         jData.put("data", message);
                         jPayload.put("data", jData);
@@ -218,12 +219,13 @@ public class GitRobot {
                     URL url = new URL("https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
-                    httpURLConnection.setRequestProperty("Authorization", "Bearer "+accessTokenToPushMessage);
-                    //httpURLConnection.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
+                    //httpURLConnection.setRequestProperty("Authorization", "Bearer "+accessTokenToPushMessage);
+                    httpURLConnection.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
                     httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8");
                     Log.d("--", "jMessage: "+jMessage);
                     OutputStreamWriter outputStream = new OutputStreamWriter (httpURLConnection.getOutputStream());
-                    outputStream.write(jMessage.toString());
+                    outputStream.write(jPayload.toString());
+                    //outputStream.write(jMessage.toString());
                     outputStream.close();
                     InputStream inputStream = httpURLConnection.getInputStream();
                     Log.d("--", "response push: " + convertStreamToString(inputStream));
