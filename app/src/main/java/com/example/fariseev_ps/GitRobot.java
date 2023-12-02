@@ -6,9 +6,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -186,23 +184,17 @@ public class GitRobot {
         //      String tokenKomu[] = s.split(",\\s+"); //Разделение по запятой и любому количеству пробелов
         //    Log.d("--", "send to - " + tokenKomu[z]);
 
-        if (accessTokenToPushMessage.equals("")) {
-            Toast toast = Toast.makeText(context, "Ошибка регистрации", Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            return;
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
+                final String[] token = new String[1];
                 JSONObject jPayload = new JSONObject();
                 JSONObject jNotification = new JSONObject();
                 JSONObject jData = new JSONObject();
                 JSONObject jMessage = new JSONObject();
-
                 try {
-                    //jPayload.put("token", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
-                    jPayload.put("to", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
+                    jPayload.put("token", "eST-SRFGTcenrFQpAutzdj:APA91bFcQRS81IOyFru_gxdlAPZNt_20Os21qqhnKkEQgWa_zPdylyaTldMxlW51I7wZbPouyI6CQscQkoWmEsfyEdUbVttGTRaiGl3dsVpvnv3QHB2KUN9xPFdGmtbVDNhkfeAHEHo2");
+                    //jPayload.put("to", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
                     if (notify.equals("data")) {
                         jData.put("data", message);
                         jPayload.put("data", jData);
@@ -219,15 +211,15 @@ public class GitRobot {
                     URL url = new URL("https://fcm.googleapis.com/v1/projects/sprkpmes/messages:send");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
-                    //httpURLConnection.setRequestProperty("Authorization", "Bearer "+accessTokenToPushMessage);
-                    httpURLConnection.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
+                    httpURLConnection.setRequestProperty("Authorization", "Bearer "+ token[0]);
+                    //httpURLConnection.setRequestProperty("Authorization", BuildConfig.PUSH_TOKEN);
                     httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8");
-                    Log.d("--", "jMessage: "+jMessage);
+                    //Log.d("--", "jMessage: "+jMessage);
                     OutputStreamWriter outputStream = new OutputStreamWriter (httpURLConnection.getOutputStream());
-                    outputStream.write(jPayload.toString());
-                    //outputStream.write(jMessage.toString());
+                    //outputStream.write(jPayload.toString());
+                    outputStream.write(jMessage.toString());
                     outputStream.close();
-                    InputStream inputStream = httpURLConnection.getInputStream();
+                    InputStream inputStream = httpURLConnection.getErrorStream();
                     Log.d("--", "response push: " + convertStreamToString(inputStream));
 
                 } catch (Exception e) {

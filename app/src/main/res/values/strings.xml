@@ -57,6 +57,7 @@
     <string name="colorPrimBackgrnd">#E5E5E5</string>
     <string name="colorSecBackgrnd">Цвет дополнительного фона</string>
     <string name="accessTokenToPushMessage">accessTokenToPushMessage</string>
+    <string name="your_web_client_id">792807325359-bqn56a6joqvlopr54b85nnaa63ohbs6k.apps.googleusercontent.com</string>
 
 
 </resources>

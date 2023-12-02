@@ -10,7 +10,7 @@ ext {
 
 
 android {
-    compileSdk 31
+    compileSdk 33
     defaultConfig {
         applicationId "com.example.fariseev_ps"
         minSdkVersion 23

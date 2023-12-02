@@ -148,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //-------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------
+
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -262,17 +264,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             String idToken = credential.getGoogleIdToken();
             String username = credential.getId();
             String password = credential.getPassword();
-            if (idToken !=  null) {
-                Log.d("--", "Got ID token. "+idToken);
-                editor.putString("accessTokenToPushMessage",idToken);
+            if (idToken != null) {
+                Log.d("--", "Got ID token. " + idToken);
+                editor.putString("accessTokenToPushMessage", idToken);
                 editor.commit();
             } else if (password != null) {
-                Log.d("--", "Got password. "+password);
+                Log.d("--", "Got password. " + password);
             } else if (username != null) {
-                Log.d("--", "Got username. "+username);
+                Log.d("--", "Got username. " + username);
             }
+
+
             mAuth = FirebaseAuth.getInstance();
-            if (idToken !=  null) {
+            if (idToken != null) {
                 AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
                 mAuth.signInWithCredential(firebaseCredential)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -280,13 +284,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("--", "signInWithCredential:success");
-                                    String user = mAuth.getCurrentUser().getEmail();
-                                    Log.d("--", "Got ID token firebase: "+user);
+                                    if (mAuth.getAccessToken(true)!=null)
+                                        Log.d("--", "Got ID token firebase: " + mAuth.getAccessToken(true));
+                                     else Log.d("--", "token null");
                                     Toast toast = Toast.makeText(getApplicationContext(), "Привет! :)", Toast.LENGTH_LONG);
                                     toast.setGravity(Gravity.CENTER, 0, 0);
                                     toast.show();
                                     editor.putBoolean("adm", true);
                                     editor.commit();
+                                    send("AlarmForceSet", "data");
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.d("--", "signInWithCredential:failure", task.getException());
@@ -295,15 +301,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         });
 
             } else {
-                Log.d("--","Token is NULL! /n");
+                Log.d("--", "Token is NULL! /n");
             }
-            }
-
-        //----------------------------------------------------------------------------------------
-        //----------------------------------------------------------------------------------------
-        //----------------------------------------------------------------------------------------
-
+        }
     }
+
+        //----------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------
+
+
+
 
     @SuppressLint("MissingPermission")
     void getPhoneNumber() {
@@ -402,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 .build())
                         .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                                 .setSupported(true)
-                                .setServerClientId("792807325359-96kajuek9s6ovnct9cbt77e13nqbqm5g.apps.googleusercontent.com")
+                                .setServerClientId(getString(R.string.your_web_client_id))
                                 .setFilterByAuthorizedAccounts(true)
                                 .build())
                         .setAutoSelectEnabled(true)
@@ -416,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                             result.getPendingIntent().getIntentSender(), RC_SIGN_IN,
                                             null, 0, 0, 0);
                                 } catch (IntentSender.SendIntentException e) {
-                                    Log.e("--", "Couldn't start One Tap UI: " + e.getLocalizedMessage());
+                                    Log.d("--", "Couldn't start One Tap UI: " + e.getLocalizedMessage());
                                 }
                             }
                         })
@@ -456,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             } else {
                 editor.putBoolean("adm", false);
                 editor.commit();
-                FirebaseAuth.getInstance().signOut();
+                //FirebaseAuth.getInstance().signOut();
                 Toast toast = Toast.makeText(this, "Пока! :(", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();

@@ -14,8 +14,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "792807325359-96kajuek9s6ovnct9cbt77e13nqbqm5g.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "792807325359-4fbs9it3it5tq1cjde8ddvl8e6g80mg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fariseev_ps",
+            "certificate_hash": "c8fc771d294b9e827767f8b24cceecb255c6fc96"
+          }
         }
       ],
       "api_key": [
@@ -25,12 +29,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "792807325359-96kajuek9s6ovnct9cbt77e13nqbqm5g.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
