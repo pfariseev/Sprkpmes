@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //-------------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------------
 
-
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -434,8 +433,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 Log.d("--", e.getLocalizedMessage());
                             }
                         });
-
-        /*        String json;
+/*
+             String json;
 
                 try {
 

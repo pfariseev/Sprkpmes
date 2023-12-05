@@ -193,7 +193,7 @@ public class GitRobot {
                 JSONObject jData = new JSONObject();
                 JSONObject jMessage = new JSONObject();
                 try {
-                    jPayload.put("token", "eST-SRFGTcenrFQpAutzdj:APA91bFcQRS81IOyFru_gxdlAPZNt_20Os21qqhnKkEQgWa_zPdylyaTldMxlW51I7wZbPouyI6CQscQkoWmEsfyEdUbVttGTRaiGl3dsVpvnv3QHB2KUN9xPFdGmtbVDNhkfeAHEHo2");
+                    jPayload.put("token", "feqMiK78Q76o4fvTE_rfsB:APA91bG6ziY128k3lc3CKlg2dshvfDSEydVKW19jQUCGvyq79VD_DGY9SCe5RbF8ZyWSqj2WSELSNXBMGgz2YqjrlcjDgdvZVJt3s6EHdRfEBmQjGEJyItkXo2Ft2VxcAPYDrNoo5oVZ");
                     //jPayload.put("to", "e8wT-zYuSiaqtfQ736bkC3:APA91bFxeOXLxVeffjPKM0VhGFOyxmP_coUCbFtH3difZfcqYpoJOSSjWmhJQGsxHozGgqFpEkLgBCpvv5AgAlQIIbXAoTYssdMJ7_M9vLagAC2bK6eEcG8dOTACLyMUMqwMyZMwH8md");
                     if (notify.equals("data")) {
                         jData.put("data", message);
