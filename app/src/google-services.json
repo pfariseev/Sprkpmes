@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "792807325359",
+    "project_id": "sprkpmes",
+    "storage_bucket": "sprkpmes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792807325359:android:b48b455f3439008a649e5a",
+        "android_client_info": {
+          "package_name": "com.example.fariseev_ps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "792807325359-p6k787dehsrkf6cp7oh5o5d332q6pqvr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fariseev_ps",
+            "certificate_hash": "c8fc771d294b9e827767f8b24cceecb255c6fc96"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF-KvKiP_wsec9B7L9dFOdIiQ2r8HS7k0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
