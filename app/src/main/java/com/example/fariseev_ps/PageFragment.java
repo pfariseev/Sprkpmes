@@ -3,6 +3,7 @@ package com.example.fariseev_ps;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -19,8 +20,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-
-import androidx.fragment.app.Fragment;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ScrollDirectionListener;
