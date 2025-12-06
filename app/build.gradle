@@ -10,11 +10,11 @@ ext {
 
 
 android {
-    compileSdk 33
+    compileSdk 31
     defaultConfig {
         applicationId "com.example.fariseev_ps"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 33
         multiDexEnabled true
         versionCode 10
         versionName "10.0"
@@ -72,6 +72,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-drive:17.0.0"
     implementation 'com.squareup.okio:okio:1.14.0'
     implementation 'com.jaredrummler:colorpicker:1.1.0'
+    implementation 'androidx.browser:browser:1.4.0'
 
 }
 

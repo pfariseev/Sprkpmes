@@ -85,7 +85,7 @@ public class GitRobot {
                 }
         } else {
             Log.d("--", "Invalid GitHub credentials !!!");
-        }
+         }
 
         if (doIt.equals("update")) {
             try {
@@ -117,7 +117,7 @@ public class GitRobot {
 
         }
         if (doIt.equals("download")) {
-      //      Log.d("--", "LocalFilePath+LocalFileName: "+LocalFilePath+LocalFileName+", RemotePath/LocalFileName: "+RemotePath+ "/" + LocalFileName);
+            Log.d("--", "LocalFilePath+LocalFileName: "+LocalFilePath+LocalFileName+", RemotePath/LocalFileName: "+RemotePath+ "/" + LocalFileName);
             if (repo==null) {
                 downloadFile=3;
                 return;

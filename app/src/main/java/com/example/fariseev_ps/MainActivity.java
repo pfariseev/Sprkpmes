@@ -53,6 +53,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -526,7 +527,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         @Override
         public Fragment getItem(int position) {
-            return PageFragment.newInstance(position);
+            try {
+                return Fragment.class.newInstance();
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (InstantiationException e) {
+                throw new RuntimeException(e);
+            }
         }
         @Override
         public int getCount() {
