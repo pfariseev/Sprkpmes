@@ -527,14 +527,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         @Override
         public Fragment getItem(int position) {
-            try {
-                return Fragment.class.newInstance();
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            }
+
+            return PageFragment.newInstance(position);
         }
+
         @Override
         public int getCount() {
             return num_list;
