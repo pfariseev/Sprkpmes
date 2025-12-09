@@ -69,7 +69,6 @@ public class GitRobot {
         String commitMsg = new Date().toString();
         byte[] fileContents = new byte[0];
         //if (!getGit(repoName)) return;
-        if (github == null) {
             SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
             try {
                 accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
@@ -80,9 +79,6 @@ public class GitRobot {
                 e.printStackTrace();
             }
             Log.d("--", "password: " + accessToken);
-        }
-        while (github==null) {}
-        if (repo == null)
             if (github.isCredentialValid()) {
                 try {
                     repo = github.getRepository(userId + "/" + repoName);
