@@ -14,7 +14,7 @@ import java.io.OutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "sprkpmes.db";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 21;
+    private static final int DB_VERSION = 1;
 
     private SQLiteDatabase mDataBase;
     private final Context mContext;
@@ -29,8 +29,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.mContext = context;
 
         copyDataBase();
-
-        this.getReadableDatabase();
+try {
+    this.getReadableDatabase();
+} catch (Exception e) {
+       onDowngrade(mDataBase, DB_VERSION, DB_VERSION);
+}
     }
 
     public void updateDataBase() throws IOException { //Обновление файла
@@ -95,6 +98,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (newVersion > oldVersion)
             mNeedUpdate = true;
     }
-
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (newVersion > oldVersion)
+            mNeedUpdate = true;
+    }
 
 }

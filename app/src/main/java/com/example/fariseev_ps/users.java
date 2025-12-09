@@ -302,9 +302,9 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         } else {
             //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
             new DownloadImageTask(name, photo, context).execute(convertName(name));
-            // GitRobot.getSingleContent() ;
+
         }
-    }
+        }
 
     public static String convertName(String name) {
         String linkName = "";

@@ -12,6 +12,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,9 @@ public class PageFragment extends Fragment {
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
+
+
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(contex);
         SharedPreferences.Editor editor = getDefaultSharedPreferences(contex).edit();
         list = prefs.getString(getString(R.string.list), "1");
@@ -100,6 +104,7 @@ public class PageFragment extends Fragment {
         Cursor cursor = mDb.rawQuery("SELECT * FROM Лист"+ (pageNumber + 1), null);
         HashMap<String, Object> client;
         client = new HashMap<String, Object>();
+        try {
         cursor.moveToPosition(2);
         String temp = cursor.getString(7);
         client.put("otdels", temp);
@@ -141,6 +146,13 @@ public class PageFragment extends Fragment {
             cursor.moveToNext();
         }
         cursor.close();
+        } catch (Exception e) {
+            Log.d("--", "Нет базы или повреждена. " + e.getMessage());
+            File dbFile = new File(contex.getApplicationInfo().dataDir + "/databases/sprkpmes.db");
+            if (dbFile.exists())
+                dbFile.delete();
+            if (GitRobot.downloadFile==2) MainActivity.restartAppWithDelay(contex);
+        }
         сhildDataList.add(сhildDataItemList);
 
         View view = inflater.inflate(R.layout.main_activity, container,false);

@@ -48,8 +48,8 @@ public class GitRobot {
     private String userId = "pfariseev";
     private String secretkey_string = "s/7s0nxKWp6VxmZ5S0hVXA==";
     private String password = "xwUPGxDW5mjEzcZzg0J7mP7YUHeuc+627fz7ojefU/LBt+b2F8pZziRgIpRpB9Re";
-    private static GitHub github = null;
-    private static GHRepository repo = null;
+    static GitHub github;
+    static GHRepository repo;
     private static String accessToken; //= BuildConfig.GITHUB_TOKEN;
     public static int downloadFile=0;
 
@@ -60,32 +60,39 @@ public class GitRobot {
 
     @TargetApi(Build.VERSION_CODES.O)
     public void updateSingleContent(Context context, String repoName, String RemotePath, String LocalFileName, String LocalFilePath, String doIt, ImageView photo) {
-
-    //    System.out.println("Upload started!\t" + LocalFilePath + LocalFileName + " => " + RepoName + "/" + RemotePath);
+        //   SharedPreferences prefs = getDefaultSharedPreferences(context);
+        //    SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
+        //   list = prefs.getString(getString(R.string.list), "1");
+        //    System.out.println("Upload started!\t" + LocalFilePath + LocalFileName + " => " + RepoName + "/" + RemotePath);
         int nLastBackSlashPos = LocalFilePath.lastIndexOf('/');
         String strLocalFilePath = nLastBackSlashPos == -1 ? "" : LocalFilePath.substring(0, nLastBackSlashPos + 1);
         String commitMsg = new Date().toString();
         byte[] fileContents = new byte[0];
         //if (!getGit(repoName)) return;
-        SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
-        try {
-            accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
-            github = new GitHubBuilder().withOAuthToken(accessToken).build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (github == null) {
+            SecretKey newsecretkey = Crypto.stringToKey(secretkey_string);
+            try {
+                accessToken = Crypto.decryptString(Base64.decode(password, Base64.DEFAULT), newsecretkey);
+                github = new GitHubBuilder().withOAuthToken(accessToken).build();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Log.d("--", "password: " + accessToken);
         }
-        Log.d("--","password: "+ accessToken);
-        if (github.isCredentialValid()) {
+        while (github==null) {}
+        if (repo == null)
+            if (github.isCredentialValid()) {
                 try {
                     repo = github.getRepository(userId + "/" + repoName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-        } else {
-            Log.d("--", "Invalid GitHub credentials !!!");
-         }
+            } else {
+                Log.d("--", "Invalid GitHub credentials !!!");
+            }
+
 
         if (doIt.equals("update")) {
             try {

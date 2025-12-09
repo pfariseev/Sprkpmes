@@ -58,6 +58,7 @@
     <string name="colorSecBackgrnd">Цвет дополнительного фона</string>
     <string name="accessTokenToPushMessage">accessTokenToPushMessage</string>
     <string name="your_web_client_id">792807325359-p6k787dehsrkf6cp7oh5o5d332q6pqvr.apps.googleusercontent.com</string>
+    <string name="accesstoken">accesstoken</string>
 
 
 </resources>

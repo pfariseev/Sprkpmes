@@ -64,6 +64,7 @@ class updateBase {
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //list=prefs.getString(getString(R.string.list), "1");
         DB_PATH = context.getApplicationInfo().dataDir + "/databases/"; // старше 4. работает это
+
         new AsyncTask<String, Integer, Void>() {
             private Exception m_error = null;
             SharedPreferences prefs = getDefaultSharedPreferences(context);
