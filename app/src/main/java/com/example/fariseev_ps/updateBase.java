@@ -81,15 +81,6 @@ class updateBase {
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                     progressDialog.show();
                 }
-                if (context.getClass().getSimpleName().equals("MainActivity"))
-                {
-                    progressDialog = new ProgressDialog(context);
-                    progressDialog.setMessage("Загрузка. Подождите.");
-                    progressDialog.setCancelable(false);
-                    progressDialog.setMax(lists);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    progressDialog.show();
-                }
             }
 
 

@@ -152,7 +152,8 @@ public class savephoto extends Activity {
                             client = URLEncoder.encode(client, "UTF-8");
                             client = client.replace("+", "%20");
                             //Name1="https://raw.githubusercontent.com/pfariseev/sprkpmes/master/"+URLEncoder.encode(Name1, "UTF-8")+".png";
-                            client = "http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1=" + client;
+                            //client = "http://tcc.fsk-ees.ru/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1=" + client;
+                            client = "http://10.19.156.26/Lists/Employees/AllItems.aspx?InitialTabId=Ribbon%2EList&VisibilityContext=WSSTabPersistence&&SortField=Title&View={C4947BB9-3499-42FE-8A40-AC2804A96D60}&SortField=Title&SortDir=Desc&FilterField1=Title&FilterValue1=" + client;
                         } catch (UnsupportedEncodingException e) {
                         }
                         File file = new File(folderToSave + name + ".jpg");
@@ -183,7 +184,8 @@ public class savephoto extends Activity {
                         }
                         try {
 
-                            String url3 = "http://tcc.fsk-ees.ru/Lists/Employees/EmployeeDisplayForm.aspx?List=941e8830-16a6-48f8-9b89-aac0efd8a575&ID=" + id + "&RootFolder=%2A&Web=133c7a02-4ddb-4780-ad4b-bdb3ff85f821";
+                            //String url3 = "http://tcc.fsk-ees.ru/Lists/Employees/EmployeeDisplayForm.aspx?List=941e8830-16a6-48f8-9b89-aac0efd8a575&ID=" + id + "&RootFolder=%2A&Web=133c7a02-4ddb-4780-ad4b-bdb3ff85f821";
+                            String url3 = "http://10.19.156.26/Lists/Employees/EmployeeDisplayForm.aspx?List=941e8830-16a6-48f8-9b89-aac0efd8a575&ID=" + id + "&RootFolder=%2A&Web=133c7a02-4ddb-4780-ad4b-bdb3ff85f821";
                             Document doc = Jsoup.connect(url3).get();
                             Elements title = doc.select("img.img-polaroid");
                             linky = title.attr("src");
