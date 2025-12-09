@@ -117,11 +117,7 @@ class updateBase {
                         publishProgress();
                         progressDialog.setMessage("Загрузка завершена. Обновление.");
                     }
-                    if (context.getClass().getSimpleName().equals("MainActivity")) {
-                        publishProgress();
-                        progressDialog.setMessage("Загрузка завершена. Обновление.");
-                    }
-                }
+                         }
 
                 return null;
             }
