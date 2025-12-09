@@ -111,7 +111,7 @@ public class EternalService extends Service{
         }
         public static void cancelAlarm(Context context){
             Log.d("--","Отмена таймера");
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, new Intent(ALARM_EVENT), 0);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 0, new Intent(ALARM_EVENT), PendingIntent.FLAG_IMMUTABLE);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(sender);
         }

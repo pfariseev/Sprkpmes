@@ -16,8 +16,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 33
         multiDexEnabled true
-        versionCode 10
-        versionName "10"
+        versionCode 11
+        versionName "11"
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -73,6 +73,7 @@ dependencies {
     implementation 'com.squareup.okio:okio:1.14.0'
     implementation 'com.jaredrummler:colorpicker:1.1.0'
     implementation 'androidx.browser:browser:1.4.0'
+ //   implementation 'androidx.work:work-runtime:2.7.1'
 
 }
 
