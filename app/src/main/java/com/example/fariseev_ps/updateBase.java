@@ -117,7 +117,7 @@ class updateBase {
                         publishProgress();
                         progressDialog.setMessage("Загрузка завершена. Обновление.");
                     }
-                         }
+                }
 
                 return null;
             }
@@ -132,7 +132,7 @@ class updateBase {
             protected void onPostExecute(Void file) {
                 // отображаем сообщение, если возникла ошибка
                 if (GitRobot.downloadFile== 3) {
-                  //  m_error.printStackTrace();
+                    //  m_error.printStackTrace();
                     if (prefs.getBoolean("adm",false)) {
                         NotificationUtils n = NotificationUtils.getInstance(context);
                         n.createInfoNotification("Ошибка скачивании базы");
@@ -141,9 +141,9 @@ class updateBase {
                     if (context.getClass().getSimpleName().equals("about")) {
                         NotificationUtils n = NotificationUtils.getInstance(context);
                         n.createInfoNotification("Что-то пошло не так :(");
-               //        Toast toast = Toast.makeText(context, "Что-то пошло не так :(, может включить интернет..?", Toast.LENGTH_LONG);
-               //         toast.setGravity(Gravity.CENTER, 0, 0);
-               //         toast.show();
+                        //        Toast toast = Toast.makeText(context, "Что-то пошло не так :(, может включить интернет..?", Toast.LENGTH_LONG);
+                        //         toast.setGravity(Gravity.CENTER, 0, 0);
+                        //         toast.show();
                     }
                     progressDialog.hide();
                     return;
@@ -156,10 +156,10 @@ class updateBase {
                     msg="Ошибка копирования базы";
                 }
                 if (copyBaseDone==2) {
-                     msg="Готово.";
+                    msg="Готово.";
                 }
                 if (copyBaseDone==3) {
-                     msg="Обновление не требуется.";
+                    msg="Обновление не требуется.";
                 }
                 if (context.getClass().getSimpleName().equals("about")) {
                     //  n.createInfoNotification("Готово");
@@ -180,33 +180,33 @@ class updateBase {
             @Override
             public void run() {
                 try  {
-        NotificationUtils n = NotificationUtils.getInstance(context);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        DatabaseHelper mDBHelper;
-        SQLiteDatabase mDb;
-        mDBHelper = new DatabaseHelper(context);
-        try {
-            mDb = mDBHelper.getWritableDatabase();
-        } catch (SQLException mSQLException) {
-            throw mSQLException;
-        }
-        File file = new File(DB_PATH + "bd.xlsx");
-        if (!file.exists()) return;
-        try {
-            Workbook wb = WorkbookFactory.create(file);
-            lists = wb.getNumberOfSheets();
-            Sheet sheet;
-            Row row;
-            int ii,xx;
-            Cursor cursor;
-            String value, SQL_CREATES_TABLE;
-            cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
-            cursor.moveToFirst();
-            String data2 = cursor.getString(11);
-            sheet = wb.getSheetAt(0);
-            row = sheet.getRow(0);
-            String dataupdate = row.getCell(11).toString();
-            //   cursor.moveToPosition(2);
+                    NotificationUtils n = NotificationUtils.getInstance(context);
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    DatabaseHelper mDBHelper;
+                    SQLiteDatabase mDb;
+                    mDBHelper = new DatabaseHelper(context);
+                    try {
+                        mDb = mDBHelper.getWritableDatabase();
+                    } catch (SQLException mSQLException) {
+                        throw mSQLException;
+                    }
+                    File file = new File(DB_PATH + "bd.xlsx");
+                    if (!file.exists()) return;
+                    try {
+                        Workbook wb = WorkbookFactory.create(file);
+                        lists = wb.getNumberOfSheets();
+                        Sheet sheet;
+                        Row row;
+                        int ii,xx;
+                        Cursor cursor;
+                        String value, SQL_CREATES_TABLE;
+                        cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
+                        cursor.moveToFirst();
+                        String data2 = cursor.getString(11);
+                        sheet = wb.getSheetAt(0);
+                        row = sheet.getRow(0);
+                        String dataupdate = row.getCell(11).toString();
+                        //   cursor.moveToPosition(2);
    /*         if (!newver) {
                 if (cursor.getString(11) != sheet.getRow(2).getCell(11).toString()) {
                     NotificationUtils n = NotificationUtils.getInstance(context);
@@ -216,94 +216,94 @@ class updateBase {
                     newver=true;
                 }
             } */
-            Log.d("--",data2+" "+dataupdate);
+                        Log.d("--",data2+" "+dataupdate);
 
-            if (!data2.equals(dataupdate)) {
+                        if (!data2.equals(dataupdate)) {
 
-                for (activelist = 0; activelist < lists; activelist++) {
-                    ContentValues newValues = new ContentValues();
-                    String listsString = String.valueOf(activelist + 1);
-                    Log.d("--", "Лист" + listsString + " начат");
-                    sheet = wb.getSheetAt(activelist);
-                    row = sheet.getRow(0);
-                    ii = sheet.getPhysicalNumberOfRows();
-                    xx = row.getPhysicalNumberOfCells();
-                   // Log.d("--",String.valueOf(xx));
+                            for (activelist = 0; activelist < lists; activelist++) {
+                                ContentValues newValues = new ContentValues();
+                                String listsString = String.valueOf(activelist + 1);
+                                Log.d("--", "Лист" + listsString + " начат");
+                                sheet = wb.getSheetAt(activelist);
+                                row = sheet.getRow(0);
+                                ii = sheet.getPhysicalNumberOfRows();
+                                xx = row.getPhysicalNumberOfCells();
+                                // Log.d("--",String.valueOf(xx));
 
-                    SQL_CREATES_TABLE = "CREATE TABLE " + "Лист" + listsString +" (Column1 NULL );";
-                    try {
-                        mDb.execSQL(SQL_CREATES_TABLE);
+                                SQL_CREATES_TABLE = "CREATE TABLE " + "Лист" + listsString +" (Column1 NULL );";
+                                try {
+                                    mDb.execSQL(SQL_CREATES_TABLE);
 
-                        Log.d("--", "Лист" + listsString + " создан");
-                    } catch (Exception e) {
-                        // Log.d("--", "Лист"+listsString+" существует");
-                    }
-                    cursor = mDb.rawQuery("SELECT * FROM Лист" + listsString, null);
-                    if (xx>cursor.getColumnCount()+1) {
-                        for (int x=cursor.getColumnCount()+1; x<xx+1; x++){
-                            String SQL = "ALTER TABLE "+"Лист"+listsString+" ADD COLUMN Column" + x +" NULL;";
-                            mDb.execSQL(SQL);
+                                    Log.d("--", "Лист" + listsString + " создан");
+                                } catch (Exception e) {
+                                    // Log.d("--", "Лист"+listsString+" существует");
+                                }
+                                cursor = mDb.rawQuery("SELECT * FROM Лист" + listsString, null);
+                                if (xx>cursor.getColumnCount()+1) {
+                                    for (int x=cursor.getColumnCount()+1; x<xx+1; x++){
+                                        String SQL = "ALTER TABLE "+"Лист"+listsString+" ADD COLUMN Column" + x +" NULL;";
+                                        mDb.execSQL(SQL);
+                                    }
+                                }
+                                cursor.moveToFirst();
+                                for (int x = 0; x < xx; x++) {
+                                    value = row.getCell(x).toString();
+                                    newValues.put("Column" + (x + 1), value);
+                                }
+                                mDb.delete("Лист" + listsString, null, null);
+                                mDb.insert("Лист" + listsString, null, newValues);
+                                newValues = new ContentValues();
+                                newValues.put("Column1", " ");
+                                mDb.insert("Лист" + listsString, null, newValues); //пустая вторая строка
+                                for (int i = 2; i < ii + 1; i++) {
+                                    cursor.move(i);
+                                    row = sheet.getRow(i);
+                                    newValues = new ContentValues();
+                                    for (int x = 0; x < xx; x++) {
+                                        if (row.getCell(x) != null) value = row.getCell(x).toString();
+                                        else value = null;
+                                        newValues.put("Column" + (x + 1), value);
+                                    }
+                                    mDb.insert("Лист" + listsString, null, newValues);
+                                }
+                                Log.d("--", "Лист" + listsString + " скопирован, всего " + lists);
+                                cursor.close();
+                            }
+                            SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
+                            editor.putString("num_lst", String.valueOf(lists));
+                            editor.commit();
+                            copyBaseDone=2;
+
+                            if (prefs.getBoolean("adm", false)) {
+                                //      NotificationUtils n = NotificationUtils.getInstance(context);
+                                n.createInfoNotification("Обновлён " + dataupdate);
+                            }
+                            if (prefs.getBoolean("Уведомления", false)) {
+                                // NotificationUtils n = NotificationUtils.getInstance(context);
+                                n.createInfoNotification("Обновлён " + dataupdate);
+                            }
+
+                        } else {
+                            copyBaseDone=3;
+                            Log.d("--","Результат копирования  " + copyBaseDone);
+                            if (prefs.getBoolean("adm", false)) {
+                                //   NotificationUtils n = NotificationUtils.getInstance(context);
+                                n.createInfoNotification("Обновление не требуется " + dataupdate);
+                            }
                         }
+
+                        Date currentDate = new Date();
+                        SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
+                        String day = fmtday.format(currentDate);
+                        SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
+                        editor.putString("dayup", day);
+                        editor.commit();
+
+                    } catch (Exception ex) {
+                        copyBaseDone=1;
+                        Log.d("--","Результат копирования  " + copyBaseDone + ex.getMessage());
+
                     }
-                    cursor.moveToFirst();
-                    for (int x = 0; x < xx; x++) {
-                        value = row.getCell(x).toString();
-                        newValues.put("Column" + (x + 1), value);
-                    }
-                    mDb.delete("Лист" + listsString, null, null);
-                    mDb.insert("Лист" + listsString, null, newValues);
-                    newValues = new ContentValues();
-                    newValues.put("Column1", " ");
-                    mDb.insert("Лист" + listsString, null, newValues); //пустая вторая строка
-                    for (int i = 2; i < ii + 1; i++) {
-                        cursor.move(i);
-                        row = sheet.getRow(i);
-                        newValues = new ContentValues();
-                        for (int x = 0; x < xx; x++) {
-                            if (row.getCell(x) != null) value = row.getCell(x).toString();
-                            else value = null;
-                            newValues.put("Column" + (x + 1), value);
-                        }
-                        mDb.insert("Лист" + listsString, null, newValues);
-                    }
-                    Log.d("--", "Лист" + listsString + " скопирован, всего " + lists);
-                    cursor.close();
-                }
-                SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
-                editor.putString("num_lst", String.valueOf(lists));
-                editor.commit();
-                copyBaseDone=2;
-
-                if (prefs.getBoolean("adm", false)) {
-              //      NotificationUtils n = NotificationUtils.getInstance(context);
-                    n.createInfoNotification("Обновлён " + dataupdate);
-                }
-                if (prefs.getBoolean("Уведомления", false)) {
-                   // NotificationUtils n = NotificationUtils.getInstance(context);
-                    n.createInfoNotification("Обновлён " + dataupdate);
-                }
-
-            } else {
-                copyBaseDone=3;
-                Log.d("--","Результат копирования  " + copyBaseDone);
-                if (prefs.getBoolean("adm", false)) {
-                 //   NotificationUtils n = NotificationUtils.getInstance(context);
-                    n.createInfoNotification("Обновление не требуется " + dataupdate);
-                }
-            }
-
-            Date currentDate = new Date();
-            SimpleDateFormat fmtday = new SimpleDateFormat("d.M.y");
-            String day = fmtday.format(currentDate);
-            SharedPreferences.Editor editor = getDefaultSharedPreferences(context).edit();
-            editor.putString("dayup", day);
-            editor.commit();
-
-        } catch (Exception ex) {
-            copyBaseDone=1;
-            Log.d("--","Результат копирования  " + copyBaseDone + ex.getMessage());
-
-        }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d("--",e.getMessage());
@@ -332,4 +332,3 @@ class updateBase {
 
 
 }
-
