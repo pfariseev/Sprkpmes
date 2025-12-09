@@ -130,6 +130,7 @@ class updateBase {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected void onPostExecute(Void file) {
+                progressDialog.hide();
                 // отображаем сообщение, если возникла ошибка
                 if (GitRobot.downloadFile== 3) {
                     //  m_error.printStackTrace();
@@ -145,7 +146,7 @@ class updateBase {
                         //         toast.setGravity(Gravity.CENTER, 0, 0);
                         //         toast.show();
                     }
-                    progressDialog.hide();
+
                     return;
                 }
                 // если всё хорошо, закрываем прогресс и удаляем временный файл
