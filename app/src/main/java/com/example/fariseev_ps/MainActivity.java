@@ -10,6 +10,7 @@ import static com.example.fariseev_ps.CallReceiver.phoneNumber;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -29,6 +30,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -53,7 +56,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     String myPhoneNumber="";
     private FirebaseAuth mAuth;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,13 +125,24 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         accessTokenToPushMessage = prefs.getString("accessTokenToPushMessage", "");
         View viewpager = findViewById(R.id.pagerTabStrip);
         viewpager.setVisibility(View.VISIBLE);
-        verifyUpdate();
-        for (int tit = 1; tit < num_list + 1; tit++) {
-            Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + tit, null);
-            cursor.moveToPosition(2);
-            titles[tit] = cursor.getString(6);
-            cursor.close();
-        }
+try {
+    verifyUpdate();
+    for (int tit = 1; tit < num_list + 1; tit++) {
+        Cursor cursor = mDb.rawQuery("SELECT * FROM Лист" + tit, null);
+        cursor.moveToPosition(2);
+        titles[tit] = cursor.getString(6);
+        cursor.close();
+    }
+} catch (Exception e) {
+    Log.d("--", "Нет базы или повреждена. " + e.getMessage());
+    File dbFile = new File(this.getApplicationInfo().dataDir + "/databases/sprkpmes.db");
+    if (dbFile.exists())
+        dbFile.delete();
+    if (GitRobot.downloadFile==2) restartAppWithDelay(this);
+
+}
+
+
         titles[1]="Карельское ПМЭС";
         String num = prefs.getString("phoneNumber","");
         String devID = prefs.getString("deviceId","");
@@ -177,6 +191,25 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
     }*/
 
+    public void restartAppWithDelay(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        // Используем Handler для задержки
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            context.startActivity(intent);
+
+            // Если это Activity
+            if (context instanceof Activity) {
+                ((Activity) context).finishAffinity();
+            }
+
+            // Завершаем процесс
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }, 300);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -797,7 +830,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             public void onClick(DialogInterface dialog, int which) {
                 //String urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1c473QyfNvzQXtcf0Cx-TAnDXRACxRGGG");
                 if (urlnew==null) urlnew = ("https://drive.google.com/uc?export=download&confirm=no_antivirus&id=1UIa0Z7u0coVVn6k3lKJCT3VkCM-dBHWK");
-                downloadFile(urlnew);
+                downloadFile_apk(urlnew);
 
             }
         });
@@ -887,13 +920,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
+    Cursor cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
+    cursor.moveToPosition(3);
+    urlnew = cursor.getString(11);
+    ver = getVersionCode();
+    cursor.moveToPosition(2);
+    Log.d("--", "ver !" + cursor.getInt(11) + "!");
 
-        Cursor cursor = mDb.rawQuery("SELECT * FROM Лист1", null);
-        cursor.moveToPosition(3);
-        urlnew=cursor.getString(11);
-        ver = getVersionCode();
-        cursor.moveToPosition(2);
-        Log.d("--", "ver !" + cursor.getInt(11) + "!");
         if (cursor.getInt(11) > getVersionCode()) {
             ShowAlertDialog();
         }
@@ -909,9 +942,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         }
         cursor.close();
+
     }
 
-    public void downloadFile(String url) {
+
+    public void downloadFile_apk(String url) {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         new AsyncTask<String, Integer, File>() {

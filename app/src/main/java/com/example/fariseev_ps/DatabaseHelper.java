@@ -14,7 +14,7 @@ import java.io.OutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "sprkpmes.db";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 20;
+    private static final int DB_VERSION = 21;
 
     private SQLiteDatabase mDataBase;
     private final Context mContext;

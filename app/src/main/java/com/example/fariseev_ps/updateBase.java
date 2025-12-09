@@ -39,7 +39,7 @@ class updateBase {
 
 
     private static Context context;
-    private static Integer copyBaseDone=0, lists=6, activelist=0;
+    public static Integer copyBaseDone=0, lists=6, activelist=0;
 
     private updateBase (Context context) {
         updateBase.context = context;
@@ -72,6 +72,15 @@ class updateBase {
             @Override
             protected void onPreExecute() {
                 if (context.getClass().getSimpleName().equals("about"))
+                {
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("Загрузка. Подождите.");
+                    progressDialog.setCancelable(false);
+                    progressDialog.setMax(lists);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    progressDialog.show();
+                }
+                if (context.getClass().getSimpleName().equals("MainActivity"))
                 {
                     progressDialog = new ProgressDialog(context);
                     progressDialog.setMessage("Загрузка. Подождите.");
@@ -113,6 +122,10 @@ class updateBase {
                 if (GitRobot.downloadFile== 2) copyDB();
                 while (copyBaseDone==0) {
                     if (context.getClass().getSimpleName().equals("about")) {
+                        publishProgress();
+                        progressDialog.setMessage("Загрузка завершена. Обновление.");
+                    }
+                    if (context.getClass().getSimpleName().equals("MainActivity")) {
                         publishProgress();
                         progressDialog.setMessage("Загрузка завершена. Обновление.");
                     }
@@ -173,6 +186,7 @@ class updateBase {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     static void copyDB() {
+        Log.d("--","Копирование базы");
         copyBaseDone=0;
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -283,7 +297,7 @@ class updateBase {
 
             } else {
                 copyBaseDone=3;
-
+                Log.d("--","Результат копирования  " + copyBaseDone);
                 if (prefs.getBoolean("adm", false)) {
                  //   NotificationUtils n = NotificationUtils.getInstance(context);
                     n.createInfoNotification("Обновление не требуется " + dataupdate);
@@ -299,11 +313,13 @@ class updateBase {
 
         } catch (Exception ex) {
             copyBaseDone=1;
+            Log.d("--","Результат копирования  " + copyBaseDone + ex.getMessage());
 
         }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d("--",e.getMessage());
+                    Log.d("--","Результат копирования  " + copyBaseDone);
                 }
             }
         });
