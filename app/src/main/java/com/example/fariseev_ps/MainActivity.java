@@ -658,11 +658,6 @@ try {
                                         enterMessage ();
                                         break;
                                     case R.id.radioButton_five:   {
-                                        updateBase n = updateBase.getInstance(context);
-                                        n.downloadFile();
-                                    }
-                                        break;
-                                    case R.id.radioButton_six:   {
                                         File dbFile = new File(getApplicationInfo().dataDir + "/databases/sprkpmes.db");
                                         if (dbFile.exists())
                                             dbFile.delete();

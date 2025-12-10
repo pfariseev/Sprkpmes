@@ -231,11 +231,8 @@ class updateBase {
                 }
             } */
                         Log.d("--",data2+" "+dataupdate);
-                        if (prefs.getBoolean("adm",false)) {
-                         //   if (context.getClass().getSimpleName().equals("MainActivity")) {
+                        if (prefs.getBoolean("adm",false))
                                 data2 = "";
-                        //    }
-                        }
                         if (!data2.equals(dataupdate)) {
 
                             for (activelist = 0; activelist < lists; activelist++) {
