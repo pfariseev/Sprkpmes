@@ -65,11 +65,15 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.BeginSignInResult;
+import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -87,6 +91,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private static final int RC_SIGN_IN = 200;
+    private static final int RC_PERMISSIONS = 110;
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
     ActionBar actionBar ;
@@ -214,19 +219,24 @@ try {
             case 7777: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (prefs.getString("phoneNumber","").equals("")) getPhoneNumber();
-                    if (prefs.getString("deviceId","").equals("")) getDeviceID();
-                   Log.i( "--","Permission granted!");
-                }
-                else {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Не все разрешения предоставлены.", Toast.LENGTH_LONG);
-                    toast.show();
-                      Log.d( "--","Permission denied!");
+                    if (prefs.getString("phoneNumber", "").equals("")) getPhoneNumber();
+                    if (prefs.getString("deviceId", "").equals("")) getDeviceID();
+                    Log.i("--", "Permission granted!");
+                } else {
+                    //Toast toast = Toast.makeText(getApplicationContext(), "Не все разрешения предоставлены.", Toast.LENGTH_LONG);
+                    //toast.show();
+                    //Log.d("--", "Permission denied!");
                 }
                 break;
             }
         }
-    }
+        if (requestCode == RC_PERMISSIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startSignIn();
+            }
+        }
+        }
+
 
     void sendRegistrationToServer(Context contex, String num, String devID, String tok) {
 
@@ -426,6 +436,64 @@ try {
         ServiceStart();
     }
 
+    private void startSignIn() {
+        oneTapClient = Identity.getSignInClient(this);
+        signInRequest = BeginSignInRequest.builder()
+                .setPasswordRequestOptions(
+                        BeginSignInRequest.PasswordRequestOptions.builder()
+                                .setSupported(true)
+                                .build()
+                )
+                .setGoogleIdTokenRequestOptions(
+                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                                .setSupported(true)
+                                .setServerClientId(getString(R.string.your_web_client_id))
+                                .setFilterByAuthorizedAccounts(true)
+                                .build()
+                )
+                .setAutoSelectEnabled(true)
+                .build();
+        oneTapClient.beginSignIn(signInRequest)
+                .addOnSuccessListener(new OnSuccessListener<BeginSignInResult>() {
+                    @Override
+                    public void onSuccess(BeginSignInResult result) {
+                        // 5. Если успешно - показываем окно выбора аккаунта
+                        try {
+                            // 7. Запускаем окно Google для выбора аккаунта
+                            startIntentSenderForResult(
+                                    result.getPendingIntent().getIntentSender(),
+                                    RC_SIGN_IN,
+                                    null, 0, 0, 0
+                            );
+                        } catch (Exception e) {
+                            Log.e("--", "Ошибка запуска: " + e.getMessage());
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        // 6. Если ошибка - логируем
+                        Log.w("--", "One-Tap не доступен: " + e.getMessage());
+                        // Здесь можно показать обычный вход
+                    }
+                });
+    }
+
+    private void checkAndRequestPermissions() {
+
+        String[] permissions = {
+                Manifest.permission.POST_NOTIFICATIONS
+        };
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, permissions, RC_PERMISSIONS);
+        } else {
+            startSignIn();
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkSearch (String check) {
         if (check.equals("!")) {
@@ -435,39 +503,16 @@ try {
                 Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
-                restartAppWithDelay(this);
-         /*       oneTapClient = Identity.getSignInClient(this);
-                signInRequest = BeginSignInRequest.builder()
-                        .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
-                                .setSupported(true)
-                                .build())
-                        .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                                .setSupported(true)
-                                .setServerClientId(getString(R.string.your_web_client_id))
-                                .setFilterByAuthorizedAccounts(true)
-                                .build())
-                        .setAutoSelectEnabled(true)
-                        .build();
-                oneTapClient.beginSignIn(signInRequest)
-                        .addOnSuccessListener(this, new OnSuccessListener<BeginSignInResult>() {
-                            @Override
-                            public void onSuccess(BeginSignInResult result) {
-                                try {
-                                    startIntentSenderForResult(
-                                            result.getPendingIntent().getIntentSender(), RC_SIGN_IN,
-                                            null, 0, 0, 0);
-                                } catch (IntentSender.SendIntentException e) {
-                                    Log.d("--", "Couldn't start One Tap UI: " + e.getLocalizedMessage());
-                                }
-                            }
-                        })
-                        .addOnFailureListener(this, new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("--", e.getLocalizedMessage());
-                            }
-                        });
-/*
+                if (Build.VERSION.SDK_INT >= 33) {
+                    checkAndRequestPermissions();
+                } else {
+                    startSignIn();
+                }
+                //restartAppWithDelay(this);
+
+            }
+
+/*}
              String json;
 
                 try {
@@ -494,7 +539,7 @@ try {
                     Log.d("--","2 "+e.getMessage());
                 }
 */
-            } else {
+             else {
                 editor.putBoolean("adm", false);
                 editor.commit();
                 //FirebaseAuth.getInstance().signOut();
@@ -786,7 +831,8 @@ try {
         else
             setAlarm(false);
         if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
-            ShowAlertCheck();
+            //ShowAlertCheck();
+            chekRec();
             setReciever(true);
         }
         //   else if (prefs.getBoolean(getString(R.string.outgoing), false)) {
