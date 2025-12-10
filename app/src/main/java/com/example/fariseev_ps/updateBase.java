@@ -81,6 +81,15 @@ class updateBase {
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                     progressDialog.show();
                 }
+                if (context.getClass().getSimpleName().equals("MainActivity"))
+                {
+                    progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("Загрузка. Подождите.");
+                    progressDialog.setCancelable(false);
+                    progressDialog.setMax(lists);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    progressDialog.show();
+                }
             }
 
 
@@ -114,6 +123,10 @@ class updateBase {
                 if (GitRobot.downloadFile== 2) copyDB();
                 while (copyBaseDone==0) {
                     if (context.getClass().getSimpleName().equals("about")) {
+                        publishProgress();
+                        progressDialog.setMessage("Загрузка завершена. Обновление.");
+                    }
+                    if (context.getClass().getSimpleName().equals("MainActivity")) {
                         publishProgress();
                         progressDialog.setMessage("Загрузка завершена. Обновление.");
                     }
@@ -218,7 +231,10 @@ class updateBase {
                 }
             } */
                         Log.d("--",data2+" "+dataupdate);
-
+                        if (prefs.getBoolean("adm",false))
+                        if (context.getClass().getSimpleName().equals("MainActivity")) {
+                            data2="";
+                        }
                         if (!data2.equals(dataupdate)) {
 
                             for (activelist = 0; activelist < lists; activelist++) {

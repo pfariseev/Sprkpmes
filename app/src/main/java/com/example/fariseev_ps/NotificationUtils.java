@@ -68,7 +68,7 @@ class NotificationUtils {
 
             Intent intent = new Intent(context, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 
             builder.setContentTitle("Справочник")  // required
                     .setSmallIcon(R.drawable.sprkpmes) // required
@@ -83,7 +83,7 @@ class NotificationUtils {
         }
         else {
             final Intent emptyIntent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, emptyIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
             builder = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.mipmap.sprkpmes) //иконка уведомления
                     .setAutoCancel(true) //уведомление закроется по клику на него

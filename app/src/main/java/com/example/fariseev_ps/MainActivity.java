@@ -19,7 +19,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -66,15 +65,11 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.BeginSignInResult;
-import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -435,8 +430,12 @@ try {
     private void checkSearch (String check) {
         if (check.equals("!")) {
             if (!prefs.getBoolean(getString(R.string.admin), false)) {
-
-                oneTapClient = Identity.getSignInClient(this);
+                editor.putBoolean("adm", true);
+                editor.commit();
+                Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+         /*       oneTapClient = Identity.getSignInClient(this);
                 signInRequest = BeginSignInRequest.builder()
                         .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
                                 .setSupported(true)
@@ -498,9 +497,10 @@ try {
                 editor.putBoolean("adm", false);
                 editor.commit();
                 //FirebaseAuth.getInstance().signOut();
-                Toast toast = Toast.makeText(this, "Пока! :(", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(this, "Пока :(", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
+
             }
             check="";
         }
@@ -656,6 +656,21 @@ try {
                                     case R.id.radioButton_four:
                                         enterMessage ();
                                         break;
+                                    case R.id.radioButton_five:   {
+                                        updateBase n = updateBase.getInstance(context);
+                                        n.downloadFile();
+                                    }
+                                        break;
+                                    case R.id.radioButton_six:   {
+                                        File dbFile = new File(getApplicationInfo().dataDir + "/databases/sprkpmes.db");
+                                        if (dbFile.exists())
+                                            dbFile.delete();
+                                        Toast toast = Toast.makeText(getApplicationContext(), "База удалена", Toast.LENGTH_LONG);
+                                        toast.setGravity(Gravity.CENTER, 0, 0);
+                                        toast.show();
+                                        restartAppWithDelay(context);
+                                    }
+                                    break;
 
                                 }
                              }
