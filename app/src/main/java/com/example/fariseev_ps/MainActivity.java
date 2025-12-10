@@ -435,6 +435,7 @@ try {
                 Toast toast = Toast.makeText(this, "Привет! :)", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
+                restartAppWithDelay(this);
          /*       oneTapClient = Identity.getSignInClient(this);
                 signInRequest = BeginSignInRequest.builder()
                         .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
@@ -500,7 +501,7 @@ try {
                 Toast toast = Toast.makeText(this, "Пока :(", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
-
+                restartAppWithDelay(this);
             }
             check="";
         }
