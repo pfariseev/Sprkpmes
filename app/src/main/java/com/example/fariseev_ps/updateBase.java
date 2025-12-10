@@ -231,9 +231,10 @@ class updateBase {
                 }
             } */
                         Log.d("--",data2+" "+dataupdate);
-                        if (prefs.getBoolean("adm",false))
-                        if (context.getClass().getSimpleName().equals("MainActivity")) {
-                            data2="";
+                        if (prefs.getBoolean("adm",false)) {
+                         //   if (context.getClass().getSimpleName().equals("MainActivity")) {
+                                data2 = "";
+                        //    }
                         }
                         if (!data2.equals(dataupdate)) {
 
