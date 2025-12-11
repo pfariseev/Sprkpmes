@@ -62,7 +62,7 @@ public class savephoto extends Activity {
         //  TextView copyrovanie = findViewById(R.id.textok);
 
         //copyrovanie.setText("Начать копирование ?");
-        folderToSave=folderToSaveVoid(this,"Photo");
+        folderToSave=folderToSaveVoid(this,"cache");
         mDBHelper = new DatabaseHelper(this);
         try {
             mDb = mDBHelper.getWritableDatabase();

@@ -141,7 +141,11 @@ public class CallReceiver extends BroadcastReceiver {
             if (PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.blacklist),"").contains(client.get("name")))
                 showWin=false;
         if (showWin)
-            showWindow(context, client.get("name"), client.get("mesto"), client.get("otdel"), client.get("doljnost"));
+            try {
+                showWindow(context, client.get("name"), client.get("mesto"), client.get("otdel"), client.get("doljnost"));
+            } catch (Exception e) {
+               // throw new RuntimeException(e);
+            }
     }
 
     private static void showWindow(Context context, String name, String mesto, String otdel, String doljnost) {

@@ -90,22 +90,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    private static final String[] PERMISSIONS = {
-          //  READ_EXTERNAL_STORAGE,
-          //  WRITE_EXTERNAL_STORAGE,
-            READ_SMS,
-          //  CALL_PHONE,
-            READ_PHONE_NUMBERS,
-            READ_PHONE_STATE,
-          //  READ_CALL_LOG,
-            PROCESS_OUTGOING_CALLS,
-            SYSTEM_ALERT_WINDOW
-           // POST_NOTIFICATIONS
-           };
     private static final int RC_SIGN_IN = 200;
     private static final int RC_PERMISSIONS = 110;
     private static final int PHONE_NUMBER_HINT = 120;
-    private static final int PERMISSION_REQUEST_CODE = 100;
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
     ActionBar actionBar ;
@@ -207,8 +194,8 @@ try {
 @Override
 public void onResume() {
     super.onResume();
-    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.imagesavetodisk), false)) chekRecPhoto();
-    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.uvedom), false)) checkAndRequestPermissions();
+    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.uvedom), false)) checkAndRequestPermissions();//chekRecPhoto();
+    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.callreceiver), false)) chekRec();
 
     pagerSet();
     ServiceStart();
@@ -234,6 +221,10 @@ public void onResume() {
             android.os.Process.killProcess(android.os.Process.myPid());
         }, 300);
     }
+
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -853,7 +844,7 @@ public void onResume() {
         else
             setAlarm(false);
         if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
-            ShowAlertCheck();
+            //ShowAlertCheck();
             setReciever(true);
         }
         //   else if (prefs.getBoolean(getString(R.string.outgoing), false)) {

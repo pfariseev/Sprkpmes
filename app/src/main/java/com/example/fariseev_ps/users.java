@@ -34,7 +34,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -289,7 +288,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
 
 
     public static void showAndSavePhoto(Context context, String name, ImageView photo) {
-        photoFolder = savephoto.folderToSaveVoid(context, "Photo");
+        photoFolder = savephoto.folderToSaveVoid(context, "cache");
         file = new File(photoFolder, name + ".jpg");
         if ((PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.imagesavetodisk), false))) {
             //  Log.d("--","savephotoToDidsk "+MainActivity.savephotoToDidsk);
@@ -834,7 +833,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //boolean exists = (new File(Environment.getExternalStorageDirectory()+"/SprPhoto/")).exists();
         //if (!exists) new File(Environment.getExternalStorageDirectory()+"/SprPhoto/").mkdirs();
-        File tempfile = new File(Environment.getExternalStorageDirectory()+"/SprPhoto/",Name1+".jpg");
+        File tempfile = new File(context.getApplicationInfo().dataDir + "/cache/");//Environment.getExternalStorageDirectory()+"/SprPhoto/",Name1+".jpg");
         System.out.println("PATH in PHOTO "+tempfile.getAbsolutePath().toString());
         outputFileUri = Uri.fromFile(tempfile);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
@@ -954,7 +953,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
         }
         ctx.getContentResolver().insert(addContactsUri, contentValues);
-        File fileForAddContact = new File(savephoto.folderToSaveVoid(ctx, "Photo"), name + ".jpg");
+        File fileForAddContact = new File(savephoto.folderToSaveVoid(ctx, "cache"), name + ".jpg");
         if (fileForAddContact!=null)
             if (fileForAddContact.exists()) {
                 byte[] photoData = getByteArrayfromBitmap(getBitmap(fileForAddContact.getAbsolutePath()));
