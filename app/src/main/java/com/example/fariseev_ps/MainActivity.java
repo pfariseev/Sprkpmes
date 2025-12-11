@@ -90,8 +90,22 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
+    private static final String[] PERMISSIONS = {
+          //  READ_EXTERNAL_STORAGE,
+          //  WRITE_EXTERNAL_STORAGE,
+            READ_SMS,
+          //  CALL_PHONE,
+            READ_PHONE_NUMBERS,
+            READ_PHONE_STATE,
+          //  READ_CALL_LOG,
+            PROCESS_OUTGOING_CALLS,
+            SYSTEM_ALERT_WINDOW
+           // POST_NOTIFICATIONS
+           };
     private static final int RC_SIGN_IN = 200;
     private static final int RC_PERMISSIONS = 110;
+    private static final int PHONE_NUMBER_HINT = 120;
+    private static final int PERMISSION_REQUEST_CODE = 100;
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
     ActionBar actionBar ;
@@ -105,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     PagerAdapter pagerAdapter;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    private static final int PHONE_NUMBER_HINT = 100;
+
     String myPhoneNumber="";
     private FirebaseAuth mAuth;
 
@@ -190,6 +204,16 @@ try {
                 Log.d("--", "GitHub credentials OK!!!");
             }
     }*/
+@Override
+public void onResume() {
+    super.onResume();
+    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.imagesavetodisk), false)) chekRecPhoto();
+    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.uvedom), false)) checkAndRequestPermissions();
+
+    pagerSet();
+    ServiceStart();
+}
+
 
     public static void restartAppWithDelay(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -223,19 +247,21 @@ try {
                     if (prefs.getString("deviceId", "").equals("")) getDeviceID();
                     Log.i("--", "Permission granted!");
                 } else {
-                    //Toast toast = Toast.makeText(getApplicationContext(), "Не все разрешения предоставлены.", Toast.LENGTH_LONG);
-                    //toast.show();
-                    //Log.d("--", "Permission denied!");
+                    Toast toast = Toast.makeText(getApplicationContext(), "Не все разрешения предоставлены.", Toast.LENGTH_LONG);
+                    toast.show();
+                    Log.d("--", "Permission denied!");
                 }
                 break;
             }
-        }
-        if (requestCode == RC_PERMISSIONS) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startSignIn();
+            case RC_PERMISSIONS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startSignIn();
             }
+            break;
+            }
+
         }
-        }
+}
 
 
     void sendRegistrationToServer(Context contex, String num, String devID, String tok) {
@@ -387,7 +413,9 @@ try {
                         PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(ctx,
                         READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(ctx, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(ctx,
+                        READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
+        {
             chekRec();
             return false;
         } else {
@@ -428,13 +456,7 @@ try {
                     }
                 }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(this.getString(R.string.imagesavetodisk), false)) chekRecPhoto();
-        pagerSet();
-        ServiceStart();
-    }
+
 
     private void startSignIn() {
         oneTapClient = Identity.getSignInClient(this);
@@ -490,7 +512,7 @@ try {
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, permissions, RC_PERMISSIONS);
         } else {
-            startSignIn();
+          //  startSignIn();
         }
     }
 
@@ -506,7 +528,7 @@ try {
                 if (Build.VERSION.SDK_INT >= 33) {
                     checkAndRequestPermissions();
                 } else {
-                    startSignIn();
+               //     startSignIn();
                 }
                 //restartAppWithDelay(this);
 
@@ -831,8 +853,7 @@ try {
         else
             setAlarm(false);
         if (prefs.getBoolean(getString(R.string.callreceiver), false)) {
-            //ShowAlertCheck();
-            chekRec();
+            ShowAlertCheck();
             setReciever(true);
         }
         //   else if (prefs.getBoolean(getString(R.string.outgoing), false)) {
