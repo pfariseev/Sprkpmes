@@ -854,7 +854,7 @@ public void onResume() {
         else setReciever(false);
     }
 
-     void setAlarm (Boolean enadis) {
+  /*   void setAlarm (Boolean enadis) {
         ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
         PackageManager pm = getPackageManager();
         //     final Intent intentService;
@@ -870,7 +870,42 @@ public void onResume() {
        //     this.stopService(new Intent(this, EternalService.class));
         }
     }
+*/
+  void setAlarm(boolean enadis) {
+      ComponentName receiver = new ComponentName(getApplicationContext(), EternalService.Alarm.class);
+      PackageManager pm = getPackageManager();
 
+      if (enadis) {
+          // Включаем компонент
+          pm.setComponentEnabledSetting(receiver,
+                  PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                  PackageManager.DONT_KILL_APP);
+
+          // Устанавливаем будильник
+          EternalService.Alarm.setAlarm(this);
+
+          // Запускаем сервис с учетом версии Android
+          Intent serviceIntent = new Intent(this, EternalService.class);
+
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+              // Android 8.0+ требует запуск сервиса как foreground service
+              startForegroundService(serviceIntent);
+          } else {
+              startService(serviceIntent);
+          }
+      } else {
+          // Отключаем компонент
+          pm.setComponentEnabledSetting(receiver,
+                  PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                  PackageManager.DONT_KILL_APP);
+
+          // Отменяем будильник
+          EternalService.Alarm.cancelAlarm(this);
+
+          // Останавливаем сервис
+          this.stopService(new Intent(this, EternalService.class));
+      }
+  }
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(this.ACTIVITY_SERVICE);
 
