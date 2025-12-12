@@ -584,9 +584,9 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
   } */
     private void performCrop(Uri imageUri) {
         // Создаем выходной файл
-       File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg");
+  //     File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg");
 
-//        File outputFile = new File(getCacheDir(), "croppedTempFile.jpg") ;
+        File outputFile = new File(getCacheDir(), Name1+"jpg") ;
  //       if (outputFile.exists())
   //      {
   //          outputFile.delete();
@@ -785,7 +785,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     @TargetApi(Build.VERSION_CODES.O)
     void photoDialog () {
         android.app.AlertDialog alertDialog= null;
-        //CheckStoragePermissionFroAdmin();
+        CheckStoragePermissionFroAdmin();
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.promptphoto, null);
         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
