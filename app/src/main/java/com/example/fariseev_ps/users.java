@@ -574,7 +574,8 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
      //   Uri outputUri;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            outputFileUri = FileProvider.getUriForFile(this, savephoto.folderToSaveVoid(this,"cache"),
+            outputFileUri = FileProvider.getUriForFile(this,
+                    getPackageName() + ".provider",
                     outputFile);
         } else {
             outputFileUri = Uri.fromFile(outputFile);
@@ -590,7 +591,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         cropIntent.putExtra("outputY", 400);
         cropIntent.putExtra("scale", true);
         cropIntent.putExtra("return-data", false); // Не возвращаем через интент
-        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri); // Сохраняем в файл
+        cropIntent.putExtra(savephoto.folderToSaveVoid(this,"cache"), outputFileUri); // Сохраняем в файл
         cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
