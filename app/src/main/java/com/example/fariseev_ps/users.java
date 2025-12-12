@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -69,6 +70,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class users extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
@@ -520,8 +522,8 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
             toast.show();
         }
-    } */
-  private void performCrop(Uri imageUri) {
+    }
+    private void performCrop(Uri imageUri) {
       Intent cropIntent = new Intent(Intent.ACTION_EDIT);
       cropIntent.setDataAndType(imageUri, "image/*");
       cropIntent.putExtra("crop", "true");
@@ -539,7 +541,44 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
           Toast.makeText(this, "Устройство не поддерживает кадрирование",
                   Toast.LENGTH_SHORT).show();
       }
-  }
+  } */
+    private void performCrop(Uri imageUri) {
+        // Создаем выходной файл
+        File outputFile = new File(getCacheDir(), "cropped_" + System.currentTimeMillis() + ".jpg");
+        Uri outputUri;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            outputUri = FileProvider.getUriForFile(this,
+                    getPackageName() + ".provider",
+                    outputFile);
+        } else {
+            outputUri = Uri.fromFile(outputFile);
+        }
+
+        // Пробуем использовать ACTION_CROP (не все устройства поддерживают)
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        cropIntent.setDataAndType(imageUri, "image/*");
+        cropIntent.putExtra("crop", "true");
+        cropIntent.putExtra("aspectX", 3);
+        cropIntent.putExtra("aspectY", 4);
+        cropIntent.putExtra("outputX", 300);
+        cropIntent.putExtra("outputY", 400);
+        cropIntent.putExtra("scale", true);
+        cropIntent.putExtra("return-data", false); // Не возвращаем через интент
+        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri); // Сохраняем в файл
+        cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        // Проверяем наличие приложения
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(cropIntent, 0);
+        if (list.size() > 0) {
+            startActivityForResult(cropIntent, PIC_CROP);
+        } else {
+            Toast.makeText(this, "Устройство не поддерживает кадрирование",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public static Bitmap getBitmap(String filePath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         //   options.inJustDecodeBounds = true;
