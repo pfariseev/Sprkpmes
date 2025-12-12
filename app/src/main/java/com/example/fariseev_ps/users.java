@@ -615,9 +615,9 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         cropIntent.putExtra("outputY", 400);
         cropIntent.putExtra("scale", true);
         cropIntent.putExtra("return-data", false); // Не возвращаем через интент
-        cropIntent.putExtra(savephoto.folderToSaveVoid(this,"cache"), outputFileUri); // Сохраняем в файл
-     //   cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-     //   cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT,outputFileUri);//savephoto.folderToSaveVoid(this,"cache"), outputFileUri); // Сохраняем в файл
+        cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         // Проверяем наличие приложения
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(cropIntent, 0);
