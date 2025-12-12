@@ -476,6 +476,8 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     matrix.preRotate(rotationInDegrees);
                 }
                 bitmap = Bitmap.createBitmap(rotatebitmap, 0, 0, rotatebitmap.getWidth(), rotatebitmap.getHeight(), matrix, true);
+                if (bitmap != null) saveFiletoFolder(Name1, bitmap);
+                else realPath = null;
             } catch (IOException ex) {
                 System.out.println("Ошибка ориентации ");
             }
@@ -489,8 +491,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             }
         }
 
-        if (bitmap != null) saveFiletoFolder(Name1, bitmap);
-        else realPath = null;
+
     }
 
     public static void saveFiletoFolder(String name, Bitmap bitmap) {
@@ -569,9 +570,12 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
   } */
     private void performCrop(Uri imageUri) {
         // Создаем выходной файл
-      //  File outputFile = new File(getCacheDir(), Name1 + ".jpg");
-        File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg") ;
+      // File outputFile = new File(getCacheDir(), "tempFotoFile" + ".jpg");
+       // File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg") ;
      //   Uri outputUri;
+        File cacheDir = getCacheDir();
+        File outputFile = new File(cacheDir, "cropped_" + System.currentTimeMillis() + ".jpg");
+        Uri destinationUri = Uri.fromFile(outputFile);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             outputFileUri = FileProvider.getUriForFile(this,
@@ -592,8 +596,8 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         cropIntent.putExtra("scale", true);
         cropIntent.putExtra("return-data", false); // Не возвращаем через интент
         cropIntent.putExtra(savephoto.folderToSaveVoid(this,"cache"), outputFileUri); // Сохраняем в файл
-        cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+     //   cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+     //   cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         // Проверяем наличие приложения
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(cropIntent, 0);
