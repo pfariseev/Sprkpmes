@@ -569,7 +569,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
   } */
     private void performCrop(Uri imageUri) {
         // Создаем выходной файл
-        File outputFile = new File(getCacheDir(), "cropped_" + System.currentTimeMillis() + ".jpg");
+        File outputFile = new File(getCacheDir(), Name1 + ".jpg");
      //   Uri outputUri;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -679,8 +679,6 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     void CheckStoragePermissionFroAdmin(){
 
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
-            // photoFolder = savephoto.folderToSaveVoid(this);
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // Android 11+
                 // Для Android 11+ нужно специальное разрешение
                 if (!Environment.isExternalStorageManager()) {
@@ -985,7 +983,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
              // Обработка отсутствия приложения камеры
          }
      } catch (Exception e) {
-         Toast.makeText(this, "шибка запуска камеры: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "Ошибка запуска камеры: " + e.getMessage(), Toast.LENGTH_SHORT).show();
      }
  }
 
