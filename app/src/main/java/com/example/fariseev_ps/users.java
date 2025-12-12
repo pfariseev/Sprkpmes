@@ -463,10 +463,31 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             }
         } else
             if (requestCode == PIC_CROP) {
-            realPath = outputFileUri.getPath();
-            System.out.println("Path out PHOTO " + realPath);
-            Bitmap rotatebitmap = getBitmap(realPath);
+                // Получаем обрезанное изображение
+                Uri croppedImageUri = data.getData();
+
+                if (croppedImageUri == null && data.hasExtra(MediaStore.EXTRA_OUTPUT)) {
+                    croppedImageUri = data.getParcelableExtra(MediaStore.EXTRA_OUTPUT);
+                }
+                if (croppedImageUri != null) {
+                    // Загружаем и отображаем изображение
+                   try {
+                        bitmap = MediaStore.Images.Media.getBitmap(
+                                getContentResolver(), croppedImageUri);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else if (data.getExtras() != null) {
+                    // Если изображение вернулось в Bundle
+                    bitmap = data.getParcelableExtra("data");
+                //    if (bitmap != null) {
+                //    }
+                }
+                // realPath = outputFileUri.getPath();
+         //   System.out.println("Path out PHOTO " + realPath);
+         //   Bitmap rotatebitmap = getBitmap(realPath);
             try {
+                realPath = croppedImageUri.getPath();
                 ExifInterface exif = new ExifInterface(realPath);
                 int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 int rotationInDegrees = exifToDegrees(rotation);
@@ -475,9 +496,9 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 if (rotation != 0f) {
                     matrix.preRotate(rotationInDegrees);
                 }
-                bitmap = Bitmap.createBitmap(rotatebitmap, 0, 0, rotatebitmap.getWidth(), rotatebitmap.getHeight(), matrix, true);
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             } catch (IOException ex) {
-                System.out.println("Ошибка ориентации ");
+                Toast.makeText(this, "Ошибка ориентации ", Toast.LENGTH_SHORT).show();
             }
                 if (bitmap != null) {
                     Bitmap bmHalf = Bitmap.createScaledBitmap(bitmap, 300, 400, false);
@@ -488,15 +509,13 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                         fOut = new FileOutputStream(file);
                         bmHalf.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        System.out.println("!1 " + e.getMessage());
+                        Toast.makeText(this, "Ошибка сжатия файлов", Toast.LENGTH_SHORT).show();
                     } finally {
                         if (fOut != null) {
                             try {
                                 fOut.close();
                             } catch (IOException e) {
-                                e.printStackTrace();
-                                System.out.println("!2 " + e.getMessage());
+                                Toast.makeText(this, "Ошибка закрытия файла", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -505,7 +524,6 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 if (realPath!=null)
                 {
                     try {
-                        //   System.out.println("realPath 2 " +realPath);
                         AsyncTask<Void, Void, String> execute = null;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                             execute = new ExecuteNetworkOperation("update");
@@ -513,7 +531,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                         execute.execute();
                         upload = false;
                     } catch (Exception ex) {
-                        System.out.println("упс2 " + ex.getMessage());
+                        Toast.makeText(this, "Ошибка загрузки на облако", Toast.LENGTH_SHORT).show();
                     }
                 }
 
