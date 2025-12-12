@@ -476,9 +476,12 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     matrix.preRotate(rotationInDegrees);
                 }
                 bitmap = Bitmap.createBitmap(rotatebitmap, 0, 0, rotatebitmap.getWidth(), rotatebitmap.getHeight(), matrix, true);
+            } catch (IOException ex) {
+                System.out.println("Ошибка ориентации ");
+            }
                 if (bitmap != null) {
                     Bitmap bmHalf = Bitmap.createScaledBitmap(bitmap, 300, 400, false);
-                    //if (file.exists()) file.delete();
+                    photoFolder = savephoto.folderToSaveVoid(context, "cache");
                     file = new File(photoFolder, Name1 + ".jpg");
                     FileOutputStream fOut = null;
                     try {
@@ -487,7 +490,16 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         System.out.println("!1 " + e.getMessage());
-                    } //saveFiletoFolder(Name1, bitmap);
+                    } finally {
+                        if (fOut != null) {
+                            try {
+                                fOut.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                System.out.println("!2 " + e.getMessage());
+                            }
+                        }
+                    }
                 }
                 else realPath = null;
                 if (realPath!=null)
@@ -504,9 +516,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                         System.out.println("упс2 " + ex.getMessage());
                     }
                 }
-            } catch (IOException ex) {
-                System.out.println("Ошибка ориентации ");
-            }
+
         }
         if (requestCode == REQUEST_MANAGE_STORAGE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
