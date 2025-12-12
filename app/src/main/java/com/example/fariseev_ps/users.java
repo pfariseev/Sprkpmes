@@ -486,6 +486,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 // realPath = outputFileUri.getPath();
          //   System.out.println("Path out PHOTO " + realPath);
          //   Bitmap rotatebitmap = getBitmap(realPath);
+         /*
             try {
                 realPath = croppedImageUri.getPath();
                 ExifInterface exif = new ExifInterface(realPath);
@@ -499,7 +500,37 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             } catch (IOException ex) {
                 Toast.makeText(this, "Ошибка ориентации ", Toast.LENGTH_SHORT).show();
-            }
+            }*/
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(croppedImageUri);
+                    if (inputStream != null) {
+                        ExifInterface exif = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                            exif = new ExifInterface(inputStream);
+                        }
+                        int orientation = exif.getAttributeInt(
+                                ExifInterface.TAG_ORIENTATION,
+                                ExifInterface.ORIENTATION_NORMAL
+                        );
+                        int rotationInDegrees = exifToDegrees(orientation);
+                        System.out.println("rotationInDegrees " + rotationInDegrees);
+
+                        // Поворачиваем Bitmap
+                        if (rotationInDegrees != 0 && bitmap != null) {
+                            Matrix matrix = new Matrix();
+                            matrix.postRotate(rotationInDegrees);
+                            bitmap = Bitmap.createBitmap(
+                                    bitmap, 0, 0,
+                                    bitmap.getWidth(), bitmap.getHeight(),
+                                    matrix, true
+                            );
+                        }
+                        inputStream.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 if (bitmap != null) {
                     Bitmap bmHalf = Bitmap.createScaledBitmap(bitmap, 300, 400, false);
                     photoFolder = savephoto.folderToSaveVoid(context, "cache");
@@ -547,6 +578,61 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
 
 
     }
+
+    private int getImageRotation(Uri imageUri) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                // Для Android 7.0+
+                InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                ExifInterface exif = new ExifInterface(inputStream);
+                int orientation = exif.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_NORMAL
+                );
+                inputStream.close();
+                return exifToDegrees(orientation);
+            } else {
+                // Для старых версий Android
+                String realPath = getRealPathFromUri(imageUri);
+                if (realPath != null) {
+                    ExifInterface exif = new ExifInterface(realPath);
+                    int orientation = exif.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_NORMAL
+                    );
+                    return exifToDegrees(orientation);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private String getRealPathFromUri(Uri uri) {
+        if (uri == null) return null;
+
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            Cursor cursor = null;
+            try {
+                String[] projection = {MediaStore.Images.Media.DATA};
+                cursor = getContentResolver().query(uri, projection, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    return cursor.getString(columnIndex);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (cursor != null) cursor.close();
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
+    }
+
 
     public static void saveFiletoFolder(String name, Bitmap bitmap) {
         if (bitmap != null) {
