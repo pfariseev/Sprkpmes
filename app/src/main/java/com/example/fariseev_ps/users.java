@@ -122,7 +122,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     public void onResume() {
         super.onResume();
         if (dialog) showDialogSaveContact(this,Name1, phoneMobile, phoneGorod);
-        if (realPath!=null)
+    /*    if (realPath!=null)
         {
             try {
                 //   System.out.println("realPath 2 " +realPath);
@@ -132,7 +132,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             } catch (Exception ex) {
                 System.out.println("упс2 " + ex.getMessage());
             }
-        }
+        }*/
 
     }
 
@@ -478,6 +478,22 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 bitmap = Bitmap.createBitmap(rotatebitmap, 0, 0, rotatebitmap.getWidth(), rotatebitmap.getHeight(), matrix, true);
                 if (bitmap != null) saveFiletoFolder(Name1, bitmap);
                 else realPath = null;
+                while (!file.canWrite()) {
+                }
+                if (realPath!=null)
+                {
+                    try {
+                        //   System.out.println("realPath 2 " +realPath);
+                        AsyncTask<Void, Void, String> execute = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            execute = new ExecuteNetworkOperation("update");
+                        }
+                        execute.execute();
+                        upload = false;
+                    } catch (Exception ex) {
+                        System.out.println("упс2 " + ex.getMessage());
+                    }
+                }
             } catch (IOException ex) {
                 System.out.println("Ошибка ориентации ");
             }
