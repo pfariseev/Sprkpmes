@@ -830,7 +830,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                             startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
                         }
                         if (item == 1) {
-                            startCamera();
+                                startCamera();
                         }
                         if (item == 2) {
                             try {
@@ -862,65 +862,56 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
         startActivityForResult(cameraIntent, CAMERA_RESULT);
     }*/
- private void startCamera() {
+ void startCamera() {
      try {
-         // Создаем временный файл для фотографии
-         File photoFile = new File(context.getApplicationInfo().dataDir + "/cache/");
-        // File photoFile = createImageFile();
-         if (photoFile == null) {
-             Toast.makeText(this, "Не удалось создать файл для фото", Toast.LENGTH_SHORT).show();
-             return;
+         File directory = new File(context.getApplicationInfo().dataDir + "/cache/");
+         if (!directory.exists()) {
+             directory.mkdirs();
          }
 
-         // Для Android 7+ (API 24) используем FileProvider
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-             outputFileUri = FileProvider.getUriForFile(
-                     this,
-                     getApplicationContext().getPackageName() + ".fileprovider",
-                     photoFile
-             );
-         } else {
-             // Для старых версий (устаревший способ)
-             outputFileUri = Uri.fromFile(photoFile);
-         }
-
-         System.out.println("PATH in PHOTO: " + photoFile.getAbsolutePath());
-         System.out.println("URI for camera: " + outputFileUri.toString());
+         File tempfile = new File(directory, "photo_" + System.currentTimeMillis() + ".jpg");
 
          Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
-         // Даем временное разрешение на запись приложению камеры
-         cameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-         // Проверяем, есть ли приложение для обработки
-         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-             startActivityForResult(cameraIntent, CAMERA_RESULT);
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+             // Для Android 7+ используем FileProvider
+             outputFileUri = FileProvider.getUriForFile(context,
+                     context.getPackageName() + ".provider",
+                     tempfile);
+             cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
          } else {
-             Toast.makeText(this, "Нет приложения камеры", Toast.LENGTH_SHORT).show();
+             // Для старых версий
+             outputFileUri = Uri.fromFile(tempfile);
          }
 
+         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+
+         if (cameraIntent.resolveActivity(context.getPackageManager()) != null) {
+             startActivityForResult(cameraIntent, CAMERA_RESULT);
+         } else {
+             // Обработка отсутствия приложения камеры
+         }
      } catch (Exception e) {
-         e.printStackTrace();
-         Toast.makeText(this, "Ошибка запуска камеры: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+         Toast.makeText(this, "шибка запуска камеры: " + e.getMessage(), Toast.LENGTH_SHORT).show();
      }
  }
 
-    public static void writeDisplayPhoto(Context ctx, long rawContactId, byte[] photo) {
-        System.out.println(rawContactId+" rawContactId");
-        Uri rawContactPhotoUri = Uri.withAppendedPath(
-                ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId),
-                ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
-        try {
-            AssetFileDescriptor fd =
-                    ctx.getContentResolver().openAssetFileDescriptor(rawContactPhotoUri, "rw");
-            OutputStream os = fd.createOutputStream();
-            os.write(photo);
-            os.close();
-            fd.close();
-        } catch (IOException e) {
-        }
-    }
+     public static void writeDisplayPhoto(Context ctx, long rawContactId, byte[] photo){
+         System.out.println(rawContactId + " rawContactId");
+         Uri rawContactPhotoUri = Uri.withAppendedPath(
+                 ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI, rawContactId),
+                 ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
+         try {
+             AssetFileDescriptor fd =
+                     ctx.getContentResolver().openAssetFileDescriptor(rawContactPhotoUri, "rw");
+             OutputStream os = fd.createOutputStream();
+             os.write(photo);
+             os.close();
+             fd.close();
+         } catch (IOException e) {
+         }
+     }
+
 
     public static byte[] getByteArrayfromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
