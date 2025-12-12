@@ -569,7 +569,8 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
   } */
     private void performCrop(Uri imageUri) {
         // Создаем выходной файл
-        File outputFile = new File(getCacheDir(), Name1 + ".jpg");
+      //  File outputFile = new File(getCacheDir(), Name1 + ".jpg");
+        File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg") ;
      //   Uri outputUri;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
