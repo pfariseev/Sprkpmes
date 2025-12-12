@@ -476,10 +476,8 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     matrix.preRotate(rotationInDegrees);
                 }
                 bitmap = Bitmap.createBitmap(rotatebitmap, 0, 0, rotatebitmap.getWidth(), rotatebitmap.getHeight(), matrix, true);
-                if (bitmap != null) saveFiletoFolder(Name1, bitmap);
-                else realPath = null;
-                while (!file.canWrite()) {
-                }
+         //       if (bitmap != null) saveFiletoFolder(Name1, bitmap);
+           //     else realPath = null;
                 if (realPath!=null)
                 {
                     try {
@@ -586,14 +584,14 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
   } */
     private void performCrop(Uri imageUri) {
         // Создаем выходной файл
-      // File outputFile = new File(getCacheDir(), "tempFotoFile" + ".jpg");
+       File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg");
 
-        File outputFile = new File(getCacheDir(), "croppedTempFile.jpg") ;
-        if (outputFile.exists())
-        {
-            outputFile.delete();
-            outputFile = new File(getCacheDir(), "croppedTempFile.jpg") ;
-        }
+//        File outputFile = new File(getCacheDir(), "croppedTempFile.jpg") ;
+ //       if (outputFile.exists())
+  //      {
+  //          outputFile.delete();
+   //         outputFile = new File(getCacheDir(), "croppedTempFile.jpg") ;
+    //    }
      //   Uri outputUri;
       //  File cacheDir = getCacheDir();
      //   File outputFile = new File(cacheDir, "cropped_" + System.currentTimeMillis() + ".jpg");
