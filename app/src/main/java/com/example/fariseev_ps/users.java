@@ -545,14 +545,14 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     private void performCrop(Uri imageUri) {
         // Создаем выходной файл
         File outputFile = new File(getCacheDir(), "cropped_" + System.currentTimeMillis() + ".jpg");
-        Uri outputUri;
+     //   Uri outputUri;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            outputUri = FileProvider.getUriForFile(this,
+            outputFileUri = FileProvider.getUriForFile(this,
                     getPackageName() + ".provider",
                     outputFile);
         } else {
-            outputUri = Uri.fromFile(outputFile);
+            outputFileUri = Uri.fromFile(outputFile);
         }
 
         // Пробуем использовать ACTION_CROP (не все устройства поддерживают)
@@ -565,7 +565,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         cropIntent.putExtra("outputY", 400);
         cropIntent.putExtra("scale", true);
         cropIntent.putExtra("return-data", false); // Не возвращаем через интент
-        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri); // Сохраняем в файл
+        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri); // Сохраняем в файл
         cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
