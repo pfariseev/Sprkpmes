@@ -571,11 +571,11 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     private void performCrop(Uri imageUri) {
         // Создаем выходной файл
       // File outputFile = new File(getCacheDir(), "tempFotoFile" + ".jpg");
-       // File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg") ;
+        File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), "cropped_" + System.currentTimeMillis() + ".jpg" + ".jpg") ;
      //   Uri outputUri;
-        File cacheDir = getCacheDir();
-        File outputFile = new File(cacheDir, "cropped_" + System.currentTimeMillis() + ".jpg");
-        Uri destinationUri = Uri.fromFile(outputFile);
+      //  File cacheDir = getCacheDir();
+     //   File outputFile = new File(cacheDir, "cropped_" + System.currentTimeMillis() + ".jpg");
+     //   Uri destinationUri = Uri.fromFile(outputFile);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             outputFileUri = FileProvider.getUriForFile(this,
