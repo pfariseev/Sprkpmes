@@ -574,8 +574,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
      //   Uri outputUri;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            outputFileUri = FileProvider.getUriForFile(this,
-                    getPackageName() + ".provider",
+            outputFileUri = FileProvider.getUriForFile(this, savephoto.folderToSaveVoid(this,"cache"),
                     outputFile);
         } else {
             outputFileUri = Uri.fromFile(outputFile);
