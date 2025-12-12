@@ -34,10 +34,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
@@ -52,6 +54,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,6 +79,8 @@ import java.util.List;
 public class users extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
 
     private static final int IDM_SMS = 101, IDM_COPY = 102, EMail_COPY = 103;;
+    private static final int REQUEST_STORAGE_PERMISSION = 110;
+    private static final int REQUEST_MANAGE_STORAGE = 111;
     Context context;
     static final int GALLERY_REQUEST = 1;
     final int CAMERA_RESULT = 3;
@@ -404,7 +409,22 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 saveFiletoFolder(name, result);
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        if (requestCode == REQUEST_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                // Разрешения отклонены
+                Toast.makeText(this, "Нужны разрешения для продолжения",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //     super.onActivityResult(requestCode, resultCode, data);
@@ -459,10 +479,15 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             } catch (IOException ex) {
                 System.out.println("Ошибка ориентации ");
             }
-
         }
-
-
+        if (requestCode == REQUEST_MANAGE_STORAGE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (!Environment.isExternalStorageManager()) {
+                    Toast.makeText(this, "Нужно разрешение на управление файлами",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
 
         if (bitmap != null) saveFiletoFolder(Name1, bitmap);
         else realPath = null;
@@ -651,28 +676,57 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         }
     }
 
-    void CheckAdmin(){
+    void CheckStoragePermissionFroAdmin(){
+
         if (getDefaultSharedPreferences(this).getBoolean("adm", false)) {
             // photoFolder = savephoto.folderToSaveVoid(this);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                int canRead = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-                int canWrite = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                if (canRead != PackageManager.PERMISSION_GRANTED || canWrite != PackageManager.PERMISSION_GRANTED) {
-                    //Нужно ли нам показывать объяснения , зачем нам нужно это разрешение
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        //показываем объяснение
-                    } else {
-                        //просим разрешение
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_EXTERNAL_STORAGE}, NUMBER_OF_REQUEST);
-                    }
-                } else {
-                    //ваш код
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // Android 11+
+                // Для Android 11+ нужно специальное разрешение
+                if (!Environment.isExternalStorageManager()) {
+                    // Запрашиваем разрешение на управление хранилищем
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(intent, REQUEST_MANAGE_STORAGE);
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Android 6.0-10
+                if (!checkStoragePermission()) {
+                    requestStoragePermissions();
                 }
             }
         }
     }
+
+
+    private boolean checkStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        }
+        return true; // Для старых версий всегда true
+    }
+
+    private void requestStoragePermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Проверяем, нужно ли показывать объяснение
+            boolean shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE);
+                // Просим разрешение напрямую
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        REQUEST_STORAGE_PERMISSION);
+            }
+        }
+
+
+
 /*
     public static String enterWord (Context context) {
         LayoutInflater li = LayoutInflater.from(context);
@@ -708,7 +762,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     @TargetApi(Build.VERSION_CODES.O)
     void photoDialog () {
         android.app.AlertDialog alertDialog= null;
-        CheckAdmin();
+        CheckStoragePermissionFroAdmin();
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.promptphoto, null);
         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);

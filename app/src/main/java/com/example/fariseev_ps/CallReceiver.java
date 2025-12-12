@@ -144,7 +144,7 @@ public class CallReceiver extends BroadcastReceiver {
             try {
                 showWindow(context, client.get("name"), client.get("mesto"), client.get("otdel"), client.get("doljnost"));
             } catch (Exception e) {
-               // throw new RuntimeException(e);
+                // throw new RuntimeException(e);
             }
     }
 
