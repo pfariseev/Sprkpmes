@@ -476,8 +476,20 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     matrix.preRotate(rotationInDegrees);
                 }
                 bitmap = Bitmap.createBitmap(rotatebitmap, 0, 0, rotatebitmap.getWidth(), rotatebitmap.getHeight(), matrix, true);
-         //       if (bitmap != null) saveFiletoFolder(Name1, bitmap);
-           //     else realPath = null;
+                if (bitmap != null) {
+                    Bitmap bmHalf = Bitmap.createScaledBitmap(bitmap, 300, 400, false);
+                    //if (file.exists()) file.delete();
+                    file = new File(photoFolder, Name1 + ".jpg");
+                    FileOutputStream fOut = null;
+                    try {
+                        fOut = new FileOutputStream(file);
+                        bmHalf.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        System.out.println("!1 " + e.getMessage());
+                    } //saveFiletoFolder(Name1, bitmap);
+                }
+                else realPath = null;
                 if (realPath!=null)
                 {
                     try {
@@ -586,7 +598,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         // Создаем выходной файл
   //     File outputFile = new File(savephoto.folderToSaveVoid(this,"cache"), Name1 + ".jpg");
 
-        File outputFile = new File(getCacheDir(), Name1+"jpg") ;
+        File outputFile = new File(getCacheDir(), "cropped_" + System.currentTimeMillis() + ".jpg");
  //       if (outputFile.exists())
   //      {
   //          outputFile.delete();
@@ -618,6 +630,18 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         cropIntent.putExtra(savephoto.folderToSaveVoid(this,"cache"),outputFileUri);//savephoto.folderToSaveVoid(this,"cache"), outputFileUri); // Сохраняем в файл
         cropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         cropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        // ОБЯЗАТЕЛЬНО: Дать разрешение на оба URI!
+        List<ResolveInfo> resInfoList = getPackageManager()
+                .queryIntentActivities(cropIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            grantUriPermission(packageName, imageUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            grantUriPermission(packageName, outputFileUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
 
         // Проверяем наличие приложения
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(cropIntent, 0);
@@ -785,7 +809,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
     @TargetApi(Build.VERSION_CODES.O)
     void photoDialog () {
         android.app.AlertDialog alertDialog= null;
-        CheckStoragePermissionFroAdmin();
+        //CheckStoragePermissionFroAdmin();
         LayoutInflater li = LayoutInflater.from(context);
         View promptsView = li.inflate(R.layout.promptphoto, null);
         final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(context);
