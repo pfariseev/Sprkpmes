@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -98,6 +99,7 @@ public class EternalService extends Service{
                 Update(context);
             }
         }
+        /*
         public static void setAlarm(Context context){
             Log.d("--","setAlarm. вызов обновления от "+context.getClass().getSimpleName());
             Log.d("--","Установка таймера "+ALARM_INTERVAL_SEC+" сек.");
@@ -109,13 +111,70 @@ public class EternalService extends Service{
             am.cancel(pi);
             am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * ALARM_INTERVAL_SEC, pi);
         }
-        public static void cancelAlarm(Context context){
+        */
+        public static void setAlarm(Context context) {
+            Log.d("--", "setAlarm. вызов обновления от " + context.getClass().getSimpleName());
+            Log.d("--", "Установка таймера " + ALARM_INTERVAL_SEC + " сек.");
+
+            Intent intent = new Intent(ALARM_EVENT);
+            intent.setClass(context, EternalService.Alarm.class);
+
+            AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+            // Флаги для разных версий Android
+            int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                flags |= PendingIntent.FLAG_MUTABLE;
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                flags |= PendingIntent.FLAG_IMMUTABLE;
+            }
+
+            PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, flags);
+
+            am.cancel(pi);
+
+            // Использование точного будильника
+            long triggerAtMillis = System.currentTimeMillis() + (1000 * ALARM_INTERVAL_SEC);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                am.setExact(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi);
+            } else {
+                am.setRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(),
+                        1000 * ALARM_INTERVAL_SEC,
+                        pi);
+            }
+        }
+ /*       public static void cancelAlarm(Context context){
             Log.d("--","Отмена таймера");
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, new Intent(ALARM_EVENT), PendingIntent.FLAG_IMMUTABLE);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(sender);
         }
-        // }
+        // }*/
+ public static void cancelAlarm(Context context){
+     Log.d("--","Отмена таймера");
+
+     Intent intent = new Intent(ALARM_EVENT);
+     intent.setClass(context, EternalService.Alarm.class);
+
+     // Используем те же флаги, что и при создании
+     int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+         flags |= PendingIntent.FLAG_MUTABLE;
+     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+         flags |= PendingIntent.FLAG_IMMUTABLE;
+     }
+
+     PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, flags);
+     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+     alarmManager.cancel(sender);
+
+     // Также отменяем PendingIntent
+     sender.cancel();
+ }
         public void Update(Context context){
             Log.d("--","EternalService. вызов обновления от "+context.getClass().getSimpleName());
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

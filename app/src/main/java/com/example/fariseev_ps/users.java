@@ -11,7 +11,6 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -35,7 +34,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -58,6 +56,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -429,12 +428,19 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                     cursor.close();
                 }
             }
-        } else if (requestCode == CAMERA_RESULT) {
-            if (data != null) {
-                performCrop();
+        } else     if (requestCode == CAMERA_RESULT && resultCode == RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                // Если есть URI в данных
+                performCrop(data.getData());
+            } else {
+                // Если URI нет в данных (например, из камеры)
+                // Используйте сохраненный URI фотографии
+                if (outputFileUri != null) {
+                    performCrop(outputFileUri);
+                }
             }
-
-        } else if (requestCode == PIC_CROP) {
+        } else
+            if (requestCode == PIC_CROP) {
             realPath = outputFileUri.getPath();
             System.out.println("Path out PHOTO " + realPath);
             Bitmap rotatebitmap = getBitmap(realPath);
@@ -453,6 +459,9 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             }
 
         }
+
+
+
         if (bitmap != null) saveFiletoFolder(Name1, bitmap);
         else realPath = null;
     }
@@ -492,7 +501,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         return 0;
     }
 
-    private void performCrop(){
+  /*  private void performCrop(){
         try {
             // Намерение для кадрирования. Не все устройства поддерживают его
             Intent cropIntent = new Intent("com.android.camera.action.CROP");
@@ -511,8 +520,26 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
             Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
             toast.show();
         }
-    }
+    } */
+  private void performCrop(Uri imageUri) {
+      Intent cropIntent = new Intent(Intent.ACTION_EDIT);
+      cropIntent.setDataAndType(imageUri, "image/*");
+      cropIntent.putExtra("crop", "true");
+      cropIntent.putExtra("aspectX", 3);
+      cropIntent.putExtra("aspectY", 4);
+      cropIntent.putExtra("outputX", 300);
+      cropIntent.putExtra("outputY", 400);
+      cropIntent.putExtra("scale", true);
+      cropIntent.putExtra("return-data", true);
 
+      // Проверяем, есть ли приложение для обработки
+      if (cropIntent.resolveActivity(getPackageManager()) != null) {
+          startActivityForResult(cropIntent, PIC_CROP);
+      } else {
+          Toast.makeText(this, "Устройство не поддерживает кадрирование",
+                  Toast.LENGTH_SHORT).show();
+      }
+  }
     public static Bitmap getBitmap(String filePath) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         //   options.inJustDecodeBounds = true;
@@ -803,11 +830,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                             startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
                         }
                         if (item == 1) {
-                            try {
-                                startCamera();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            startCamera();
                         }
                         if (item == 2) {
                             try {
@@ -827,7 +850,7 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
                 return null;
         }
     }
-    void startCamera () throws IOException {
+ /*   void startCamera () throws IOException {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -838,7 +861,50 @@ public class users extends AppCompatActivity implements AdapterView.OnItemLongCl
         outputFileUri = Uri.fromFile(tempfile);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
         startActivityForResult(cameraIntent, CAMERA_RESULT);
-    }
+    }*/
+ private void startCamera() {
+     try {
+         // Создаем временный файл для фотографии
+         File photoFile = new File(context.getApplicationInfo().dataDir + "/cache/");
+        // File photoFile = createImageFile();
+         if (photoFile == null) {
+             Toast.makeText(this, "Не удалось создать файл для фото", Toast.LENGTH_SHORT).show();
+             return;
+         }
+
+         // Для Android 7+ (API 24) используем FileProvider
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+             outputFileUri = FileProvider.getUriForFile(
+                     this,
+                     getApplicationContext().getPackageName() + ".fileprovider",
+                     photoFile
+             );
+         } else {
+             // Для старых версий (устаревший способ)
+             outputFileUri = Uri.fromFile(photoFile);
+         }
+
+         System.out.println("PATH in PHOTO: " + photoFile.getAbsolutePath());
+         System.out.println("URI for camera: " + outputFileUri.toString());
+
+         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+
+         // Даем временное разрешение на запись приложению камеры
+         cameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+         // Проверяем, есть ли приложение для обработки
+         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+             startActivityForResult(cameraIntent, CAMERA_RESULT);
+         } else {
+             Toast.makeText(this, "Нет приложения камеры", Toast.LENGTH_SHORT).show();
+         }
+
+     } catch (Exception e) {
+         e.printStackTrace();
+         Toast.makeText(this, "Ошибка запуска камеры: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+     }
+ }
 
     public static void writeDisplayPhoto(Context ctx, long rawContactId, byte[] photo) {
         System.out.println(rawContactId+" rawContactId");

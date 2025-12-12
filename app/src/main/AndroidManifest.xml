@@ -28,6 +28,8 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  //  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+  //  <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
 
@@ -94,7 +96,7 @@
 
         <receiver
             android:name=".EternalService$Alarm"
-            android:exported="true"
+            android:exported="false"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
             android:enabled="true">
             <intent-filter>
